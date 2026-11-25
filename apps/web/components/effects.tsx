@@ -159,6 +159,71 @@ export function ScrollReveal({
   );
 }
 
+/// Smooth horizontal carousel with snap scrolling, controls and gentle
+/// auto-advance. Auto-advance is disabled under prefers-reduced-motion.
+export function Carousel({
+  items,
+  className = "",
+}: {
+  items: { tag: string; title: string; body: string }[];
+  className?: string;
+}) {
+  const [index, setIndex] = useState(0);
+  const scroller = useRef<HTMLDivElement>(null);
+
+  const go = (next: number) => {
+    const n = (next + items.length) % items.length;
+    setIndex(n);
+    const box = scroller.current;
+    const card = box?.children[n] as HTMLElement | undefined;
+    if (box && card) {
+      box.scrollTo({ left: card.offsetLeft - box.offsetLeft - (box.clientWidth - card.clientWidth) / 2, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => go(index + 1), 7000);
+    return () => window.clearInterval(id);
+  }, [index, items.length]);
+
+  return (
+    <div className={`relative ${className}`}>
+      <div
+        ref={scroller}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        aria-roledescription="carousel"
+      >
+        {items.map((item) => (
+          <SpotlightCard
+            key={item.title}
+            className="min-w-[min(86vw,340px)] shrink-0 snap-center border border-line bg-surface p-6"
+          >
+            <span className="overline">{item.tag}</span>
+            <h3 className="mt-5 text-[17px]">{item.title}</h3>
+            <p className="mt-3 text-[15px] leading-7 text-ink-2">{item.body}</p>
+          </SpotlightCard>
+        ))}
+      </div>
+      <div className="mt-4 flex items-center gap-3">
+        <button onClick={() => go(index - 1)} className="border border-line-strong px-3 py-2 font-mono text-[14px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Previous item">←</button>
+        <button onClick={() => go(index + 1)} className="border border-line-strong px-3 py-2 font-mono text-[14px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Next item">→</button>
+        <div className="ml-2 flex gap-2">
+          {items.map((item, i) => (
+            <button
+              key={item.title}
+              onClick={() => go(i)}
+              aria-label={`Go to ${item.title}`}
+              aria-current={i === index ? "true" : undefined}
+              className={`h-2 w-8 transition-colors ${i === index ? "bg-flare" : "bg-line-strong hover:bg-ink-3"}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function GradientText({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <span className={`gradient-text ${className}`}>{children}</span>;
 }

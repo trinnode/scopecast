@@ -85,7 +85,7 @@ contract ScopeCastReactiveTest is MiniTest {
 
     function test_onlySystemCanCallReact() public {
         vm.expectRevert();
-        reactive.react(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 1, true, _hash(1, true)));
+        reactive.react(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 1, true, _hash(1, true)));
     }
 
     function test_onlyOwnerCanSetMirror() public {
@@ -98,7 +98,7 @@ contract ScopeCastReactiveTest is MiniTest {
 
     function test_acceptsMatchingEvent() public {
         vm.recordLogs();
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 1, true, _hash(1, true)));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 1, true, _hash(1, true)));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 1);
         Vm.Log[] memory logs = vm.getRecordedLogs();
         assertEq(logs.length, 1);
@@ -106,19 +106,19 @@ contract ScopeCastReactiveTest is MiniTest {
     }
 
     function test_ignoresWrongChain() public {
-        _deliver(_log(84533, HUB, TOPIC0, 3, 1, true, _hash(1, true)));
+        _deliver(_log(84533, HUB, TOPIC0, 4, 1, true, _hash(1, true)));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 0);
     }
 
     function test_ignoresWrongEmitter() public {
-        _deliver(_log(ORIGIN_CHAIN, address(0xBAD), TOPIC0, 3, 1, true, _hash(1, true)));
+        _deliver(_log(ORIGIN_CHAIN, address(0xBAD), TOPIC0, 4, 1, true, _hash(1, true)));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 0);
     }
 
     function test_ignoresWrongTopic() public {
         _deliver(
             _log(
-                ORIGIN_CHAIN, HUB, uint256(keccak256("Other(uint256)")), 3, 1, true, _hash(1, true)
+                ORIGIN_CHAIN, HUB, uint256(keccak256("Other(uint256)")), 4, 1, true, _hash(1, true)
             )
         );
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 0);
@@ -132,7 +132,7 @@ contract ScopeCastReactiveTest is MiniTest {
     }
 
     function test_ignoresTamperedPolicyHash() public {
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 1, true, bytes32(keccak256("tampered"))));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 1, true, bytes32(keccak256("tampered"))));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 0);
     }
 
@@ -140,7 +140,7 @@ contract ScopeCastReactiveTest is MiniTest {
 
     function test_duplicateEventDoesNotRequestSecondCallback() public {
         IReactive.LogRecord memory log_ =
-            _log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 2, true, _hash(2, true));
+            _log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 2, true, _hash(2, true));
         vm.recordLogs();
         _deliver(log_);
         _deliver(log_);
@@ -150,14 +150,14 @@ contract ScopeCastReactiveTest is MiniTest {
     }
 
     function test_oldEpochAfterNewEpochIsIgnored() public {
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 3, false, _hash(3, false)));
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 1, true, _hash(1, true)));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 3, false, _hash(3, false)));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 1, true, _hash(1, true)));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 3);
     }
 
     function test_acceptsStrictlyNewerEpoch() public {
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 1, true, _hash(1, true)));
-        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 3, 2, false, _hash(2, false)));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 1, true, _hash(1, true)));
+        _deliver(_log(ORIGIN_CHAIN, HUB, TOPIC0, 4, 2, false, _hash(2, false)));
         assertEq(uint256(reactive.latestRequestedEpoch(AGENT_ID)), 2);
     }
 }

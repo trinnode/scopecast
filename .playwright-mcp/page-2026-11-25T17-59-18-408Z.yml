@@ -1,0 +1,100 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - generic [aria-hidden] [ref=f26e3]: ◐
+    - paragraph [ref=f26e4]:
+      - strong [ref=f26e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f26e7]:
+    - banner [ref=f26e8]:
+      - generic [ref=f26e9]: scopecast / console
+      - button "Connect wallet" [ref=f26e12] [cursor=pointer]
+    - navigation "Mobile console navigation" [ref=f26e13]:
+      - generic [ref=f26e14]:
+        - link "Overview" [ref=f26e15] [cursor=pointer]:
+          - /url: /console
+        - link "Agent policies" [ref=f26e16] [cursor=pointer]:
+          - /url: /console/policies
+        - link "Propagation" [ref=f26e17] [cursor=pointer]:
+          - /url: /console/propagation
+        - link "Guarded DeFi" [ref=f26e18] [cursor=pointer]:
+          - /url: /console/demo
+        - link "Authorise policy" [ref=f26e19] [cursor=pointer]:
+          - /url: /console/create
+        - link "Revoke" [ref=f26e20] [cursor=pointer]:
+          - /url: /console/revoke
+        - link "Audit trail" [ref=f26e21] [cursor=pointer]:
+          - /url: /console/audit
+        - link "Diagnostics" [ref=f26e22] [cursor=pointer]:
+          - /url: /console/diagnostics
+        - link "Architecture" [ref=f26e23] [cursor=pointer]:
+          - /url: /console/architecture
+    - main [ref=f26e24]:
+      - generic [ref=f26e25]:
+        - generic [ref=f26e26]:
+          - generic [ref=f26e27]: CONFIGURE · ARCHITECTURE
+          - heading "Three chains, one versioned capability" [level=1] [ref=f26e30]
+          - paragraph [ref=f26e31]: SCOPECAST is a coordination layer for integrated contracts. It is not a smart wallet, approval scanner, universal revoker or price-driven circuit breaker.
+        - generic [ref=f26e33]:
+          - generic [ref=f26e34]:
+            - generic [ref=f26e35]: "01"
+            - heading "PolicyHub · Base Sepolia 84532" [level=2] [ref=f26e38]
+            - paragraph [ref=f26e39]: Owner-only registry. create / update / revoke / rotate each increment a monotonic epoch and emit PolicyUpdated with all capability fields and a canonical policy hash. The agent cannot modify its own policy.
+          - generic [ref=f26e40]:
+            - generic [ref=f26e41]: "02"
+            - heading "ScopeCastReactive · Reactive Omni 5318007" [level=2] [ref=f26e44]
+            - paragraph [ref=f26e45]: Subscribed to the exact hub address and topic0. react() validates chain ID, emitter, topic count, event signature, destination chain/module and policy hash before requesting a callback. Irrelevant logs return without reverting.
+          - generic [ref=f26e46]:
+            - generic [ref=f26e47]: "03"
+            - heading "PolicyMirror · Unichain Sepolia 1301" [level=2] [ref=f26e50]
+            - paragraph [ref=f26e51]: Accepts callbacks only from the official callback proxy and the authorised reactive sender. Applies strictly newer epochs only. Idempotent under duplicate delivery; stale callbacks cannot reactivate a revoked policy.
+          - generic [ref=f26e52]:
+            - generic [ref=f26e53]: "04"
+            - heading "GuardedDeFiVault · Unichain Sepolia 1301" [level=2] [ref=f26e56]
+            - paragraph [ref=f26e57]: The only agent entry point reads the mirror and checks active, agent, chain, target, selector, expiry and cap. Successful actions move test tokens between two internal positions and emit an auditable event.
+        - generic [ref=f26e58]:
+          - generic [ref=f26e59]:
+            - generic [ref=f26e60]: TRUST BOUNDARIES
+            - list [ref=f26e63]:
+              - listitem [ref=f26e64]:
+                - strong [ref=f26e65]: "Trusted:"
+                - text: source owner transaction (use a multisig in production).
+              - listitem [ref=f26e66]:
+                - strong [ref=f26e67]: "Authenticated:"
+                - text: reactive callback via proxy + sender identity.
+              - listitem [ref=f26e68]:
+                - strong [ref=f26e69]: "Hostile:"
+                - text: agent calldata, opaque event bytes, any unregistered module.
+              - listitem [ref=f26e70]:
+                - strong [ref=f26e71]: "Asynchronous:"
+                - text: the window between source finality and destination callback is real and visible.
+          - generic [ref=f26e72]:
+            - generic [ref=f26e73]: ORDERING INVARIANTS
+            - list [ref=f26e76]:
+              - listitem [ref=f26e77]: Destination epoch never decreases.
+              - listitem [ref=f26e78]: Callback at epoch n cannot modify state at epoch n or above.
+              - listitem [ref=f26e79]: Inactive latest policy blocks every guarded action.
+              - listitem [ref=f26e80]: Unrelated source events cannot modify the mirror.
+              - listitem [ref=f26e81]: Policy hash binds all capability fields across chains.
+        - generic [ref=f26e82]:
+          - generic [ref=f26e83]: CONSTANTS USED BY THE REACTIVE LAYER
+          - generic [ref=f26e86]:
+            - generic [ref=f26e87]:
+              - text: topic0
+              - generic [ref=f26e88]: "0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9"
+            - generic [ref=f26e89]:
+              - text: system contract
+              - generic [ref=f26e90]: "0x8888888888888888888888888888888888888888"
+            - generic [ref=f26e91]:
+              - text: callback proxy (Unichain)
+              - generic [ref=f26e92]: "0x775c9B990ADe401060B78D0e98684eEf8d2466C1"
+          - paragraph [ref=f26e93]:
+            - text: "Full documentation:"
+            - link "repository ↗" [ref=f26e94] [cursor=pointer]:
+              - /url: https://github.com/trinnode/scopecast
+    - contentinfo [ref=f26e95]:
+      - img "SCOPECAST" [ref=f26e97]
+      - generic [ref=f26e98]: Testnet build · not audited
+      - link "Source ↗" [ref=f26e99] [cursor=pointer]:
+        - /url: https://github.com/trinnode/scopecast
+  - button "Open Next.js Dev Tools" [ref=f26e105] [cursor=pointer]
+  - alert [ref=f26e109]

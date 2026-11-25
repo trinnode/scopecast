@@ -83,7 +83,7 @@ contract IntegrationHarnessTest is MiniTest {
             topic3: uint256(log_.topics[3]),
             data: log_.data,
             blockNumber: 1,
-            opCode: 3,
+            opCode: 4,
             blockHash: 0,
             txHash: 0,
             logIndex: 0

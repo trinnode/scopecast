@@ -30,8 +30,12 @@ say() { printf '\n== %s ==\n' "$1"; }
 deploy() {
   local rpc="$1" key="$2" target="$3"; shift 3
   local out
-  out="$(cd contracts && forge create "$target" --rpc-url "$rpc" --private-key "$key" --constructor-args "$@" --json)"
-  printf '%s\n' "$out" | jq -r '.deployedTo'
+  if [ "$#" -gt 0 ]; then
+    out="$(cd contracts && forge create "$target" --rpc-url "$rpc" --private-key "$key" --broadcast --constructor-args "$@")"
+  else
+    out="$(cd contracts && forge create "$target" --rpc-url "$rpc" --private-key "$key" --broadcast)"
+  fi
+  printf '%s\n' "$out" | awk '/^Deployed to:/ {print $3; exit}'
 }
 
 send() {
@@ -44,8 +48,8 @@ REACTIVE_ADDR="$(cast wallet address --private-key "$REACTIVE_DEPLOYER_PRIVATE_K
 echo "Deployer (Base/Unichain): $ADMIN_ADDR"
 echo "Reactive deployer:        $REACTIVE_ADDR"
 
-for pair in "Base:$BASE_RPC:84532" "Unichain:$UNI_RPC:1301" "Lasna:$LASNA_RPC:5318007"; do
-  IFS=: read -r name url expected <<<"$pair"
+for pair in "Base|$BASE_RPC|84532" "Unichain|$UNI_RPC|1301" "Lasna|$LASNA_RPC|5318007"; do
+  IFS='|' read -r name url expected <<<"$pair"
   actual="$(cast chain-id --rpc-url "$url")"
   if [ "$actual" != "$expected" ]; then echo "ERROR: $name chain id $actual != $expected" >&2; exit 1; fi
   echo "$name chain id verified: $actual"
@@ -92,12 +96,12 @@ say "6/6 Configure the reactive contract (owner only) and verify subscription"
 send "$LASNA_RPC" "$REACTIVE_DEPLOYER_PRIVATE_KEY" "$REACTIVE_CONTRACT_ADDRESS" \
   'configure(address,address,address)' "$POLICY_HUB_ADDRESS" "$GUARDED_VAULT_ADDRESS" "$POLICY_MIRROR_ADDRESS" >/dev/null
 
-for item in "Base:$BASE_RPC:$POLICY_HUB_ADDRESS:expectedDestinationModule()" \
-            "Unichain:$UNI_RPC:$POLICY_MIRROR_ADDRESS:reactiveSender()" \
-            "Unichain:$UNI_RPC:$POLICY_MIRROR_ADDRESS:_CALLBACK_SENDER()" \
-            "Lasna:$LASNA_RPC:$REACTIVE_CONTRACT_ADDRESS:originHub()" \
-            "Lasna:$LASNA_RPC:$REACTIVE_CONTRACT_ADDRESS:destinationMirror()"; do
-  IFS=: read -r name rpc addr fn <<<"$item"
+for item in "Base|$BASE_RPC|$POLICY_HUB_ADDRESS|expectedDestinationModule()" \
+            "Unichain|$UNI_RPC|$POLICY_MIRROR_ADDRESS|reactiveSender()" \
+            "Unichain|$UNI_RPC|$POLICY_MIRROR_ADDRESS|_CALLBACK_SENDER()" \
+            "Lasna|$LASNA_RPC|$REACTIVE_CONTRACT_ADDRESS|originHub()" \
+            "Lasna|$LASNA_RPC|$REACTIVE_CONTRACT_ADDRESS|destinationMirror()"; do
+  IFS='|' read -r name rpc addr fn <<<"$item"
   result="$(cast call "$addr" "$fn" --rpc-url "$rpc")"
   echo "$name $fn -> $result"
 done

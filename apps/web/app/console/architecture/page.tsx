@@ -38,8 +38,8 @@ export default function Architecture() {
         {flow.map((step) => (
           <Card key={step.n}>
             <Overline>{step.n}</Overline>
-            <h2 className="mt-3 font-display text-[18px] font-semibold text-ink">{step.title}</h2>
-            <p className="mt-3 text-[13px] leading-6 text-ink-2">{step.body}</p>
+            <h2 className="mt-3 font-display text-[22px] font-semibold text-ink">{step.title}</h2>
+            <p className="mt-3 text-[17px] leading-6 text-ink-2">{step.body}</p>
           </Card>
         ))}
       </div>
@@ -47,7 +47,7 @@ export default function Architecture() {
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <Card>
           <Overline>TRUST BOUNDARIES</Overline>
-          <ul className="mt-4 space-y-3 text-[13px] leading-6 text-ink-2">
+          <ul className="mt-4 space-y-3 text-[17px] leading-6 text-ink-2">
             <li><strong className="text-ink">Trusted:</strong> source owner transaction (use a multisig in production).</li>
             <li><strong className="text-ink">Authenticated:</strong> reactive callback via proxy + sender identity.</li>
             <li><strong className="text-ink">Hostile:</strong> agent calldata, opaque event bytes, any unregistered module.</li>
@@ -56,7 +56,7 @@ export default function Architecture() {
         </Card>
         <Card>
           <Overline>ORDERING INVARIANTS</Overline>
-          <ol className="mt-4 list-decimal space-y-2 pl-5 text-[13px] leading-6 text-ink-2">
+          <ol className="mt-4 list-decimal space-y-2 pl-5 text-[17px] leading-6 text-ink-2">
             <li>Destination epoch never decreases.</li>
             <li>Callback at epoch n cannot modify state at epoch n or above.</li>
             <li>Inactive latest policy blocks every guarded action.</li>
@@ -68,12 +68,12 @@ export default function Architecture() {
 
       <Card className="mt-8">
         <Overline>CONSTANTS USED BY THE REACTIVE LAYER</Overline>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3 text-[12px]">
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 text-[16px]">
           <div><span className="text-ink-3">topic0</span><div><Mono>{POLICY_UPDATED_TOPIC}</Mono></div></div>
           <div><span className="text-ink-3">system contract</span><div><Mono>{SYSTEM_CONTRACT}</Mono></div></div>
           <div><span className="text-ink-3">callback proxy (Unichain)</span><div><Mono>{CALLBACK_PROXY.unichain}</Mono></div></div>
         </div>
-        <p className="mt-5 text-[12px] text-ink-3">Full documentation: <Link href="https://github.com/trinnode/scopecast" className="text-cyan hover:underline">repository ↗</Link></p>
+        <p className="mt-5 text-[16px] text-ink-3">Full documentation: <Link href="https://github.com/trinnode/scopecast" className="text-cyan hover:underline">repository ↗</Link></p>
       </Card>
     </>
   );

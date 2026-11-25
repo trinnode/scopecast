@@ -29,10 +29,10 @@ export default async function Diagnostics() {
             {checks.map((c) => (
               <div key={c.name} className="flex items-start justify-between gap-4 border-b border-line py-3 last:border-b-0">
                 <div>
-                  <p className="text-[13px] text-ink">{c.name}</p>
-                  {c.detail && <p className="text-[11px] text-ink-3">{c.detail}</p>}
+                  <p className="text-[17px] text-ink">{c.name}</p>
+                  {c.detail && <p className="text-[15px] text-ink-3">{c.detail}</p>}
                 </div>
-                <span className={`mono text-[12px] ${c.ok ? "text-cyan" : "text-vermilion"}`}>
+                <span className={`mono text-[16px] ${c.ok ? "text-cyan" : "text-vermilion"}`}>
                   {c.ok ? "▶ " : "! "}{c.value}
                 </span>
               </div>
@@ -45,7 +45,7 @@ export default async function Diagnostics() {
             <Overline>CONFIGURED ADDRESSES</Overline>
             <div className="mt-4 space-y-3">
               {rows.map(([label, value]) => (
-                <div key={label} className="flex justify-between gap-4 text-[12px]">
+                <div key={label} className="flex justify-between gap-4 text-[16px]">
                   <span className="text-ink-3">{label}</span>
                   <Mono>{value ?? "NOT CONFIGURED"}</Mono>
                 </div>
@@ -54,7 +54,7 @@ export default async function Diagnostics() {
           </Card>
           <Card>
             <Overline>SYSTEM CONSTANTS</Overline>
-            <div className="mt-4 space-y-3 text-[12px]">
+            <div className="mt-4 space-y-3 text-[16px]">
               <div><span className="text-ink-3">Lasna system contract</span><div><Mono>{SYSTEM_CONTRACT}</Mono></div></div>
               <div><span className="text-ink-3">Base callback proxy</span><div><Mono>{CALLBACK_PROXY.base}</Mono></div></div>
               <div><span className="text-ink-3">Unichain callback proxy</span><div><Mono>{CALLBACK_PROXY.unichain}</Mono></div></div>
@@ -69,7 +69,7 @@ export default async function Diagnostics() {
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {Object.entries(rpcUrls).map(([k, v]) => (
             <div key={k} className="rounded-sm border border-line bg-surface-2 p-3">
-              <p className="text-[11px] uppercase tracking-[0.08em] text-ink-3">{k}</p>
+              <p className="text-[15px] uppercase tracking-[0.08em] text-ink-3">{k}</p>
               <Mono>{v}</Mono>
             </div>
           ))}

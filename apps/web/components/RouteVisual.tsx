@@ -1,6 +1,6 @@
 "use client";
 
-import { truncateHex } from "./ui";
+import { truncateHex } from "@/lib/format";
 import type { PolicyStatus } from "@/lib/status";
 
 type Stage = {
@@ -27,26 +27,26 @@ export function RouteVisual({
   return (
     <div className="relative border border-line-strong bg-[#08080A]/90 p-5 md:p-6" aria-label="Policy propagation route">
       {simulation && (
-        <span className="absolute right-4 top-4 border border-amber/60 bg-tint-pending px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-amber">◐ Simulation</span>
+        <span className="absolute right-4 top-4 border border-amber/60 bg-tint-pending px-2 py-1 font-mono text-[13px] font-bold uppercase tracking-[0.16em] text-amber">◐ Simulation</span>
       )}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_46px_minmax(0,1fr)_46px_minmax(0,1fr)] md:items-center">
         {stages.map((stage, i) => (
           <div key={stage.label} className="contents">
             <div className="flex min-w-0 flex-col items-center text-center">
               <NodeState state={stage.state} />
-              <p className="mt-3 font-display text-[10px] font-bold uppercase leading-4 tracking-[-0.02em] text-ink md:text-[11px]">{stage.label}</p>
-              <p className="mt-1 font-mono text-[9px] uppercase leading-4 tracking-[0.04em] text-ink-3">{stage.sub}</p>
+              <p className="mt-3 font-display text-[14px] font-bold uppercase leading-4 tracking-[-0.02em] text-ink md:text-[15px]">{stage.label}</p>
+              <p className="mt-1 font-mono text-[13px] uppercase leading-4 tracking-[0.04em] text-ink-3">{stage.sub}</p>
               <div className="mt-2">
                 {stage.hash ? (
                   stage.url ? (
-                    <a href={stage.url} target="_blank" rel="noopener noreferrer" className="mono text-[10px] text-flare hover:underline">
+                    <a href={stage.url} target="_blank" rel="noopener noreferrer" className="mono text-[14px] text-flare hover:underline">
                       {truncateHex(stage.hash, 10, 8)} ↗
                     </a>
                   ) : (
-                    <span className="mono text-[10px] text-ink-2">{stage.hash}</span>
+                    <span className="mono text-[14px] text-ink-2">{stage.hash}</span>
                   )
                 ) : (
-                  <span className="mono text-[10px] text-fog">NO VERIFIED RECEIPT</span>
+                  <span className="mono text-[14px] text-fog">NO VERIFIED RECEIPT</span>
                 )}
               </div>
             </div>
@@ -61,7 +61,7 @@ export function RouteVisual({
           </div>
         ))}
       </div>
-      <p className="mt-6 border-t border-line pt-4 font-mono text-[10px] leading-4 uppercase tracking-[0.08em] text-ink-3">
+      <p className="mt-6 border-t border-line pt-4 font-mono text-[14px] leading-4 uppercase tracking-[0.08em] text-ink-3">
         A stage completes only after its receipt is verified on that chain. Source finality is not destination enforcement.
       </p>
     </div>
@@ -77,7 +77,7 @@ function NodeState({ state }: { state: Stage["state"] }) {
     revoked: { glyph: "⊘", cls: "border-blush bg-tint-revoked text-blush" },
   }[state];
   return (
-    <span className={`flex h-9 w-9 shrink-0 items-center justify-center border text-[13px] ${map.cls}`} aria-label={state}>
+    <span className={`flex h-9 w-9 shrink-0 items-center justify-center border text-[17px] ${map.cls}`} aria-label={state}>
       {map.glyph}
     </span>
   );

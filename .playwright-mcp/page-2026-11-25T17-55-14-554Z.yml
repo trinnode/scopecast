@@ -1,0 +1,118 @@
+- generic [active] [ref=f20e1]:
+  - generic [ref=f20e2]:
+    - generic [aria-hidden] [ref=f20e3]: ◐
+    - paragraph [ref=f20e4]:
+      - strong [ref=f20e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f20e7]:
+    - banner [ref=f20e8]:
+      - generic [ref=f20e9]: scopecast / console
+      - button "Connect wallet" [ref=f20e12] [cursor=pointer]
+    - navigation "Mobile console navigation" [ref=f20e13]:
+      - generic [ref=f20e14]:
+        - link "Overview" [ref=f20e15] [cursor=pointer]:
+          - /url: /console
+        - link "Agent policies" [ref=f20e16] [cursor=pointer]:
+          - /url: /console/policies
+        - link "Propagation" [ref=f20e17] [cursor=pointer]:
+          - /url: /console/propagation
+        - link "Guarded DeFi" [ref=f20e18] [cursor=pointer]:
+          - /url: /console/demo
+        - link "Authorise policy" [ref=f20e19] [cursor=pointer]:
+          - /url: /console/create
+        - link "Revoke" [ref=f20e20] [cursor=pointer]:
+          - /url: /console/revoke
+        - link "Audit trail" [ref=f20e21] [cursor=pointer]:
+          - /url: /console/audit
+        - link "Diagnostics" [ref=f20e22] [cursor=pointer]:
+          - /url: /console/diagnostics
+        - link "Architecture" [ref=f20e23] [cursor=pointer]:
+          - /url: /console/architecture
+    - main [ref=f20e24]:
+      - generic [ref=f20e25]:
+        - generic [ref=f20e26]:
+          - generic [ref=f20e27]: LIVE PROPAGATION TIMELINE
+          - heading "From source confirmation to destination enforcement" [level=1] [ref=f20e30]
+          - paragraph [ref=f20e31]: Each stage is shown with the actual transaction hash only when it has been independently verified against the chain RPC. An unobserved stage stays UNKNOWN.
+        - generic [ref=f20e33]:
+          - generic [ref=f20e34]:
+            - generic [ref=f20e35]: GRANT PATH
+            - 'generic "Status: DESTINATION SYNC UNKNOWN" [ref=f20e38]':
+              - generic [aria-hidden] [ref=f20e39]: "?"
+              - text: DESTINATION SYNC UNKNOWN
+          - generic "Policy propagation route" [ref=f20e40]:
+            - generic [ref=f20e41]: ◐ Simulation
+            - generic [ref=f20e42]:
+              - generic [ref=f20e44]:
+                - generic "pending" [ref=f20e45]: ○
+                - paragraph [ref=f20e46]: Source policy event
+                - paragraph [ref=f20e47]: Base Sepolia · 84532
+                - generic [ref=f20e48]: NO VERIFIED RECEIPT
+              - generic [ref=f20e50]:
+                - generic "pending" [ref=f20e51]: ○
+                - paragraph [ref=f20e52]: Reactive transaction
+                - paragraph [ref=f20e53]: Reactive Omni / Lasna · 5318007
+                - generic [ref=f20e54]: NO VERIFIED RECEIPT
+              - generic [ref=f20e56]:
+                - generic "pending" [ref=f20e57]: ○
+                - paragraph [ref=f20e58]: Destination callback receipt
+                - paragraph [ref=f20e59]: Unichain Sepolia · 1301
+                - generic [ref=f20e60]: NO VERIFIED RECEIPT
+            - paragraph [ref=f20e61]: A stage completes only after its receipt is verified on that chain. Source finality is not destination enforcement.
+        - generic [ref=f20e62]:
+          - generic [ref=f20e63]:
+            - generic [ref=f20e64]: STAGE DETAIL
+            - list [ref=f20e67]:
+              - listitem [ref=f20e68]:
+                - paragraph [ref=f20e69]: 01 · SOURCE_POLICY_ACTIVE
+                - paragraph [ref=f20e70]: Source policy event
+                - paragraph [ref=f20e71]: Base Sepolia · 84532
+                - generic [ref=f20e72]: NO VERIFIED RECEIPT
+              - listitem [ref=f20e73]:
+                - paragraph [ref=f20e74]: 02 · REACTIVE_EVENT_PROCESSED
+                - paragraph [ref=f20e75]: Reactive transaction
+                - paragraph [ref=f20e76]: Reactive Omni / Lasna · 5318007
+                - generic [ref=f20e77]: NO VERIFIED RECEIPT
+              - listitem [ref=f20e78]:
+                - paragraph [ref=f20e79]: 03 · CALLBACK_REQUESTED
+                - paragraph [ref=f20e80]: Destination callback receipt
+                - paragraph [ref=f20e81]: Unichain Sepolia · 1301
+                - generic [ref=f20e82]: NO VERIFIED RECEIPT
+          - generic [ref=f20e83]:
+            - generic [ref=f20e84]: REVOCATION PATH
+            - list [ref=f20e87]:
+              - listitem [ref=f20e88]:
+                - paragraph [ref=f20e89]: "01"
+                - paragraph [ref=f20e90]: Source revoke transaction
+                - paragraph [ref=f20e91]: NO VERIFIED RECEIPT
+              - listitem [ref=f20e92]:
+                - paragraph [ref=f20e93]: "02"
+                - paragraph [ref=f20e94]: Reactive revoke transaction
+                - paragraph [ref=f20e95]: NO VERIFIED RECEIPT
+              - listitem [ref=f20e96]:
+                - paragraph [ref=f20e97]: "03"
+                - paragraph [ref=f20e98]: Destination revoke callback
+                - paragraph [ref=f20e99]: NO VERIFIED RECEIPT
+              - listitem [ref=f20e100]:
+                - paragraph [ref=f20e101]: "04"
+                - paragraph [ref=f20e102]: Post-revoke denial proof
+                - paragraph [ref=f20e103]: NO VERIFIED RECEIPT
+        - generic [ref=f20e104]:
+          - generic [ref=f20e105]:
+            - generic [ref=f20e106]: OBSERVED PROPAGATION
+            - paragraph [ref=f20e109]: UNKNOWN
+          - generic [ref=f20e110]:
+            - generic [ref=f20e111]: MEASURED AT
+            - paragraph [ref=f20e114]: NOT RECORDED
+          - generic [ref=f20e115]:
+            - generic [ref=f20e116]: METHOD
+            - paragraph [ref=f20e119]: Destination block timestamp − source block timestamp, from verified receipts.
+        - generic [ref=f20e121]:
+          - generic [aria-hidden] [ref=f20e122]: "?"
+          - paragraph [ref=f20e123]: Live flow not yet recorded
+          - paragraph [ref=f20e124]: No verified on-chain flow evidence has been recorded yet. Local simulations are not proof of a live callback. This file is updated only from independently checked RPC receipts.
+    - contentinfo [ref=f20e125]:
+      - img "SCOPECAST" [ref=f20e127]
+      - generic [ref=f20e128]: Testnet build · not audited
+      - link "Source ↗" [ref=f20e129] [cursor=pointer]:
+        - /url: https://github.com/trinnode/scopecast

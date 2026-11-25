@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { createPublicClient, http } from "viem";
 import { useWallet } from "@/components/WalletProvider";
-import { Card, EmptyState, Mono, Overline, PageHeader, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, Mono, Overline, PageHeader, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 import { readSourceEvents, readMirrorPolicy, type SourceEvent } from "@/lib/chain-data";
 import { deriveStatus, STATUS } from "@/lib/status";
 import { policyHubAbi } from "@/lib/contracts";
@@ -89,7 +90,7 @@ export default function Revoke() {
                   }`}
                 >
                   <span>
-                    <span className="block text-[13px] text-ink">Epoch {e.epoch} · {e.active ? "ACTIVE" : "REVOKED"}</span>
+                    <span className="block text-[17px] text-ink">Epoch {e.epoch} · {e.active ? "ACTIVE" : "REVOKED"}</span>
                     <Mono>{truncateHex(e.agentId, 14, 10)}</Mono>
                   </span>
                   <StatusChip status={deriveStatus(e.active, mirrorEpoch, e.epoch)} compact />
@@ -101,32 +102,32 @@ export default function Revoke() {
           <div className="space-y-6">
             <Card rail={status.includes("REVOKED") ? "revoked" : "pending"}>
               <Overline>CONSEQUENCE</Overline>
-              <p className="mt-3 text-[13px] leading-6 text-ink-2">
+              <p className="mt-3 text-[17px] leading-6 text-ink-2">
                 Revoking increments the epoch and sets the source policy inactive. The guarded vault will reject
                 this agent&apos;s next call once the newer epoch reaches the mirror. A transaction already
                 included on the destination before then is <strong className="text-ink">not</strong> reversed.
               </p>
-              <div className="mt-5 space-y-3 text-[13px]">
+              <div className="mt-5 space-y-3 text-[17px]">
                 <div className="flex justify-between"><span className="text-ink-3">Source epoch</span><Mono>{current?.epoch ?? "—"}</Mono></div>
                 <div className="flex justify-between"><span className="text-ink-3">Mirror epoch</span><Mono>{mirrorEpoch ?? "UNKNOWN"}</Mono></div>
                 <div className="flex justify-between"><span className="text-ink-3">Current state</span><StatusChip status={status} /></div>
               </div>
               <div className="mt-6 space-y-3">
-                {!address && <button onClick={() => void connect()} className="w-full rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[12px] font-bold uppercase text-cyan hover:bg-cyan/10">Connect owner wallet</button>}
-                {address && chainId !== 84532 && <button onClick={() => void switchToBase()} className="w-full rounded-sm border border-amber/60 bg-tint-pending px-3 py-2 text-[12px] font-bold uppercase text-amber hover:bg-amber/10">Switch to Base Sepolia</button>}
+                {!address && <button onClick={() => void connect()} className="w-full rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[16px] font-bold uppercase text-cyan hover:bg-cyan/10">Connect owner wallet</button>}
+                {address && chainId !== 84532 && <button onClick={() => void switchToBase()} className="w-full rounded-sm border border-amber/60 bg-tint-pending px-3 py-2 text-[16px] font-bold uppercase text-amber hover:bg-amber/10">Switch to Base Sepolia</button>}
                 <button
                   onClick={() => void submit()}
                   disabled={!address || chainId !== 84532 || busy || !current?.active || !addresses.policyHub}
-                  className="w-full rounded-sm border border-vermilion bg-vermilion px-3 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-inverse hover:bg-vermilion/85 disabled:cursor-not-allowed disabled:opacity-45"
+                  className="w-full rounded-sm border border-vermilion bg-vermilion px-3 py-2.5 text-[16px] font-bold uppercase tracking-[0.06em] text-inverse hover:bg-vermilion/85 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {busy ? "Awaiting confirmation…" : "Revoke across chains"}
                 </button>
-                {error && <p className="text-[12px] text-vermilion" role="alert">! {error}</p>}
+                {error && <p className="text-[16px] text-vermilion" role="alert">! {error}</p>}
                 {hash && (
                   <div className="rounded-sm border border-line bg-surface-2 p-3">
-                    <p className="text-[11px] uppercase tracking-[0.08em] text-amber">SOURCE_REVOKED · PROPAGATION PENDING</p>
-                    <a className="mono mt-1 block break-all text-[11px] text-ink-2 hover:underline" href={txUrl("base", hash)} target="_blank" rel="noreferrer">{hash} ↗</a>
-                    <p className="mt-2 text-[11px] text-ink-3">Waiting for the Reactive transaction and destination callback receipt before showing REVOKED ON DESTINATION.</p>
+                    <p className="text-[15px] uppercase tracking-[0.08em] text-amber">SOURCE_REVOKED · PROPAGATION PENDING</p>
+                    <a className="mono mt-1 block break-all text-[15px] text-ink-2 hover:underline" href={txUrl("base", hash)} target="_blank" rel="noreferrer">{hash} ↗</a>
+                    <p className="mt-2 text-[15px] text-ink-3">Waiting for the Reactive transaction and destination callback receipt before showing REVOKED ON DESTINATION.</p>
                   </div>
                 )}
               </div>

@@ -1,0 +1,60 @@
+- generic [active] [ref=f24e1]:
+  - generic [ref=f24e2]:
+    - generic [aria-hidden] [ref=f24e3]: ◐
+    - paragraph [ref=f24e4]:
+      - strong [ref=f24e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f24e7]:
+    - banner [ref=f24e8]:
+      - generic [ref=f24e9]: scopecast / console
+      - button "Connect wallet" [ref=f24e12] [cursor=pointer]
+    - navigation "Mobile console navigation" [ref=f24e13]:
+      - generic [ref=f24e14]:
+        - link "Overview" [ref=f24e15] [cursor=pointer]:
+          - /url: /console
+        - link "Agent policies" [ref=f24e16] [cursor=pointer]:
+          - /url: /console/policies
+        - link "Propagation" [ref=f24e17] [cursor=pointer]:
+          - /url: /console/propagation
+        - link "Guarded DeFi" [ref=f24e18] [cursor=pointer]:
+          - /url: /console/demo
+        - link "Authorise policy" [ref=f24e19] [cursor=pointer]:
+          - /url: /console/create
+        - link "Revoke" [ref=f24e20] [cursor=pointer]:
+          - /url: /console/revoke
+        - link "Audit trail" [ref=f24e21] [cursor=pointer]:
+          - /url: /console/audit
+        - link "Diagnostics" [ref=f24e22] [cursor=pointer]:
+          - /url: /console/diagnostics
+        - link "Architecture" [ref=f24e23] [cursor=pointer]:
+          - /url: /console/architecture
+    - main [ref=f24e24]:
+      - generic [ref=f24e25]:
+        - generic [ref=f24e26]:
+          - generic [ref=f24e27]: AUDIT EXPLORER
+          - heading "Event trail across chains" [level=1] [ref=f24e30]
+          - paragraph [ref=f24e31]: Filterable by agent ID, epoch and state. Every row links to the official explorer for the chain that produced it.
+        - generic [ref=f24e33]:
+          - generic [ref=f24e34]:
+            - generic [ref=f24e35]: SOURCE EVENTS
+            - paragraph [ref=f24e38]: "0"
+          - generic [ref=f24e39]:
+            - generic [ref=f24e40]: GUARDED ACTIONS
+            - paragraph [ref=f24e43]: "0"
+          - generic [ref=f24e44]:
+            - generic [ref=f24e45]: REGISTRY
+            - paragraph [ref=f24e48]: NOT CONFIGURED
+        - generic [ref=f24e49]:
+          - generic [aria-hidden] [ref=f24e50]: "?"
+          - paragraph [ref=f24e51]: No source events
+          - paragraph [ref=f24e52]: Configure PolicyHub and publish a policy to populate the audit trail.
+        - generic [ref=f24e53]:
+          - generic [ref=f24e54]: DESTINATION ACTIONS
+          - paragraph [ref=f24e57]: No successful guarded actions observed.
+    - contentinfo [ref=f24e58]:
+      - img "SCOPECAST" [ref=f24e60]
+      - generic [ref=f24e61]: Testnet build · not audited
+      - link "Source ↗" [ref=f24e62] [cursor=pointer]:
+        - /url: https://github.com/trinnode/scopecast
+  - button "Open Next.js Dev Tools" [ref=f24e68] [cursor=pointer]
+  - alert [ref=f24e72]

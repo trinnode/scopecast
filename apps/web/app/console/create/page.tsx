@@ -62,7 +62,7 @@ export default function CreatePolicy() {
     }
   }
 
-  const input = "w-full rounded-sm border border-line-input bg-surface-2 px-3 py-2 text-[13px] text-ink outline-none placeholder:text-ink-3 focus:border-cyan";
+  const input = "w-full rounded-sm border border-line-input bg-surface-2 px-3 py-2 text-[17px] text-ink outline-none placeholder:text-ink-3 focus:border-cyan";
 
   return (
     <>
@@ -77,25 +77,25 @@ export default function CreatePolicy() {
           <Overline>POLICY DRAFT</Overline>
           <div className="mt-5 space-y-5">
             <label className="block">
-              <span className="mb-1 block text-[12px] text-ink-2">Stable agent name</span>
+              <span className="mb-1 block text-[16px] text-ink-2">Stable agent name</span>
               <input className={input} value={name} onChange={(e) => setName(e.target.value)} />
-              <span className="mt-1 block text-[11px] text-ink-3">Hashed into a stable agentId.</span>
+              <span className="mt-1 block text-[15px] text-ink-3">Hashed into a stable agentId.</span>
             </label>
             <label className="block">
-              <span className="mb-1 block text-[12px] text-ink-2">Agent public key</span>
+              <span className="mb-1 block text-[16px] text-ink-2">Agent public key</span>
               <input className={input} placeholder="0x…" value={agent} onChange={(e) => setAgent(e.target.value)} />
             </label>
             <label className="block">
-              <span className="mb-1 block text-[12px] text-ink-2">Allowed function signature</span>
+              <span className="mb-1 block text-[16px] text-ink-2">Allowed function signature</span>
               <input className={`${input} mono`} value={signature} onChange={(e) => setSignature(e.target.value)} />
             </label>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="mb-1 block text-[12px] text-ink-2">Per-action cap (test units)</span>
+                <span className="mb-1 block text-[16px] text-ink-2">Per-action cap (test units)</span>
                 <input className={input} inputMode="decimal" value={cap} onChange={(e) => setCap(e.target.value)} />
               </label>
               <label className="block">
-                <span className="mb-1 block text-[12px] text-ink-2">Expiry (hours from now)</span>
+                <span className="mb-1 block text-[16px] text-ink-2">Expiry (hours from now)</span>
                 <input className={input} inputMode="numeric" value={hours} onChange={(e) => setHours(e.target.value)} />
               </label>
             </div>
@@ -105,7 +105,7 @@ export default function CreatePolicy() {
         <div className="space-y-6">
           <Card>
             <Overline>PERMISSION SUMMARY</Overline>
-            <div className="mt-4 space-y-3 text-[13px]">
+            <div className="mt-4 space-y-3 text-[17px]">
               <div className="flex justify-between gap-4"><span className="text-ink-3">Status</span><StatusChip status="POLICY_DRAFT" /></div>
               <div className="flex justify-between gap-4"><span className="text-ink-3">agentId</span><Mono title={agentId}>{agentId.slice(0, 14)}…</Mono></div>
               <div className="flex justify-between gap-4"><span className="text-ink-3">Destination</span><Mono>1301 (Unichain)</Mono></div>
@@ -121,31 +121,31 @@ export default function CreatePolicy() {
             <Overline>OWNER SIGNATURE</Overline>
             <div className="mt-4 space-y-3">
               {!address && (
-                <button onClick={() => void connect()} className="w-full rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[12px] font-bold uppercase text-cyan hover:bg-cyan/10">
+                <button onClick={() => void connect()} className="w-full rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[16px] font-bold uppercase text-cyan hover:bg-cyan/10">
                   Connect wallet
                 </button>
               )}
               {address && chainId !== 84532 && (
-                <button onClick={() => void switchToBase()} className="w-full rounded-sm border border-amber/60 bg-tint-pending px-3 py-2 text-[12px] font-bold uppercase text-amber hover:bg-amber/10">
+                <button onClick={() => void switchToBase()} className="w-full rounded-sm border border-amber/60 bg-tint-pending px-3 py-2 text-[16px] font-bold uppercase text-amber hover:bg-amber/10">
                   Switch to Base Sepolia
                 </button>
               )}
               <button
                 onClick={() => void submit()}
                 disabled={!valid || !address || chainId !== 84532 || busy || !addresses.policyHub}
-                className="w-full rounded-sm border border-cyan bg-cyan px-3 py-2.5 text-[12px] font-bold uppercase tracking-[0.06em] text-inverse hover:bg-cyan/85 disabled:cursor-not-allowed disabled:opacity-45"
+                className="w-full rounded-sm border border-cyan bg-cyan px-3 py-2.5 text-[16px] font-bold uppercase tracking-[0.06em] text-inverse hover:bg-cyan/85 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 {busy ? "Awaiting confirmation…" : "Publish policy on Base"}
               </button>
-              {!addresses.policyHub && <p className="text-[12px] text-amber">PolicyHub address is not configured — signing is disabled.</p>}
-              {error && <p className="text-[12px] text-vermilion" role="alert">! {error}</p>}
+              {!addresses.policyHub && <p className="text-[16px] text-amber">PolicyHub address is not configured — signing is disabled.</p>}
+              {error && <p className="text-[16px] text-vermilion" role="alert">! {error}</p>}
               {hash && (
                 <div className="rounded-sm border border-line bg-surface-2 p-3">
-                  <p className="text-[11px] uppercase tracking-[0.08em] text-cyan">SOURCE TX SUBMITTED</p>
-                  <a className="mono mt-1 block break-all text-[11px] text-ink-2 hover:underline" href={txUrl("base", hash)} target="_blank" rel="noreferrer">
+                  <p className="text-[15px] uppercase tracking-[0.08em] text-cyan">SOURCE TX SUBMITTED</p>
+                  <a className="mono mt-1 block break-all text-[15px] text-ink-2 hover:underline" href={txUrl("base", hash)} target="_blank" rel="noreferrer">
                     {hash} ↗
                   </a>
-                  <p className="mt-2 text-[11px] text-ink-3">Destination state only changes after the Reactive callback is confirmed.</p>
+                  <p className="mt-2 text-[15px] text-ink-3">Destination state only changes after the Reactive callback is confirmed.</p>
                 </div>
               )}
             </div>

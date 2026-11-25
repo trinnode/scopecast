@@ -1,6 +1,7 @@
 import { readSourceEvents, readVaultEvents } from "@/lib/chain-data";
 import { addresses } from "@/lib/config";
-import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 import { deriveStatus } from "@/lib/status";
 
 export const dynamic = "force-dynamic";
@@ -18,9 +19,9 @@ export default async function Audit() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <Card className="p-4"><Overline>SOURCE EVENTS</Overline><p className="mt-2 font-display text-[22px]">{events.length}</p></Card>
-        <Card className="p-4"><Overline>GUARDED ACTIONS</Overline><p className="mt-2 font-display text-[22px]">{actions.length}</p></Card>
-        <Card className="p-4"><Overline>REGISTRY</Overline><p className="mono mt-2 text-[11px] text-ink-2">{addresses.policyHub ?? "NOT CONFIGURED"}</p></Card>
+        <Card className="p-4"><Overline>SOURCE EVENTS</Overline><p className="mt-2 font-display text-[26px]">{events.length}</p></Card>
+        <Card className="p-4"><Overline>GUARDED ACTIONS</Overline><p className="mt-2 font-display text-[26px]">{actions.length}</p></Card>
+        <Card className="p-4"><Overline>REGISTRY</Overline><p className="mono mt-2 text-[15px] text-ink-2">{addresses.policyHub ?? "NOT CONFIGURED"}</p></Card>
       </div>
 
       {events.length === 0 ? (
@@ -28,8 +29,8 @@ export default async function Audit() {
       ) : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[820px] text-left text-[13px]">
-              <thead className="bg-surface-2 text-[11px] uppercase tracking-[0.08em] text-ink-3">
+            <table className="w-full min-w-[820px] text-left text-[17px]">
+              <thead className="bg-surface-2 text-[15px] uppercase tracking-[0.08em] text-ink-3">
                 <tr>
                   <th className="px-4 py-3">Agent ID</th>
                   <th className="px-4 py-3">Epoch</th>
@@ -59,11 +60,11 @@ export default async function Audit() {
       <div className="mt-8">
         <Overline>DESTINATION ACTIONS</Overline>
         {actions.length === 0 ? (
-          <p className="mt-3 text-[13px] text-ink-3">No successful guarded actions observed.</p>
+          <p className="mt-3 text-[17px] text-ink-3">No successful guarded actions observed.</p>
         ) : (
           <div className="card mt-4 overflow-hidden">
-            <table className="w-full text-left text-[13px]">
-              <thead className="bg-surface-2 text-[11px] uppercase tracking-[0.08em] text-ink-3">
+            <table className="w-full text-left text-[17px]">
+              <thead className="bg-surface-2 text-[15px] uppercase tracking-[0.08em] text-ink-3">
                 <tr><th className="px-4 py-3">Agent</th><th className="px-4 py-3">Amount</th><th className="px-4 py-3">Epoch</th><th className="px-4 py-3">Tx</th></tr>
               </thead>
               <tbody>

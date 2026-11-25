@@ -1,0 +1,47 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [aria-hidden] [ref=f23e3]: ◐
+    - paragraph [ref=f23e4]:
+      - strong [ref=f23e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f23e7]:
+    - banner [ref=f23e8]:
+      - generic [ref=f23e9]: scopecast / console
+      - button "Connect wallet" [ref=f23e12] [cursor=pointer]
+    - navigation "Mobile console navigation" [ref=f23e13]:
+      - generic [ref=f23e14]:
+        - link "Overview" [ref=f23e15] [cursor=pointer]:
+          - /url: /console
+        - link "Agent policies" [ref=f23e16] [cursor=pointer]:
+          - /url: /console/policies
+        - link "Propagation" [ref=f23e17] [cursor=pointer]:
+          - /url: /console/propagation
+        - link "Guarded DeFi" [ref=f23e18] [cursor=pointer]:
+          - /url: /console/demo
+        - link "Authorise policy" [ref=f23e19] [cursor=pointer]:
+          - /url: /console/create
+        - link "Revoke" [ref=f23e20] [cursor=pointer]:
+          - /url: /console/revoke
+        - link "Audit trail" [ref=f23e21] [cursor=pointer]:
+          - /url: /console/audit
+        - link "Diagnostics" [ref=f23e22] [cursor=pointer]:
+          - /url: /console/diagnostics
+        - link "Architecture" [ref=f23e23] [cursor=pointer]:
+          - /url: /console/architecture
+    - main [ref=f23e24]:
+      - generic [ref=f23e25]:
+        - generic [ref=f23e26]:
+          - generic [ref=f23e27]: GOVERN · REVOKE
+          - heading "Revoke across chains" [level=1] [ref=f23e30]
+          - paragraph [ref=f23e31]: The source revocation is final on Base Sepolia. The destination mirror changes only after the authenticated callback is delivered and confirmed — the console never labels a source-only revoke as revoked everywhere.
+        - generic [ref=f23e33]:
+          - generic [aria-hidden] [ref=f23e34]: "?"
+          - paragraph [ref=f23e35]: No policies available to revoke
+          - paragraph [ref=f23e36]: Publish a policy first. This console reads real source events; it will not fabricate a policy.
+    - contentinfo [ref=f23e37]:
+      - img "SCOPECAST" [ref=f23e39]
+      - generic [ref=f23e40]: Testnet build · not audited
+      - link "Source ↗" [ref=f23e41] [cursor=pointer]:
+        - /url: https://github.com/trinnode/scopecast
+  - button "Open Next.js Dev Tools" [ref=f23e47] [cursor=pointer]
+  - alert [ref=f23e51]

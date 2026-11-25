@@ -1,0 +1,270 @@
+- generic [ref=f43e1]:
+  - generic [ref=f43e2]:
+    - generic [aria-hidden] [ref=f43e3]: ◐
+    - paragraph [ref=f43e4]:
+      - strong [ref=f43e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f43e6]:
+    - banner [ref=f43e7]:
+      - generic [ref=f43e8]:
+        - link "SCOPECAST home" [ref=f43e9] [cursor=pointer]:
+          - /url: /
+          - img "SCOPECAST mark" [ref=f43e10]
+          - img "SCOPECAST" [ref=f43e11]
+        - navigation "Main navigation" [ref=f43e348]:
+          - link "Problem" [ref=f43e349] [cursor=pointer]:
+            - /url: "#problem"
+          - link "How it works" [ref=f43e350] [cursor=pointer]:
+            - /url: "#how"
+          - link "Policy" [ref=f43e351] [cursor=pointer]:
+            - /url: "#policy"
+          - link "Status" [ref=f43e352] [cursor=pointer]:
+            - /url: "#status"
+          - link "GitHub" [ref=f43e353] [cursor=pointer]:
+            - /url: https://github.com/trinnode/scopecast
+          - link "Open console" [ref=f43e354] [cursor=pointer]:
+            - /url: /console
+    - main [ref=f43e21]:
+      - generic [ref=f43e23]:
+        - generic [ref=f43e24]:
+          - generic [ref=f43e25]: Reactive Omni Buildathon · Every Second Counts
+          - heading "Revoke once. Enforce everywhere." [level=1] [ref=f43e28]: Revoke once.Enforce everywhere.
+          - paragraph [ref=f43e29]: SCOPECAST is a cross-chain capability registry for delegated DeFi agents. One owner action on Base Sepolia produces a versioned policy event; a Reactive contract validates it and mirrors it to a guarded execution module on Unichain Sepolia.
+          - generic [ref=f43e32]:
+            - link "Open the console" [ref=f43e33] [cursor=pointer]:
+              - /url: /console
+            - link "Read the architecture" [ref=f43e37] [cursor=pointer]:
+              - /url: /console/architecture
+          - generic [ref=f43e38]:
+            - generic [ref=f43e39]: 01 Base Sepolia · 84532
+            - generic [ref=f43e40]: 02 Reactive Lasna · 5318007
+            - generic [ref=f43e41]: 03 Unichain Sepolia · 1301
+        - generic [ref=f43e43]:
+          - generic [ref=f43e44]:
+            - generic [ref=f43e45]: Cross-chain route
+            - generic [ref=f43e48]: Illustration
+          - generic "Three-chain policy route illustration" [ref=f43e50]:
+            - generic [ref=f43e54]:
+              - generic [ref=f43e58]:
+                - generic [ref=f43e59]: "01"
+                - paragraph [ref=f43e62]: BASE SEPOLIA
+                - paragraph [ref=f43e63]: 84532 · source
+              - generic [ref=f43e66]:
+                - generic [ref=f43e67]: "02"
+                - paragraph [ref=f43e70]: REACTIVE OMNI
+                - paragraph [ref=f43e71]: 5318007 · reaction
+              - generic [ref=f43e74]:
+                - generic [ref=f43e75]: "03"
+                - paragraph [ref=f43e78]: UNICHAIN SEP.
+                - paragraph [ref=f43e79]: 1301 · enforcement
+            - generic [ref=f43e85]:
+              - generic [ref=f43e86]: Move pointer to rotate
+              - generic [ref=f43e87]: policy hash bound to every stage
+          - generic [ref=f43e88]:
+            - generic [ref=f43e89]: 01 source event
+            - generic [ref=f43e90]: 02 react + callback
+            - generic [ref=f43e91]: 03 guarded action
+      - generic [ref=f43e93]:
+        - generic [ref=f43e94]:
+          - generic [ref=f43e95]: 01 · The problem
+          - heading "Delegated authority is fragmented across integrations." [level=2] [ref=f43e98]
+          - paragraph [ref=f43e99]: An autonomous agent can hold scoped permissions in several protocol integrations and on several chains. Each integration keeps its own local state. Revoking one session on one chain does not update the others until someone submits a separate transaction to each of them.
+        - generic [ref=f43e100]:
+          - generic [ref=f43e102]:
+            - generic [ref=f43e103]: "01"
+            - heading "No single control plane" [level=3] [ref=f43e104]
+            - paragraph [ref=f43e105]: The owner has to find and update every integration where the agent has authority.
+          - generic [ref=f43e107]:
+            - generic [ref=f43e108]: "02"
+            - heading "Operational delay" [level=3] [ref=f43e109]
+            - paragraph [ref=f43e110]: Each chain-specific update is a separate transaction with its own confirmation time.
+          - generic [ref=f43e112]:
+            - generic [ref=f43e113]: "03"
+            - heading "No shared proof" [level=3] [ref=f43e114]
+            - paragraph [ref=f43e115]: There is no canonical trail linking a source revocation to destination enforcement.
+      - generic [ref=f43e117]:
+        - generic [ref=f43e118]:
+          - generic [ref=f43e119]: 02 · How it works
+          - heading "Four steps, each independently verifiable." [level=2] [ref=f43e122]
+        - generic [ref=f43e123]:
+          - generic [ref=f43e125]:
+            - text: "01"
+            - heading "Authorise on source" [level=3] [ref=f43e126]
+            - paragraph [ref=f43e127]: The owner calls PolicyHub on Base Sepolia. Every create, update, rotate and revoke increments an epoch and emits PolicyUpdated with all nine capability fields.
+          - generic [ref=f43e129]:
+            - text: "02"
+            - heading "Validate in Reactive" [level=3] [ref=f43e130]
+            - paragraph [ref=f43e131]: ScopeCastReactive checks chain ID, emitter address, event signature, topic count (opCode 3) and the canonical policy hash before acting. Unrelated logs return without reverting.
+          - generic [ref=f43e133]:
+            - text: "03"
+            - heading "Request callback" [level=3] [ref=f43e134]
+            - paragraph [ref=f43e135]: The Reactive contract calls requestCallbackV_1_0 with the destination chain, mirror address, gas limit and ABI payload. The network injects the sender into the first address argument.
+          - generic [ref=f43e137]:
+            - text: "04"
+            - heading "Enforce at the module" [level=3] [ref=f43e138]
+            - paragraph [ref=f43e139]: PolicyMirror accepts only the official proxy and the authorised Reactive contract, applies strictly newer epochs, and GuardedDeFiVault checks the mirrored state on every call.
+      - generic [ref=f43e141]:
+        - generic [ref=f43e142]:
+          - generic [ref=f43e143]: 03 · The policy
+          - heading "A versioned capability, not a kill switch." [level=2] [ref=f43e146]
+          - paragraph [ref=f43e147]: Every field is covered by one canonical hash. The same hash is emitted on the source, recomputed by the Reactive contract, verified again by the mirror, and carried into the audit trail.
+          - paragraph [ref=f43e148]: topic0 = 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9
+        - generic [ref=f43e150]:
+          - generic [ref=f43e151]:
+            - generic [ref=f43e152]: Field
+            - generic [ref=f43e358]: Type
+            - generic [ref=f43e153]: Meaning
+          - generic [ref=f43e154]:
+            - generic [ref=f43e155]: agentId
+            - generic [ref=f43e359]: bytes32
+            - generic [ref=f43e156]: Stable identifier derived from a name; not a display label.
+          - generic [ref=f43e157]:
+            - generic [ref=f43e158]: agent
+            - generic [ref=f43e360]: address
+            - generic [ref=f43e159]: The execution key allowed to call the guarded module.
+          - generic [ref=f43e160]:
+            - generic [ref=f43e161]: destinationChainId
+            - generic [ref=f43e361]: uint256
+            - generic [ref=f43e162]: Chain the policy is valid on (1301 in the demo).
+          - generic [ref=f43e163]:
+            - generic [ref=f43e164]: destinationModule
+            - generic [ref=f43e362]: address
+            - generic [ref=f43e165]: The only contract the agent may act through.
+          - generic [ref=f43e166]:
+            - generic [ref=f43e167]: allowedSelector
+            - generic [ref=f43e363]: bytes4
+            - generic [ref=f43e168]: The single function selector the agent may invoke.
+          - generic [ref=f43e169]:
+            - generic [ref=f43e170]: maxValue
+            - generic [ref=f43e364]: uint256
+            - generic [ref=f43e171]: Per-action ceiling for the guarded operation.
+          - generic [ref=f43e172]:
+            - generic [ref=f43e173]: expiresAt
+            - generic [ref=f43e365]: uint64
+            - generic [ref=f43e174]: Unix timestamp after which the capability is void.
+          - generic [ref=f43e175]:
+            - generic [ref=f43e176]: epoch
+            - generic [ref=f43e366]: uint64
+            - generic [ref=f43e177]: Monotonic version; strictly newer wins on the destination.
+          - generic [ref=f43e178]:
+            - generic [ref=f43e179]: active / policyHash
+            - generic [ref=f43e367]: bool / bytes32
+            - generic [ref=f43e180]: Revocation flag and canonical hash of all fields.
+      - generic [ref=f43e182]:
+        - generic [ref=f43e183]:
+          - generic [ref=f43e184]: 04 · Security model
+          - heading "Fail closed, in the right order." [level=2] [ref=f43e187]
+        - generic [ref=f43e188]:
+          - generic [ref=f43e190]:
+            - heading "Dual callback authentication" [level=3] [ref=f43e194]
+            - paragraph [ref=f43e195]: PolicyMirror requires onlyServiceProvider (the caller is the official callback proxy) and onlyCallbackSender (the injected sender is the one authorised Reactive contract). Neither check alone is sufficient.
+          - generic [ref=f43e197]:
+            - heading "Monotonic epochs" [level=3] [ref=f43e201]
+            - paragraph [ref=f43e202]: A callback at epoch n is ignored if the mirror already holds epoch n or newer. A delayed revoke cannot be overwritten by an older grant, and duplicate deliveries are harmless.
+          - generic [ref=f43e204]:
+            - heading "Scoped execution" [level=3] [ref=f43e208]
+            - paragraph [ref=f43e209]: GuardedDeFiVault checks active state, caller identity, chain, target, selector, expiry and cap. Its agent entry point accepts no arbitrary recipient or external target.
+          - generic [ref=f43e211]:
+            - heading "Visible failure modes" [level=3] [ref=f43e215]
+            - paragraph [ref=f43e216]: The console renders SOURCE_REVOKED separately from DESTINATION_REVOKED, and shows UNKNOWN when a receipt cannot be independently verified.
+        - generic [ref=f43e218]:
+          - heading "Known limitations" [level=3] [ref=f43e222]
+          - list [ref=f43e223]:
+            - listitem [ref=f43e224]: — Propagation is asynchronous; no atomic cross-chain revocation.
+            - listitem [ref=f43e225]: — Settled transactions are never reversed.
+            - listitem [ref=f43e226]: — Only modules that query the mirror are protected.
+            - listitem [ref=f43e227]: — Callback funding exhaustion can interrupt delivery.
+            - listitem [ref=f43e228]: — The source owner must be a multisig in production.
+            - listitem [ref=f43e229]: — Testnet chain parameters are rechecked before each deploy.
+      - generic [ref=f43e231]:
+        - generic [ref=f43e232]:
+          - generic [ref=f43e233]: Who it is for
+          - heading "Built for teams that delegate authority." [level=2] [ref=f43e236]
+          - paragraph [ref=f43e237]: Each role needs a different view of the same policy state. The console keeps one source of truth for all of them.
+        - generic [ref=f43e239]:
+          - generic [ref=f43e240]:
+            - generic [ref=f43e241]:
+              - text: PROTOCOL
+              - heading "Integration engineer" [level=3] [ref=f43e242]
+              - paragraph [ref=f43e243]: Add the guard to an execution module and read the mirrored policy before every agent call.
+            - generic [ref=f43e244]:
+              - text: OPERATIONS
+              - heading "Security engineer" [level=3] [ref=f43e245]
+              - paragraph [ref=f43e246]: See the exact epoch, target, selector and cap on source and destination, with real transaction links.
+            - generic [ref=f43e247]:
+              - text: TREASURY
+              - heading "DAO operator" [level=3] [ref=f43e248]
+              - paragraph [ref=f43e249]: Authorise one bounded strategy on a source chain and revoke it without editing each destination.
+            - generic [ref=f43e250]:
+              - text: INFRASTRUCTURE
+              - heading "Agent provider" [level=3] [ref=f43e251]
+              - paragraph [ref=f43e252]: Give each session key a narrow scope and prove to users that a revoke reached every integrated chain.
+          - generic [ref=f43e253]:
+            - button "Previous item" [ref=f43e254] [cursor=pointer]: ←
+            - button "Next item" [ref=f43e255] [cursor=pointer]: →
+            - generic [ref=f43e256]:
+              - button "Go to Integration engineer" [ref=f43e257] [cursor=pointer]
+              - button "Go to Security engineer" [ref=f43e258] [cursor=pointer]
+              - button "Go to DAO operator" [ref=f43e259] [cursor=pointer]
+              - button "Go to Agent provider" [ref=f43e260] [cursor=pointer]
+      - generic [ref=f43e262]:
+        - generic [ref=f43e263]:
+          - generic [ref=f43e264]: 05 · Build status
+          - heading "What is proven, and what is not yet." [level=2] [ref=f43e267]
+          - paragraph [ref=f43e268]: Entries below are recorded only from independently checked RPC receipts. Null values mean not deployed or not verified — never assumed.
+        - generic [ref=f43e270]:
+          - generic [ref=f43e271]:
+            - generic [ref=f43e272]: Item
+            - generic [ref=f43e273]: Verified state
+          - generic [ref=f43e274]:
+            - generic [ref=f43e275]: Solidity test suite
+            - generic [ref=f43e276]: 51 tests passing — unit, fuzz and full local lifecycle harness
+          - generic [ref=f43e277]:
+            - generic [ref=f43e278]: ScopeCastReactive on Lasna
+            - generic [ref=f43e279]: "0x155c0CbEdfBA688974A7354D39797c09667f98a3"
+          - generic [ref=f43e280]:
+            - generic [ref=f43e281]: Reactive funding
+            - generic [ref=f43e282]: lREACT reserve deposited, debt 0
+          - generic [ref=f43e283]:
+            - generic [ref=f43e284]: PolicyHub on Base Sepolia
+            - generic [ref=f43e285]: "0xc8B5A34BC6791138d107E1348A24bB7c27C766e4"
+          - generic [ref=f43e286]:
+            - generic [ref=f43e287]: PolicyMirror + vault on Unichain
+            - generic [ref=f43e288]: "0xFd036Ad562A612cEF82db4893558C09bBA8664D8"
+          - generic [ref=f43e289]:
+            - generic [ref=f43e290]: Live origin → callback proof
+            - generic [ref=f43e291]: Verified · 3000 ms source → destination
+          - generic [ref=f43e292]:
+            - generic [ref=f43e293]: Post-revoke enforcement
+            - generic [ref=f43e294]: eth_call denied with AgentPolicyInactive (0x5aff86e7)
+      - generic [ref=f43e296]:
+        - generic [ref=f43e297]:
+          - generic [ref=f43e298]: 06 · Frequently asked questions
+          - heading "Clear answers, no hidden claims." [level=2] [ref=f43e301]
+        - generic [ref=f43e303]:
+          - group [ref=f43e304]:
+            - generic "Is revocation instant or atomic across chains?" [ref=f43e305] [cursor=pointer]
+          - group [ref=f43e308]:
+            - generic "Can SCOPECAST undo a transaction that already executed?" [ref=f43e309] [cursor=pointer]
+          - group [ref=f43e312]:
+            - generic "Does this revoke permissions in arbitrary third-party contracts?" [ref=f43e313] [cursor=pointer]
+          - group [ref=f43e316]:
+            - generic "Who can change a policy?" [ref=f43e317] [cursor=pointer]
+          - group [ref=f43e320]:
+            - generic "What happens if the callback fails or the funding runs out?" [ref=f43e321] [cursor=pointer]
+      - generic [ref=f43e326]:
+        - generic [ref=f43e327]:
+          - heading "Inspect the implementation." [level=2] [ref=f43e328]
+          - paragraph [ref=f43e329]: Contracts, tests, runbook and sourced research are public. The console reads live chain state and refuses to guess.
+        - generic [ref=f43e330]:
+          - link "Open console" [ref=f43e331] [cursor=pointer]:
+            - /url: /console
+          - link "Source repository ↗" [ref=f43e332] [cursor=pointer]:
+            - /url: https://github.com/trinnode/scopecast
+    - contentinfo [ref=f43e333]:
+      - generic [ref=f43e334]:
+        - img "SCOPECAST" [ref=f43e335]
+        - generic [ref=f43e336]: Testnet build · not audited · no mainnet funds
+        - generic [ref=f43e337]: Revoke once. Enforce everywhere.
+  - button "Open Next.js Dev Tools" [ref=f43e343] [cursor=pointer]
+  - alert [ref=f43e347]

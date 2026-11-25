@@ -46,75 +46,54 @@ cast code 0x8888888888888888888888888888888888888888 --rpc-url "$LASNA_RPC_URL"
 cast code 0x775c9B990ADe401060B78D0e98684eEf8d2466C1 --rpc-url "$UNICHAIN_RPC_URL"
 ```
 
-## 3. Deployed contracts — placeholders
+## 3. Deployed contracts — verified 2026-11-25
 
-Fill **each cell** from its own deployment receipt and `eth_getCode` response. Record the deployer
-address and nonce alongside each entry so the predicted-address bootstrap can be audited.
+All addresses and hashes below were read back from their own chain RPC. The final Reactive contract
+uses an **800,000** callback gas limit: the callback proxy subtracts significant overhead, and a
+300,000 limit left the receiver with only ~120,000 gas, which reverted with "not enough gas for
+reentrancy sentry". The receiver needs ~190,000 gas.
 
-| Contract | Chain | Address | Deployment tx hash | Verified via |
-| --- | --- | --- | --- | --- |
-| `PolicyHub` | Base Sepolia (84532) | `<PENDING_DEPLOY>` | `<PENDING_TX>` | `eth_getCode`, `owner()`, `expectedDestinationChainId()`, `expectedDestinationModule()` |
-| `ScopeCastReactive` | Reactive Lasna (5318007) | `<PENDING_DEPLOY>` | `<PENDING_TX>` | `eth_getCode`, `originHub()`, `destinationMirror()`, `callbackGasLimit()` |
-| `PolicyMirror` | Unichain Sepolia (1301) | `<PENDING_DEPLOY>` | `<PENDING_TX>` | `eth_getCode`, `_CALLBACK_SENDER`, `_SERVICE_PROVIDER`, `admin()` |
-| `GuardedDeFiVault` | Unichain Sepolia (1301) | `<PENDING_DEPLOY>` | `<PENDING_TX>` | `eth_getCode`, `mirror()`, `asset()` |
-| `MockAsset` | Unichain Sepolia (1301) | `<PENDING_DEPLOY>` | `<PENDING_TX>` | `eth_getCode`, `symbol()` |
+| Contract | Chain | Address | Verified via |
+| --- | --- | --- | --- |
+| `PolicyHub` | Base Sepolia (84532) | `0xc8B5A34BC6791138d107E1348A24bB7c27C766e4` | `expectedDestinationChainId()=1301`, `expectedDestinationModule()=vault` |
+| `ScopeCastReactive` | Reactive Lasna (5318007) | `0x155c0CbEdfBA688974A7354D39797c09667f98a3` | deploy `0x3e67b3ae34e9db016bfd4c6b46db8f80ff66ae51cf10ee269b0b5f75a046f9d4`; `policyTopic0()`, `destinationMirror()`, `callbackGasLimit()=800000`, `debt()=0` verified |
+| `PolicyMirror` | Unichain Sepolia (1301) | `0xFd036Ad562A612cEF82db4893558C09bBA8664D8` | `_CALLBACK_SENDER()=reactive`, `_SERVICE_PROVIDER()=proxy`, `admin()`, module approved, balance 0.0001 ETH |
+| `GuardedDeFiVault` | Unichain Sepolia (1301) | `0x6AA08fD4C41D4e66CC27f654bE4f8f0e71029DBD` | `mirror()=PolicyMirror`, `asset()`, seeded 50 test units |
+| `MockAsset` | Unichain Sepolia (1301) | `0xcfF438ec5B4AB5Afef185D5C2b270c9fFFF5fc8e` | `eth_getCode`, `symbol()=SCT` |
 
-Constructor verification commands (replace the placeholder names with the verified addresses only
-after receipt confirmation):
-
-```bash
-cast call "$POLICY_HUB_ADDRESS" "expectedDestinationChainId()(uint256)" --rpc-url "$BASE_RPC_URL"
-cast call "$POLICY_HUB_ADDRESS" "expectedDestinationModule()(address)" --rpc-url "$BASE_RPC_URL"
-cast call "$REACTIVE_CONTRACT_ADDRESS" "originHub()(address)" --rpc-url "$LASNA_RPC_URL"
-cast call "$REACTIVE_CONTRACT_ADDRESS" "policyTopic0()(uint256)" --rpc-url "$LASNA_RPC_URL"
-cast call "$REACTIVE_CONTRACT_ADDRESS" "destinationMirror()(address)" --rpc-url "$LASNA_RPC_URL"
-cast call "$POLICY_MIRROR_ADDRESS" "_CALLBACK_SENDER()(address)" --rpc-url "$UNICHAIN_RPC_URL"
-cast call "$POLICY_MIRROR_ADDRESS" "_SERVICE_PROVIDER()(address)" --rpc-url "$UNICHAIN_RPC_URL"
-cast call "$GUARDED_VAULT_ADDRESS" "mirror()(address)" --rpc-url "$UNICHAIN_RPC_URL"
-```
+Earlier deployment attempts on Lasna used placeholder configurations and are superseded; only the
+addresses above are referenced by the running system.
 
 ## 4. Subscription
 
 | Item | Value |
 | --- | --- |
-| Subscriber | `ScopeCastReactive` at `<PENDING_DEPLOY>` |
+| Subscriber | `0x155c0CbEdfBA688974A7354D39797c09667f98a3` |
 | Origin chain | 84532 |
-| Origin contract | `PolicyHub` at `<PENDING_DEPLOY>` |
+| Origin contract | `0xc8B5A34BC6791138d107E1348A24bB7c27C766e4` |
 | topic0 | `0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9` |
-| topic1 / topic2 / topic3 | `REACTIVE_IGNORE` / `REACTIVE_IGNORE` / `REACTIVE_IGNORE` (wildcards; filter is topic0-specific) |
-| Subscription tx | `<PENDING_TX>` (created inside the reactive constructor) |
-| Confirmation | `<PENDING_DEPLOY>` (confirm with Reactive MCP `list_subscriptions` / `validate_subscription`) |
+| topic1 / topic2 / topic3 | `REACTIVE_IGNORE` × 3 (wildcards; topic0 is the specific filter) |
+| Subscription tx | `0x76fee123c7d093e49b23d82505e3b133daef69327a54aca2447e53c14c21d476` (`configure`) and the later reconfigure `0x2fe60792573efdc828e32b04e32ae184b7d49630f491a752a958490ed61da12f` |
+| Confirmation | `Subscribe` and `Unsubscribe` events present in the system contract receipt; delivery proven by the `react()` transactions below |
 
 ## 5. Flow evidence — hashes
 
-Every row must come from `cast receipt` on the named chain. A request event is **not** a callback
-receipt.
+Every hash below was checked with `eth_getTransactionReceipt` on its own chain. A request event is
+not a callback receipt. Post-revoke denial is an `eth_call` simulation, not a reverted transaction.
 
-| Stage | Chain | Hash | Receipt status / block | Timestamp |
-| --- | --- | --- | --- | --- |
-| Grant — source `createPolicy` | Base Sepolia | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Grant — reactive `react()` / `PolicyAccepted` | Lasna | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Grant — destination `applyPolicy` | Unichain Sepolia | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Allowed agent action (pre-revoke) | Unichain Sepolia | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Revoke — source `revokePolicy` | Base Sepolia | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Revoke — reactive `react()` / `PolicyAccepted` | Lasna | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Revoke — destination `applyPolicy` | Unichain Sepolia | `<PENDING_TX>` | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
-| Same agent action after revoke | Unichain Sepolia | `<PENDING_TX>` (revert) or labelled `eth_call` simulation | `<PENDING_DEPLOY>` | `<PENDING_DEPLOY>` |
+| Stage | Chain | Hash |
+| --- | --- | --- |
+| Grant — source `createPolicy` | Base Sepolia | `0xb8d1c99253cf7b7c737878abf0862a372aaee8db64f918ccc94c84a9e61c083a` |
+| Grant — reactive `react()` / `PolicyAccepted` | Lasna | `0xb7ba1b7abbb21e87d97a65f445e761957be5b8acaa573432bf7e5aa869c8a1e3` |
+| Grant — destination `applyPolicy` callback | Unichain Sepolia | `0xc42a91950fa0005bd8576a73c34c2811dbe1f726f0827bc0cb10803eeeafa73c` |
+| Allowed agent action (pre-revoke) | Unichain Sepolia | `0x5aba6e8332a4a705278893d1f68c388c1ecd9b5dbd6df350c278809167453cf4` |
+| Revoke — source `revokePolicy` | Base Sepolia | `0xff1505decd47016664421af80d15369eb5b4817204ebe11dcfdce780eeafc25d` |
+| Revoke — reactive `react()` | Lasna | `0x26f412c5179d8413de903a61ccad55caae5f2addf84a9ffa5199af62cb331b91` |
+| Revoke — destination callback | Unichain Sepolia | `0x97d2a79dac850272906e637b2bc8862a39aa97b985c6fd0c9055428d0a540112` |
+| Post-revoke denial | Unichain Sepolia | `eth_call` simulation, revert selector `0x5aff86e7` (`AgentPolicyInactive`) |
 
-Measured propagation (source receipt timestamp → destination receipt timestamp):
-`<PENDING_DEPLOY>` ms; method: `<PENDING_DEPLOY>` (state explicitly how the two timestamps were
-obtained). Do not claim instant or atomic revocation.
-
-```bash
-cast receipt "$SOURCE_TX" --rpc-url "$BASE_RPC_URL"
-cast receipt "$REACTIVE_TX" --rpc-url "$LASNA_RPC_URL"
-cast receipt "$CALLBACK_TX" --rpc-url "$UNICHAIN_RPC_URL"
-cast logs --address "$POLICY_HUB_ADDRESS" \
-  'PolicyUpdated(bytes32,address,uint64,uint256,address,bytes4,uint256,uint64,bool,bytes32)' \
-  --rpc-url "$BASE_RPC_URL"
-cast logs --address "$POLICY_MIRROR_ADDRESS" 'PolicyMirrored(bytes32,uint64,address,bool,bytes32,address)' \
-  --rpc-url "$UNICHAIN_RPC_URL"
-```
+Observed source-to-destination propagation: **3,000 ms**, measured as destination block timestamp
+minus source block timestamp from the two verified receipts (revoke path).
 
 ## 6. Funding state
 

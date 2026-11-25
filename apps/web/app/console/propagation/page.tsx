@@ -1,6 +1,7 @@
 import { readSourceEvents } from "@/lib/chain-data";
 import { readEvidence } from "@/lib/evidence";
-import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 import { RouteVisual } from "@/components/RouteVisual";
 
 export const dynamic = "force-dynamic";
@@ -66,16 +67,16 @@ export default async function Propagation() {
           <ol className="mt-4 space-y-4">
             {stages.map((s, i) => (
               <li key={s.key} className="border-l border-line pl-4">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-cyan">0{i + 1} · {s.key}</p>
-                <p className="mt-1 text-[14px] text-ink">{s.title}</p>
-                <p className="text-[12px] text-ink-3">{s.chain}</p>
+                <p className="text-[15px] uppercase tracking-[0.08em] text-cyan">0{i + 1} · {s.key}</p>
+                <p className="mt-1 text-[18px] text-ink">{s.title}</p>
+                <p className="text-[16px] text-ink-3">{s.chain}</p>
                 <div className="mt-2">
                   {s.hash ? (
                     <ExplorerLink href={s.hash.startsWith("0x") ? `https://${s.explorer === "base" ? "sepolia.basescan.org" : s.explorer === "lasna" ? "lasna.reactscan.net" : "sepolia.uniscan.xyz"}/tx/${s.hash}` : "#"}>
                       {truncateHex(s.hash, 14, 10)}
                     </ExplorerLink>
                   ) : (
-                    <span className="mono text-[11px] text-fog">NO VERIFIED RECEIPT</span>
+                    <span className="mono text-[15px] text-fog">NO VERIFIED RECEIPT</span>
                   )}
                 </div>
               </li>
@@ -93,15 +94,15 @@ export default async function Propagation() {
               { label: "Post-revoke denial proof", hash: evidence.revoke?.denial, explorer: "sepolia.uniscan.xyz", kind: evidence.revoke?.denialKind },
             ].map((s, i) => (
               <li key={s.label} className="border-l border-line pl-4">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-vermilion">0{i + 1}</p>
-                <p className="mt-1 text-[14px] text-ink">{s.label}</p>
+                <p className="text-[15px] uppercase tracking-[0.08em] text-vermilion">0{i + 1}</p>
+                <p className="mt-1 text-[18px] text-ink">{s.label}</p>
                 {s.hash ? (
                   <div className="mt-2">
                     <ExplorerLink href={`https://${s.explorer}/tx/${s.hash}`}>{truncateHex(s.hash, 14, 10)}</ExplorerLink>
-                    {s.kind && <span className="ml-2 text-[11px] text-amber">({s.kind.toUpperCase()})</span>}
+                    {s.kind && <span className="ml-2 text-[15px] text-amber">({s.kind.toUpperCase()})</span>}
                   </div>
                 ) : (
-                  <p className="mono mt-2 text-[11px] text-fog">NO VERIFIED RECEIPT</p>
+                  <p className="mono mt-2 text-[15px] text-fog">NO VERIFIED RECEIPT</p>
                 )}
               </li>
             ))}
@@ -110,9 +111,9 @@ export default async function Propagation() {
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <Card className="p-4"><Overline>OBSERVED PROPAGATION</Overline><p className="mt-2 font-display text-[22px] text-ink">{evidence.propagationMs ? `${evidence.propagationMs} ms` : "UNKNOWN"}</p></Card>
-        <Card className="p-4"><Overline>MEASURED AT</Overline><p className="mono mt-2 text-[12px] text-ink">{evidence.measuredAt ?? "NOT RECORDED"}</p></Card>
-        <Card className="p-4"><Overline>METHOD</Overline><p className="mt-2 text-[12px] text-ink-2">Destination block timestamp − source block timestamp, from verified receipts.</p></Card>
+        <Card className="p-4"><Overline>OBSERVED PROPAGATION</Overline><p className="mt-2 font-display text-[26px] text-ink">{evidence.propagationMs ? `${evidence.propagationMs} ms` : "UNKNOWN"}</p></Card>
+        <Card className="p-4"><Overline>MEASURED AT</Overline><p className="mono mt-2 text-[16px] text-ink">{evidence.measuredAt ?? "NOT RECORDED"}</p></Card>
+        <Card className="p-4"><Overline>METHOD</Overline><p className="mt-2 text-[16px] text-ink-2">Destination block timestamp − source block timestamp, from verified receipts.</p></Card>
       </div>
 
       {!evidence.verified && (

@@ -1,0 +1,112 @@
+- generic [active] [ref=f25e1]:
+  - generic [ref=f25e2]:
+    - generic [aria-hidden] [ref=f25e3]: ◐
+    - paragraph [ref=f25e4]:
+      - strong [ref=f25e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f25e7]:
+    - banner [ref=f25e8]:
+      - generic [ref=f25e9]: scopecast / console
+      - button "Connect wallet" [ref=f25e12] [cursor=pointer]
+    - navigation "Mobile console navigation" [ref=f25e13]:
+      - generic [ref=f25e14]:
+        - link "Overview" [ref=f25e15] [cursor=pointer]:
+          - /url: /console
+        - link "Agent policies" [ref=f25e16] [cursor=pointer]:
+          - /url: /console/policies
+        - link "Propagation" [ref=f25e17] [cursor=pointer]:
+          - /url: /console/propagation
+        - link "Guarded DeFi" [ref=f25e18] [cursor=pointer]:
+          - /url: /console/demo
+        - link "Authorise policy" [ref=f25e19] [cursor=pointer]:
+          - /url: /console/create
+        - link "Revoke" [ref=f25e20] [cursor=pointer]:
+          - /url: /console/revoke
+        - link "Audit trail" [ref=f25e21] [cursor=pointer]:
+          - /url: /console/audit
+        - link "Diagnostics" [ref=f25e22] [cursor=pointer]:
+          - /url: /console/diagnostics
+        - link "Architecture" [ref=f25e23] [cursor=pointer]:
+          - /url: /console/architecture
+    - main [ref=f25e24]:
+      - generic [ref=f25e25]:
+        - generic [ref=f25e26]:
+          - generic [ref=f25e27]: CONFIGURE · DIAGNOSTICS
+          - heading "Chain and callback health" [level=1] [ref=f25e30]
+          - paragraph [ref=f25e31]: Live RPC checks and configured addresses. A failed check is shown as unavailable — the console never infers success from a callback request alone.
+        - generic [ref=f25e33]:
+          - generic [ref=f25e34]:
+            - generic [ref=f25e35]: LIVE CHECKS
+            - generic [ref=f25e38]:
+              - generic [ref=f25e39]:
+                - generic [ref=f25e40]:
+                  - paragraph [ref=f25e41]: Base Sepolia chain ID
+                  - paragraph [ref=f25e42]: expected 84532
+                - generic [ref=f25e43]: ▶ 84532
+              - generic [ref=f25e44]:
+                - generic [ref=f25e45]:
+                  - paragraph [ref=f25e46]: Unichain Sepolia chain ID
+                  - paragraph [ref=f25e47]: expected 1301
+                - generic [ref=f25e48]: ▶ 1301
+              - generic [ref=f25e49]:
+                - generic [ref=f25e50]:
+                  - paragraph [ref=f25e51]: Reactive Lasna chain ID
+                  - paragraph [ref=f25e52]: expected 5318007
+                - generic [ref=f25e53]: ▶ 5318007
+              - generic [ref=f25e54]:
+                - paragraph [ref=f25e56]: Lasna system contract
+                - generic [ref=f25e57]: ▶ deployed (239 bytes)
+              - generic [ref=f25e58]:
+                - paragraph [ref=f25e60]: Unichain callback proxy
+                - generic [ref=f25e61]: ▶ deployed (218 bytes)
+          - generic [ref=f25e62]:
+            - generic [ref=f25e63]:
+              - generic [ref=f25e64]: CONFIGURED ADDRESSES
+              - generic [ref=f25e67]:
+                - generic [ref=f25e68]:
+                  - generic [ref=f25e69]: PolicyHub (Base)
+                  - generic [ref=f25e70]: NOT CONFIGURED
+                - generic [ref=f25e71]:
+                  - generic [ref=f25e72]: ScopeCastReactive (Lasna)
+                  - generic [ref=f25e73]: NOT CONFIGURED
+                - generic [ref=f25e74]:
+                  - generic [ref=f25e75]: PolicyMirror (Unichain)
+                  - generic [ref=f25e76]: NOT CONFIGURED
+                - generic [ref=f25e77]:
+                  - generic [ref=f25e78]: GuardedDeFiVault (Unichain)
+                  - generic [ref=f25e79]: NOT CONFIGURED
+                - generic [ref=f25e80]:
+                  - generic [ref=f25e81]: MockAsset (Unichain)
+                  - generic [ref=f25e82]: NOT CONFIGURED
+            - generic [ref=f25e83]:
+              - generic [ref=f25e84]: SYSTEM CONSTANTS
+              - generic [ref=f25e87]:
+                - generic [ref=f25e88]:
+                  - text: Lasna system contract
+                  - generic [ref=f25e89]: "0x8888888888888888888888888888888888888888"
+                - generic [ref=f25e90]:
+                  - text: Base callback proxy
+                  - generic [ref=f25e91]: "0x476F44b11F5C942c58f4c8E3d0300E5710743585"
+                - generic [ref=f25e92]:
+                  - text: Unichain callback proxy
+                  - generic [ref=f25e93]: "0x775c9B990ADe401060B78D0e98684eEf8d2466C1"
+                - generic [ref=f25e94]:
+                  - text: PolicyUpdated topic0
+                  - generic [ref=f25e95]: "0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9"
+        - generic [ref=f25e96]:
+          - generic [ref=f25e97]: RPC ENDPOINTS IN USE
+          - generic [ref=f25e100]:
+            - generic [ref=f25e101]:
+              - paragraph [ref=f25e102]: base
+              - text: https://base-sepolia-rpc.publicnode.com
+            - generic [ref=f25e103]:
+              - paragraph [ref=f25e104]: unichain
+              - text: https://sepolia.unichain.org
+            - generic [ref=f25e105]:
+              - paragraph [ref=f25e106]: lasna
+              - text: https://lasna-rpc.rnk.dev/
+    - contentinfo [ref=f25e107]:
+      - img "SCOPECAST" [ref=f25e109]
+      - generic [ref=f25e110]: Testnet build · not audited
+      - link "Source ↗" [ref=f25e111] [cursor=pointer]:
+        - /url: https://github.com/trinnode/scopecast

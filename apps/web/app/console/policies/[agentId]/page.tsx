@@ -1,6 +1,7 @@
 import { readSourceEvents, readMirrorPolicy, readVaultEvents } from "@/lib/chain-data";
 import { deriveStatus, STATUS } from "@/lib/status";
-import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, ExplorerLink, Mono, Overline, PageHeader, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 import { RouteVisual } from "@/components/RouteVisual";
 
 export const dynamic = "force-dynamic";
@@ -28,8 +29,8 @@ export default async function PolicyDetail({ params }: Params) {
 
   const field = (label: string, value: React.ReactNode) => (
     <div className="flex justify-between gap-4 border-b border-line py-3 last:border-b-0">
-      <span className="text-[13px] text-ink-3">{label}</span>
-      <span className="text-right text-[13px] text-ink">{value}</span>
+      <span className="text-[17px] text-ink-3">{label}</span>
+      <span className="text-right text-[17px] text-ink">{value}</span>
     </div>
   );
 
@@ -84,10 +85,10 @@ export default async function PolicyDetail({ params }: Params) {
                 .map((e) => (
                   <li key={e.txHash} className="flex items-start justify-between gap-3 border-l border-line pl-4">
                     <div>
-                      <p className="text-[13px] text-ink">Epoch {e.epoch} · {e.active ? "GRANT" : "REVOKE"}</p>
+                      <p className="text-[17px] text-ink">Epoch {e.epoch} · {e.active ? "GRANT" : "REVOKE"}</p>
                       <ExplorerLink href={`https://sepolia.basescan.org/tx/${e.txHash}`}>{truncateHex(e.txHash, 10, 8)}</ExplorerLink>
                     </div>
-                    <span className="mono text-[11px] text-ink-3">#{e.blockNumber.toString()}</span>
+                    <span className="mono text-[15px] text-ink-3">#{e.blockNumber.toString()}</span>
                   </li>
                 ))}
             </ol>
@@ -98,15 +99,15 @@ export default async function PolicyDetail({ params }: Params) {
       <div className="mt-8">
         <Overline>GUARDED ACTIONS</Overline>
         {actions.length === 0 ? (
-          <div className="card mt-4 p-6 text-[13px] text-ink-3">
+          <div className="card mt-4 p-6 text-[17px] text-ink-3">
             {status === STATUS.DESTINATION_REVOKED || status === STATUS.SOURCE_REVOKED
               ? "No successful guarded actions were observed. Any post-revoke attempt is expected to revert on-chain."
               : "No guarded actions observed yet."}
           </div>
         ) : (
           <div className="card mt-4 overflow-hidden">
-            <table className="w-full text-left text-[13px]">
-              <thead className="bg-surface-2 text-[11px] uppercase tracking-[0.08em] text-ink-3">
+            <table className="w-full text-left text-[17px]">
+              <thead className="bg-surface-2 text-[15px] uppercase tracking-[0.08em] text-ink-3">
                 <tr><th className="px-4 py-3">Amount</th><th className="px-4 py-3">Epoch</th><th className="px-4 py-3">Transaction</th></tr>
               </thead>
               <tbody>

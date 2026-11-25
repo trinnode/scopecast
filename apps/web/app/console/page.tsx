@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { readSourceEvents, readMirrorPolicy, readVaultPositions } from "@/lib/chain-data";
 import { deriveStatus } from "@/lib/status";
-import { Card, EmptyState, Mono, Overline, PageHeader, Stat, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, Mono, Overline, PageHeader, Stat, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 import { RouteVisual } from "@/components/RouteVisual";
 
 export const dynamic = "force-dynamic";
@@ -76,18 +77,18 @@ export default async function Overview() {
           <Overline>DESTINATION COVERAGE</Overline>
           <div className="mt-5 space-y-4">
             <div className="flex items-center justify-between border-b border-line pb-3">
-              <span className="text-[13px] text-ink-2">Guarded vault state</span>
-              <span className="mono text-[12px] text-ink">{positions ? `${positions.idle.toString()} idle` : "UNKNOWN"}</span>
+              <span className="text-[17px] text-ink-2">Guarded vault state</span>
+              <span className="mono text-[16px] text-ink">{positions ? `${positions.idle.toString()} idle` : "UNKNOWN"}</span>
             </div>
             <div className="flex items-center justify-between border-b border-line pb-3">
-              <span className="text-[13px] text-ink-2">Mock strategy bucket</span>
-              <span className="mono text-[12px] text-ink">{positions ? positions.strategy.toString() : "UNKNOWN"}</span>
+              <span className="text-[17px] text-ink-2">Mock strategy bucket</span>
+              <span className="mono text-[16px] text-ink">{positions ? positions.strategy.toString() : "UNKNOWN"}</span>
             </div>
             <div className="flex items-center justify-between border-b border-line pb-3">
-              <span className="text-[13px] text-ink-2">Mirrors at source epoch</span>
-              <span className="mono text-[12px] text-ink">{rows.length ? `${synced}/${rows.length}` : "UNKNOWN"}</span>
+              <span className="text-[17px] text-ink-2">Mirrors at source epoch</span>
+              <span className="mono text-[16px] text-ink">{rows.length ? `${synced}/${rows.length}` : "UNKNOWN"}</span>
             </div>
-            <Link href="/console/diagnostics" className="inline-flex items-center gap-2 text-[13px] text-cyan hover:underline">
+            <Link href="/console/diagnostics" className="inline-flex items-center gap-2 text-[17px] text-cyan hover:underline">
               Inspect RPC and callback health →
             </Link>
           </div>
@@ -97,7 +98,7 @@ export default async function Overview() {
       <div className="mt-8">
         <div className="mb-4 flex items-center justify-between">
           <Overline>RECENT POLICY STATE</Overline>
-          <Link href="/console/policies" className="text-[12px] text-cyan hover:underline">View all →</Link>
+          <Link href="/console/policies" className="text-[16px] text-cyan hover:underline">View all →</Link>
         </div>
         {rows.length === 0 ? (
           <EmptyState
@@ -106,8 +107,8 @@ export default async function Overview() {
           />
         ) : (
           <div className="card overflow-hidden">
-            <table className="w-full text-left text-[13px]">
-              <thead className="bg-surface-2 text-[11px] uppercase tracking-[0.08em] text-ink-3">
+            <table className="w-full text-left text-[17px]">
+              <thead className="bg-surface-2 text-[15px] uppercase tracking-[0.08em] text-ink-3">
                 <tr>
                   <th className="px-4 py-3">Agent</th>
                   <th className="px-4 py-3">Epoch</th>

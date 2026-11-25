@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { readSourceEvents, readMirrorPolicy } from "@/lib/chain-data";
 import { deriveStatus } from "@/lib/status";
-import { Card, EmptyState, Mono, Overline, PageHeader, StatusChip, truncateHex } from "@/components/ui";
+import { Card, EmptyState, Mono, Overline, PageHeader, StatusChip } from "@/components/ui";
+import { truncateHex } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -22,10 +23,10 @@ export default async function Policies() {
         description="The latest epoch per agent. Source state comes from PolicyUpdated logs; destination state comes from the mirrored contract on Unichain Sepolia."
       />
       <div className="mb-6 flex flex-wrap gap-3">
-        <Link href="/console/create" className="rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[12px] font-bold uppercase tracking-[0.06em] text-cyan hover:bg-cyan/10">
+        <Link href="/console/create" className="rounded-sm border border-cyan/60 bg-tint-active px-3 py-2 text-[16px] font-bold uppercase tracking-[0.06em] text-cyan hover:bg-cyan/10">
           + New policy
         </Link>
-        <Link href="/console/revoke" className="rounded-sm border border-vermilion/60 bg-tint-revoked px-3 py-2 text-[12px] font-bold uppercase tracking-[0.06em] text-vermilion hover:bg-vermilion/10">
+        <Link href="/console/revoke" className="rounded-sm border border-vermilion/60 bg-tint-revoked px-3 py-2 text-[16px] font-bold uppercase tracking-[0.06em] text-vermilion hover:bg-vermilion/10">
           Revoke across chains
         </Link>
       </div>
@@ -42,17 +43,17 @@ export default async function Policies() {
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-3">
-                        <span className="font-display text-[16px] font-semibold text-ink">Northstar Rebalance Agent</span>
+                        <span className="font-display text-[20px] font-semibold text-ink">Northstar Rebalance Agent</span>
                         <StatusChip status={status} />
                       </div>
-                      <p className="mono mt-2 text-[12px] text-ink-3">{e.agentId}</p>
+                      <p className="mono mt-2 text-[16px] text-ink-3">{e.agentId}</p>
                     </div>
-                    <div className="text-right text-[12px] text-ink-2">
+                    <div className="text-right text-[16px] text-ink-2">
                       <p>epoch <span className="mono text-ink">{e.epoch}</span> · mirror <span className="mono text-ink">{m ? Number(m.epoch) : "unknown"}</span></p>
                       <p className="mt-1">cap <span className="mono text-ink">{e.maxValue.toString()}</span> · expires {new Date(e.expiresAt * 1000).toISOString().slice(0, 10)}</p>
                     </div>
                   </div>
-                  <div className="mt-4 grid gap-3 border-t border-line pt-4 text-[12px] sm:grid-cols-3">
+                  <div className="mt-4 grid gap-3 border-t border-line pt-4 text-[16px] sm:grid-cols-3">
                     <div><span className="text-ink-3">Agent key </span><Mono>{truncateHex(e.agent)}</Mono></div>
                     <div><span className="text-ink-3">Target </span><Mono>{truncateHex(e.destinationModule)}</Mono></div>
                     <div><span className="text-ink-3">Selector </span><Mono>{e.allowedSelector}</Mono></div>
@@ -63,7 +64,7 @@ export default async function Policies() {
           })}
         </div>
       )}
-      <div className="mt-6"><Overline>TIP</Overline><p className="mt-1 text-[13px] text-ink-3">Select a policy to see its full lifecycle and the three real transaction stages.</p></div>
+      <div className="mt-6"><Overline>TIP</Overline><p className="mt-1 text-[17px] text-ink-3">Select a policy to see its full lifecycle and the three real transaction stages.</p></div>
     </>
   );
 }

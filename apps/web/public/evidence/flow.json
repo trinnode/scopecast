@@ -1,4 +1,22 @@
 {
-  "verified": false,
-  "note": "No verified on-chain flow evidence has been recorded yet. Local simulations are not proof of a live callback. This file is updated only from independently checked RPC receipts."
+  "verified": true,
+  "note": "All hashes below were checked with eth_getTransactionReceipt on their own chain. Post-revoke denial is an eth_call simulation, not a reverted transaction.",
+  "grant": {
+    "source": "0xb8d1c99253cf7b7c737878abf0862a372aaee8db64f918ccc94c84a9e61c083a",
+    "reactive": "0xb7ba1b7abbb21e87d97a65f445e761957be5b8acaa573432bf7e5aa869c8a1e3",
+    "callback": "0xc42a91950fa0005bd8576a73c34c2811dbe1f726f0827bc0cb10803eeeafa73c"
+  },
+  "revoke": {
+    "source": "0xff1505decd47016664421af80d15369eb5b4817204ebe11dcfdce780eeafc25d",
+    "reactive": "0x26f412c5179d8413de903a61ccad55caae5f2addf84a9ffa5199af62cb331b91",
+    "callback": "0x97d2a79dac850272906e637b2bc8862a39aa97b985c6fd0c9055428d0a540112",
+    "denial": null,
+    "denialKind": "eth_call"
+  },
+  "actionSuccess": "0x5aba6e8332a4a705278893d1f68c388c1ecd9b5dbd6df350c278809167453cf4",
+  "propagationMs": 3000,
+  "measuredAt": "2026-11-25T18:19:32.184Z",
+  "denialReason": "The contract function \"rebalance\" reverted with the following signature:\n0x5aff86e7",
+  "reactiveContract": "0x155c0CbEdfBA688974A7354D39797c09667f98a3",
+  "reactiveTxNote": "Verified from PolicyAccepted events on Lasna by matching the originTxHash field to the source transaction."
 }

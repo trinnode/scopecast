@@ -64,31 +64,36 @@ multisig in production. All activity is testnet-only and uses a valueless mock t
 **Status**
 
 ```
-Built during the Reactive Omni Buildathon. Public repository: <PENDING_DEPLOY>.
-Live app: <PENDING_DEPLOY>.
+Built during the Reactive Omni Buildathon. Public repository: https://github.com/trinnode/scopecast.
+Live app: Vercel deployment pending; local run: `cd apps/web && pnpm dev`.
 ```
 
 ## 2. Deployed addresses and hashes
 
-Fill from `DEPLOYMENTS.md` only after receipt verification.
+All values below come from `DEPLOYMENTS.md`, which was filled only from independently verified RPC
+receipts on 2026-11-25.
 
 | Item | Value |
 | --- | --- |
-| Public repository URL | `<PENDING_DEPLOY>` |
-| Live app URL | `<PENDING_DEPLOY>` |
-| `PolicyHub` (Base Sepolia, 84532) | `<PENDING_DEPLOY>` |
-| `ScopeCastReactive` (Reactive Lasna, 5318007) | `<PENDING_DEPLOY>` |
-| `PolicyMirror` (Unichain Sepolia, 1301) | `<PENDING_DEPLOY>` |
-| `GuardedDeFiVault` (Unichain Sepolia, 1301) | `<PENDING_DEPLOY>` |
-| `MockAsset` (Unichain Sepolia, 1301) | `<PENDING_DEPLOY>` |
-| Grant — source / reactive / callback tx | `<PENDING_TX>` / `<PENDING_TX>` / `<PENDING_TX>` |
-| Revoke — source / reactive / callback tx | `<PENDING_TX>` / `<PENDING_TX>` / `<PENDING_TX>` |
-| Pre-revoke allowed action tx | `<PENDING_TX>` |
-| Post-revoke denial | `<PENDING_TX>` (revert) or labelled `eth_call` simulation |
-| Measured source-to-destination propagation | `<PENDING_DEPLOY>` ms, method stated in `DEPLOYMENTS.md` |
-| Demo video (< 3 minutes) | `<PENDING_DEPLOY>` |
+| Public repository URL | `https://github.com/trinnode/scopecast` |
+| Live app URL | Vercel pending; local: `cd apps/web && pnpm dev` |
+| `PolicyHub` (Base Sepolia, 84532) | `0xc8B5A34BC6791138d107E1348A24bB7c27C766e4` |
+| `ScopeCastReactive` (Reactive Lasna, 5318007) | `0x155c0CbEdfBA688974A7354D39797c09667f98a3` |
+| `PolicyMirror` (Unichain Sepolia, 1301) | `0xFd036Ad562A612cEF82db4893558C09bBA8664D8` |
+| `GuardedDeFiVault` (Unichain Sepolia, 1301) | `0x6AA08fD4C41D4e66CC27f654bE4f8f0e71029DBD` |
+| `MockAsset` (Unichain Sepolia, 1301) | `0xcfF438ec5B4AB5Afef185D5C2b270c9fFFF5fc8e` |
+| Grant — source | `0xb8d1c99253cf7b7c737878abf0862a372aaee8db64f918ccc94c84a9e61c083a` |
+| Grant — reactive | `0xb7ba1b7abbb21e87d97a65f445e761957be5b8acaa573432bf7e5aa869c8a1e3` |
+| Grant — callback | `0xc42a91950fa0005bd8576a73c34c2811dbe1f726f0827bc0cb10803eeeafa73c` |
+| Pre-revoke allowed action | `0x5aba6e8332a4a705278893d1f68c388c1ecd9b5dbd6df350c278809167453cf4` |
+| Revoke — source | `0xff1505decd47016664421af80d15369eb5b4817204ebe11dcfdce780eeafc25d` |
+| Revoke — reactive | `0x26f412c5179d8413de903a61ccad55caae5f2addf84a9ffa5199af62cb331b91` |
+| Revoke — callback | `0x97d2a79dac850272906e637b2bc8862a39aa97b985c6fd0c9055428d0a540112` |
+| Post-revoke denial | labelled `eth_call` simulation, revert selector `0x5aff86e7` (`AgentPolicyInactive`) |
+| Measured propagation | 3,000 ms (destination block timestamp − source block timestamp) |
+| Demo video (< 3 minutes) | pending production |
 
-Explorer links must use the right chain: Base Sepolia `https://sepolia.basescan.org/tx/<hash>`,
+Explorer links use the right chain: Base Sepolia `https://sepolia.basescan.org/tx/<hash>`,
 Lasna `https://lasna.reactscan.net/tx/<hash>`, Unichain Sepolia
 `https://sepolia.uniscan.xyz/tx/<hash>`.
 
@@ -131,9 +136,9 @@ Reactive callbacks.
 - [ ] Public, open-source repository with all contracts, tests and docs.
 - [ ] `forge build` and `forge test -vvv` pass locally (labelled simulation).
 - [ ] Chain IDs, system contract and callback proxy re-verified by RPC near submission time.
-- [ ] All three contracts deployed with predicted CREATE addresses; immutables verified by `cast call`.
-- [ ] Subscription active; source grant → reactive → callback receipts captured and linked.
-- [ ] Pre-revoke allowed action and post-revoke rejection captured and correctly labelled.
-- [ ] `DEPLOYMENTS.md` filled only from receipts; console `flow.json` flipped to `verified: true` only then.
+- [x] Contracts deployed with owner-only bootstrap; immutables and configuration verified by `cast call`.
+- [x] Subscription active; source grant → reactive → callback receipts captured and linked.
+- [x] Pre-revoke allowed action and post-revoke rejection captured and correctly labelled.
+- [x] `DEPLOYMENTS.md` filled only from receipts; console `flow.json` flipped to `verified: true` only then.
 - [ ] Demo video under three minutes; no local simulation spliced into the live section.
 - [ ] Honest scope statement included; no "instant"/"atomic"/"universal"/"world's first" wording.

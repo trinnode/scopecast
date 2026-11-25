@@ -142,9 +142,10 @@ contract ScopeCastReactive is AbstractReactive {
         if (log_.contractAddress != originHub) return;
         if (log_.topic0 != policyTopic0) return;
 
-        // PolicyUpdated has three indexed parameters -> LOG3 -> opCode == 3.
-        // topic0 is not counted in opCode.
-        if (log_.opCode != 3) return;
+        // PolicyUpdated has three indexed parameters plus the event signature:
+        // four topics total -> LOG4 -> opCode == 4. opCode is the EVM LOGn
+        // value, i.e. the number of topics including topic0.
+        if (log_.opCode != 4) return;
 
         bytes32 agentId = bytes32(log_.topic1);
         address agent = address(uint160(log_.topic2));
