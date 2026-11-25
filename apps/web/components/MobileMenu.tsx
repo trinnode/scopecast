@@ -36,7 +36,7 @@ export function MobileMenu({ links, groups }: { links?: Item[]; groups?: { name:
 
       <div
         id="scopecast-mobile-menu"
-        className={`fixed inset-0 z-50 lg:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-50 overflow-hidden lg:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
         <button
