@@ -1,0 +1,37 @@
+REACTIVE OMNI RPC VERIFICATION - access date 2026-11-25
+No secrets. Public RPC endpoints only. Methods: eth_chainId, eth_getCode, eth_blockNumber.
+
+Workaround used for Lasna: curl -s --resolve lasna-rpc.rnk.dev:443:137.74.125.148
+
+=== 1. Base Sepolia chainId (https://base-sepolia-rpc.publicnode.com) ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","result":"0x14a34","id":1}
+=== 2. Unichain Sepolia chainId (https://sepolia.unichain.org) ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","result":"0x515","id":1}
+
+=== 3. Lasna chainId (https://lasna-rpc.rnk.dev/) ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","id":1,"result":"0x512577"}
+=== 4. Base Sepolia eth_getCode callback proxy 0x476F44b11F5C942c58f4c8E3d0300E5710743585 ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_getCode","params":["0x476F44b11F5C942c58f4c8E3d0300E5710743585","latest"],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","id":1,"result":"0x60806040525f600b6038565b5f015f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050603681605f565b005b5f7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc905090565b5f8173ffffffffffffffffffffffffffffffffffffffff163b116080575f5ffd5b365f6001375f6001366001845af43d5f60013e805f8114609f573d6001f35b3d6001fdfea2646970667358221220cf2c9788f2e91d9d26cca49645b5c9b27fdf786308315cc138fd653ce1ce86ba64736f6c634300081f0033"}
+=== 5. Unichain Sepolia eth_getCode callback proxy 0x775c9B990ADe401060B78D0e98684eEf8d2466C1 ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_getCode","params":["0x775c9B990ADe401060B78D0e98684eEf8d2466C1","latest"],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","result":"0x60806040525f600b6038565b5f015f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050603681605f565b005b5f7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc905090565b5f8173ffffffffffffffffffffffffffffffffffffffff163b116080575f5ffd5b365f6001375f6001366001845af43d5f60013e805f8114609f573d6001f35b3d6001fdfea2646970667358221220cf2c9788f2e91d9d26cca49645b5c9b27fdf786308315cc138fd653ce1ce86ba64736f6c634300081f0033","id":1}
+
+=== 6. Lasna eth_getCode system contract 0x8888888888888888888888888888888888888888 ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_getCode","params":["0x8888888888888888888888888888888888888888","latest"],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","id":1,"result":"0x60806040525f600b6038565b5f015f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050603681605f565b005b5f7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc905090565b5f73ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16036095575f5ffd5b365f6001375f6001366001845af43d5f60013e805f811460b4573d6001f35b3d6001fdfea26469706673582212203d07b14e58d5261d8052bf6b315d3e209f72c76964f9753711f1cc57a5bcdd6f64736f6c634300081e0033"}
+=== 7. Lasna eth_blockNumber (liveness) ===
+REQUEST: {"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}
+RESPONSE:
+{"jsonrpc":"2.0","id":1,"result":"0x8ca7bb"}
+=== 8. Reactive MCP endpoint GET probe (expected 405) ===
+HTTP 405

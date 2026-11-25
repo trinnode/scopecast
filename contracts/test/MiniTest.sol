@@ -25,6 +25,7 @@ interface Vm {
     function assume(bool condition) external;
     function addr(uint256 privateKey) external pure returns (address);
     function label(address account, string calldata label) external;
+    function etch(address account, bytes calldata code) external;
 }
 
 abstract contract MiniTest {
