@@ -3,12 +3,10 @@ node_modules/
 .pnpm-store/
 apps/web/node_modules/
 
-# foundry
+# foundry build artifacts (dependencies in contracts/lib are vendored on purpose)
 contracts/out/
 contracts/cache/
-contracts/lib/
-!contracts/lib/.gitkeep
-broadcast/
+contracts/broadcast/**/*.json
 !contracts/broadcast/.gitkeep
 
 # env / secrets

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="sc-mark-title">
+  <title id="sc-mark-title">ScopeCast mark — a delegated permission signal severed by a closed enforcement gate</title>
+  <g id="sc-mark">
+    <!-- Delegator node: committed permission source -->
+    <rect x="7" y="25" width="14" height="14" rx="2" fill="currentColor"/>
+    <!-- Controlled signal line: originates at the delegator, stops at the gate -->
+    <path d="M21 32 H30" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="butt"/>
+    <!-- Closed gate: the single enforcement point -->
+    <rect x="30" y="18" width="5" height="28" rx="1" fill="currentColor"/>
+    <!-- The channel is cut: the signal does not continue past the gate -->
+    <!-- Agent node: isolated on the far side of the cut -->
+    <rect x="44" y="25" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="3.5"/>
+  </g>
+</svg>
