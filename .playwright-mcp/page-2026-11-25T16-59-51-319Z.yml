@@ -1,0 +1,121 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e2]:
+    - generic [aria-hidden] [ref=f13e3]: ◐
+    - paragraph [ref=f13e4]:
+      - strong [ref=f13e5]: TESTNET ONLY
+      - text: — valueless test assets. No retroactive reversal. No atomic cross-chain revocation.
+  - generic [ref=f13e6]:
+    - complementary [ref=f13e7]:
+      - generic [ref=f13e8]:
+        - img "SCOPECAST mark" [ref=f13e9]
+        - img "SCOPECAST" [ref=f13e10]
+      - navigation "Console navigation" [ref=f13e11]:
+        - generic [ref=f13e12]:
+          - generic [ref=f13e13]: OPERATE
+          - link "Overview" [ref=f13e17] [cursor=pointer]:
+            - /url: /console
+          - link "Agent policies" [ref=f13e23] [cursor=pointer]:
+            - /url: /console/policies
+          - link "Propagation" [ref=f13e27] [cursor=pointer]:
+            - /url: /console/propagation
+          - link "Guarded DeFi" [ref=f13e30] [cursor=pointer]:
+            - /url: /console/demo
+        - generic [ref=f13e33]:
+          - generic [ref=f13e34]: GOVERN
+          - link "Authorise policy" [ref=f13e38] [cursor=pointer]:
+            - /url: /console/create
+          - link "Revoke" [ref=f13e51] [cursor=pointer]:
+            - /url: /console/revoke
+          - link "Audit trail" [ref=f13e54] [cursor=pointer]:
+            - /url: /console/audit
+        - generic [ref=f13e60]:
+          - generic [ref=f13e61]: CONFIGURE
+          - link "Diagnostics" [ref=f13e65] [cursor=pointer]:
+            - /url: /console/diagnostics
+          - link "Architecture" [ref=f13e69] [cursor=pointer]:
+            - /url: /console/architecture
+      - generic [ref=f13e75]:
+        - paragraph [ref=f13e76]: 84532 → 5318007 → 1301
+        - paragraph [ref=f13e77]: REVOKE ONCE. ENFORCE EVERYWHERE.
+    - generic [ref=f13e78]:
+      - banner [ref=f13e79]:
+        - generic [ref=f13e80]:
+          - generic [ref=f13e81]: scopecast / console
+          - generic [ref=f13e82]: /
+          - generic [ref=f13e83]: overview
+        - button "Connect wallet" [ref=f13e85] [cursor=pointer]
+      - main [ref=f13e86]:
+        - generic [ref=f13e87]:
+          - generic [ref=f13e88]:
+            - generic [ref=f13e89]: SECURITY OVERVIEW
+            - heading "Delegated authority, accounted for" [level=1] [ref=f13e92]
+            - paragraph [ref=f13e93]: State is read from Base Sepolia and Unichain Sepolia on every request. When a contract address is not configured, or an RPC is unreachable, the console shows UNKNOWN rather than guessing.
+          - generic [ref=f13e95]:
+            - generic [ref=f13e96]:
+              - generic [ref=f13e97]: AGENTS TRACKED
+              - generic [ref=f13e100]: "0"
+            - generic [ref=f13e101]:
+              - generic [ref=f13e102]: ACTIVE POLICIES
+              - generic [ref=f13e105]: "0"
+            - generic [ref=f13e106]:
+              - generic [ref=f13e107]: PENDING MIRRORS
+              - generic [ref=f13e110]: "0"
+            - generic [ref=f13e111]:
+              - generic [ref=f13e112]: REVOKED KEYS
+              - generic [ref=f13e115]: "0"
+          - generic [ref=f13e116]:
+            - generic [ref=f13e117]:
+              - generic [ref=f13e118]:
+                - generic [ref=f13e119]: PROPAGATION ROUTE
+                - 'generic "Status: DESTINATION SYNC UNKNOWN" [ref=f13e122]':
+                  - generic [aria-hidden] [ref=f13e123]: "?"
+                  - text: DESTINATION SYNC UNKNOWN
+              - generic "Policy propagation route" [ref=f13e124]:
+                - generic [ref=f13e125]: ◐ Simulation
+                - generic [ref=f13e126]:
+                  - generic [ref=f13e128]:
+                    - generic "pending" [ref=f13e129]: ○
+                    - paragraph [ref=f13e130]: Base Sepolia
+                    - paragraph [ref=f13e131]: PolicyHub · 84532
+                    - generic [ref=f13e132]: NO VERIFIED RECEIPT
+                  - generic [ref=f13e136]:
+                    - generic "pending" [ref=f13e137]: ○
+                    - paragraph [ref=f13e138]: Reactive Omni
+                    - paragraph [ref=f13e139]: Lasna · 5318007
+                    - generic [ref=f13e140]: NO VERIFIED RECEIPT
+                  - generic [ref=f13e144]:
+                    - generic "pending" [ref=f13e145]: ○
+                    - paragraph [ref=f13e146]: Unichain Sepolia
+                    - paragraph [ref=f13e147]: PolicyMirror · 1301
+                    - generic [ref=f13e148]: NO VERIFIED RECEIPT
+                - paragraph [ref=f13e149]: A stage completes only after its receipt is verified on that chain. Source finality is not destination enforcement.
+            - generic [ref=f13e150]:
+              - generic [ref=f13e151]: DESTINATION COVERAGE
+              - generic [ref=f13e154]:
+                - generic [ref=f13e155]:
+                  - generic [ref=f13e156]: Guarded vault state
+                  - generic [ref=f13e157]: UNKNOWN
+                - generic [ref=f13e158]:
+                  - generic [ref=f13e159]: Mock strategy bucket
+                  - generic [ref=f13e160]: UNKNOWN
+                - generic [ref=f13e161]:
+                  - generic [ref=f13e162]: Mirrors at source epoch
+                  - generic [ref=f13e163]: UNKNOWN
+                - link "Inspect RPC and callback health →" [ref=f13e164] [cursor=pointer]:
+                  - /url: /console/diagnostics
+          - generic [ref=f13e165]:
+            - generic [ref=f13e166]:
+              - generic [ref=f13e167]: RECENT POLICY STATE
+              - link "View all →" [ref=f13e170] [cursor=pointer]:
+                - /url: /console/policies
+            - generic [ref=f13e171]:
+              - generic [aria-hidden] [ref=f13e172]: "?"
+              - paragraph [ref=f13e173]: No source policies observed yet
+              - paragraph [ref=f13e174]: No PolicyUpdated events were returned from the configured PolicyHub. Configure a deployed address and publish a policy on Base Sepolia, or use the local simulation to explore the console.
+      - contentinfo [ref=f13e175]:
+        - img "SCOPECAST" [ref=f13e177]
+        - generic [ref=f13e178]: Testnet build · not audited
+        - link "Source ↗" [ref=f13e179] [cursor=pointer]:
+          - /url: https://github.com/trinnode/scopecast
+  - button "Open Next.js Dev Tools" [ref=f13e185] [cursor=pointer]
+  - alert [ref=f13e189]

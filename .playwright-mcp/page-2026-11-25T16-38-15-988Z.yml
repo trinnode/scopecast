@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [aria-hidden] [ref=e3]: ◐
+    - paragraph [ref=e4]:
+      - strong [ref=e5]: TESTNET ONLY.
+      - text: All tokens, balances and transactions are valueless test assets. SCOPECAST cannot reverse settled actions and does not provide atomic cross-chain revocation.
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - img "SCOPECAST" [ref=e9]
+      - navigation "Main navigation" [ref=e10]:
+        - link "How it works" [ref=e11] [cursor=pointer]:
+          - /url: "#how"
+        - link "Scope" [ref=e12] [cursor=pointer]:
+          - /url: "#scope"
+        - link "Open console" [ref=e13] [cursor=pointer]:
+          - /url: /console
+    - main [ref=e14]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: REACTIVE OMNI BUILDATHON · EVERY SECOND COUNTS
+          - heading "Revoke once. Enforce everywhere." [level=1] [ref=e19]: Revoke once.Enforce everywhere.
+          - paragraph [ref=e20]: SCOPECAST gives a protocol one authoritative policy for a delegated DeFi agent. A Reactive contract mirrors every versioned change to integrated execution modules on another chain — and the module refuses the next action once the newer epoch arrives.
+          - generic [ref=e21]:
+            - link "Open the console" [ref=e22] [cursor=pointer]:
+              - /url: /console
+            - link "See the callback path" [ref=e25] [cursor=pointer]:
+              - /url: "#how"
+          - paragraph [ref=e26]: "Honest by design: revocation is asynchronous. A transaction already settled on the destination is not reversed. Only modules that query the mirror are protected."
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]: LIVE ROUTE · EXAMPLE POLICY
+            - generic [ref=e30]: SIMULATION
+          - generic "Policy propagation route" [ref=e31]:
+            - generic [ref=e32]: ◐ Simulation
+            - generic [ref=e33]:
+              - generic [ref=e35]:
+                - generic [ref=e36]:
+                  - generic "complete" [ref=e37]: ▶
+                  - generic [ref=e38]:
+                    - paragraph [ref=e39]: Base Sepolia
+                    - paragraph [ref=e40]: PolicyHub · origin event
+                - generic [ref=e41]: NO TX OBSERVED
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - generic "complete" [ref=e47]: ▶
+                  - generic [ref=e48]:
+                    - paragraph [ref=e49]: Reactive Omni
+                    - paragraph [ref=e50]: react() · decode + validate
+                - generic [ref=e51]: NO TX OBSERVED
+              - generic [ref=e55]:
+                - generic [ref=e56]:
+                  - generic "complete" [ref=e57]: ▶
+                  - generic [ref=e58]:
+                    - paragraph [ref=e59]: Unichain Sepolia
+                    - paragraph [ref=e60]: PolicyMirror · enforcement
+                - generic [ref=e61]: NO TX OBSERVED
+            - paragraph [ref=e62]: A stage is marked complete only after its receipt is verified on that chain. Source finality is not destination enforcement.
+      - generic [ref=e63]:
+        - generic [ref=e64]: THE SECURITY PROPERTY
+        - heading "One policy, three verifiable stages" [level=2] [ref=e65]
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - heading "Versioned source policy" [level=3] [ref=e72]
+            - paragraph [ref=e73]: Agent key, target module, method selector, value cap, expiry and epoch are written to a single registry. Every change increments the epoch.
+          - generic [ref=e74]:
+            - heading "Authenticated reaction" [level=3] [ref=e82]
+            - paragraph [ref=e83]: A Reactive contract validates origin chain, registry address, event signature and payload hash before requesting a callback. Stale epochs never win.
+          - generic [ref=e84]:
+            - heading "Enforced at the module" [level=3] [ref=e88]
+            - paragraph [ref=e89]: A guarded vault checks the mirrored policy on every agent call. After the revoke callback lands, the exact same call is rejected on-chain.
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - generic [ref=e93]: WHAT THIS IS — AND IS NOT
+          - heading "A coordination layer, not magic" [level=2] [ref=e94]
+          - paragraph [ref=e95]: SCOPECAST synchronises capability state for modules that integrate its guard. It is not a smart wallet, an approval scanner, a price-driven circuit breaker or a universal revoker.
+        - list [ref=e96]:
+          - listitem [ref=e97]: No retroactive reversal of settled transactions
+          - listitem [ref=e101]: Propagation window between source and destination
+          - listitem [ref=e105]: Only integrated modules query the mirror
+          - listitem [ref=e109]: Source owner must be a multisig in production
+          - listitem [ref=e113]: Callback gas reserve must stay funded
+          - listitem [ref=e117]: Testnet chain parameters can change
+      - generic [ref=e121]:
+        - paragraph [ref=e122]: Ready to inspect the real flow?
+        - link "Read the architecture →" [ref=e123] [cursor=pointer]:
+          - /url: /console/architecture

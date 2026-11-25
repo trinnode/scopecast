@@ -30,17 +30,23 @@ contract ScopeCastReactive is AbstractReactive {
     error ZeroGasLimit();
     error GasLimitTooLow();
 
+    event Configured(address indexed hub, address indexed module, address indexed mirror);
+
     uint256 public immutable originChainId;
-    address public immutable originHub;
     uint256 public immutable policyTopic0;
     uint256 public immutable destinationChainId;
-    address public immutable expectedDestinationModule;
     uint64 public immutable callbackGasLimit;
 
-    /// @dev Owner-controlled because the mirror is deployed after this contract
-    ///      on a different chain (immutable cross-chain address bootstrap).
+    /// @dev These three addresses are owner-controlled bootstrap parameters:
+    ///      the mirror has an immutable dependency on this contract's address,
+    ///      and the hub has an immutable dependency on the vault address, so a
+    ///      single-transaction cross-chain deployment is impossible. The owner
+    ///      (a multisig in production) is the only writer.
+    address public originHub;
+    address public expectedDestinationModule;
     address public destinationMirror;
     address public owner;
+    address public subscribedHub;
 
     /// @notice Highest epoch for which a callback has been requested per agent.
     mapping(bytes32 agentId => uint64 epoch) public latestRequestedEpoch;
@@ -75,6 +81,7 @@ contract ScopeCastReactive is AbstractReactive {
         owner = msg.sender;
 
         // Only topic0 is specific; indexed agentId/agent/epoch are wildcards.
+        subscribedHub = originHub_;
         SYSTEM.subscribe(
             originChainId_,
             originHub_,
@@ -85,10 +92,42 @@ contract ScopeCastReactive is AbstractReactive {
         );
     }
 
-    /// @notice One-time owner bootstrap of the destination mirror address.
+    /// @notice Owner bootstrap of cross-chain addresses. Re-subscribes to the
+    ///         new hub if it changed, and unsubscribes from the old one.
+    function configure(address hub_, address module_, address mirror_) external onlyOwner {
+        if (hub_ == address(0) || module_ == address(0) || mirror_ == address(0)) {
+            revert ZeroDestination();
+        }
+        if (subscribedHub != address(0) && subscribedHub != hub_) {
+            SYSTEM.unsubscribe(
+                originChainId,
+                subscribedHub,
+                policyTopic0,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE,
+                REACTIVE_IGNORE
+            );
+        }
+        originHub = hub_;
+        expectedDestinationModule = module_;
+        destinationMirror = mirror_;
+        if (subscribedHub != hub_) {
+            SYSTEM.subscribe(
+                originChainId, hub_, policyTopic0, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE
+            );
+            subscribedHub = hub_;
+        }
+        emit Configured(hub_, module_, mirror_);
+    }
+
     function setDestinationMirror(address mirror_) external onlyOwner {
         if (mirror_ == address(0)) revert ZeroDestination();
         destinationMirror = mirror_;
+    }
+
+    /// @notice Operator helper to clear reactive-side execution debt.
+    function coverDebt() external {
+        _coverDebt();
     }
 
     function transferOwnership(address newOwner_) external onlyOwner {
