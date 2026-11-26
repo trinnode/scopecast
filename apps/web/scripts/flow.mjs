@@ -120,6 +120,7 @@ const mirrorAbi = [
   ] },
 ];
 const vaultAbi = parseAbi(["function rebalance(bytes32 agentId,uint256 amount)"]);
+const POLICY_ACCEPTED_TOPIC = "0x65824c35042e7d5d71faf4e9c4c69fe8c9716227fc5f6c1a5854ab043c66923a";
 
 const agentId = keccak256(stringToHex("Northstar Rebalance Agent - live v3"));
 const agentAddress = agentWallet.account.address;
@@ -150,7 +151,9 @@ async function findCallbackHash(epoch) {
     fromBlock: from,
     toBlock: latest,
   });
-  const match = logs.filter((l) => Number(l.args.epoch) === epoch).pop();
+  const match = logs
+    .filter((l) => Number(l.args.epoch) === epoch && String(l.topics[1]).toLowerCase() === String(agentId).toLowerCase())
+    .pop();
   return match?.transactionHash;
 }
 
@@ -167,6 +170,21 @@ async function verified(hash, client, label) {
   return { hash, timestampMs: Number(block.timestamp) * 1000 };
 }
 
+/// Find the Lasna react() transaction that contains a given origin tx hash.
+/// PolicyAccepted data layout: bool, bytes32, uint256 originTxHash, bytes.
+async function findReactiveTx(originHash) {
+  const latest = await lasnaClient.getBlockNumber();
+  const from = latest > 3000n ? latest - 3000n : 0n;
+  const logs = await lasnaClient.getLogs({ address: REACTIVE, fromBlock: from, toBlock: latest });
+  for (const log of logs) {
+    if (String(log.topics[0]).toLowerCase() !== POLICY_ACCEPTED_TOPIC) continue;
+    const data = log.data.slice(2);
+    const origin = "0x" + data.slice(128, 192).replace(/^0+/, "");
+    if (origin.toLowerCase() === String(originHash).toLowerCase()) return log.transactionHash;
+  }
+  return null;
+}
+
 async function main() {
   console.log("Agent ID:", agentId);
   console.log("Agent key address:", agentAddress);
@@ -178,8 +196,8 @@ async function main() {
     console.log("step: read source policy");
     const sourcePolicy = await baseClient.readContract({ address: HUB, abi: hubAbi, functionName: "getPolicy", args: [agentId] });
     if (!process.env.GRANT_TX) throw new Error("Set GRANT_TX to the verified source grant hash when resuming");
-    source = { hash: process.env.GRANT_TX };
-    console.log("RESUMED SOURCE GRANT:", source.hash, "epoch", String(sourcePolicy.epoch));
+    source = await verified(process.env.GRANT_TX, baseClient, "RESUMED SOURCE GRANT");
+    console.log("RESUMED SOURCE EPOCH:", String(sourcePolicy.epoch));
   } else {
     const grantHash = await baseWallet.writeContract({
       address: HUB, abi: hubAbi, functionName: "createPolicy",
@@ -200,9 +218,9 @@ async function main() {
   // 3. Successful guarded action (or resume from an already confirmed one)
   let actionHash;
   if (process.env.SKIP_ACTION === "1") {
+    if (!process.env.ACTION_TX) throw new Error("Set ACTION_TX when resuming after the action");
     actionHash = process.env.ACTION_TX;
-    if (!actionHash) throw new Error("Set ACTION_TX when resuming after the action");
-    console.log("RESUMED ACTION:", actionHash);
+    await verified(actionHash, unichainClient, "RESUMED ACTION");
   } else {
     actionHash = await agentWallet.writeContract({
       address: VAULT, abi: vaultAbi, functionName: "rebalance", args: [agentId, parseUnits("2", 18)],
@@ -222,24 +240,33 @@ async function main() {
 
   // 6. Post-revoke denial: eth_call simulation (no gas spent, clearly labelled)
   let denialReason = "";
+  let denialSucceeded = false;
   try {
     await unichainClient.simulateContract({
       account: agentAddress, address: VAULT, abi: vaultAbi, functionName: "rebalance",
       args: [agentId, parseUnits("2", 18)],
     });
-    throw new Error("Simulation unexpectedly succeeded — revocation did not take effect");
+    denialSucceeded = true;
   } catch (e) {
     denialReason = String(e?.shortMessage || e?.message || e).slice(0, 300);
-    console.log("POST-REVOKE DENIAL (eth_call):", denialReason);
   }
+  if (denialSucceeded) throw new Error("Simulation unexpectedly succeeded — revocation did not take effect");
+  console.log("POST-REVOKE DENIAL (eth_call):", denialReason);
+
+  const grantReactive = await findReactiveTx(source.hash);
+  const revokeReactive = await findReactiveTx(revokeSource.hash);
+  if (!grantReactive) throw new Error("No Lasna PolicyAccepted event found for the grant source hash");
+  if (!revokeReactive) throw new Error("No Lasna PolicyAccepted event found for the revoke source hash");
+  await verified(grantReactive, lasnaClient, "GRANT REACTIVE TX");
+  await verified(revokeReactive, lasnaClient, "REVOKE REACTIVE TX");
 
   const evidence = {
     verified: true,
     note: "All hashes below were checked with eth_getTransactionReceipt on their own chain. Post-revoke denial is an eth_call simulation, not a reverted transaction.",
-    grant: { source: source.hash, reactive: "SEE_LASNA_TX", callback: callback.hash },
+    grant: { source: source.hash, reactive: grantReactive, callback: callback.hash },
     revoke: {
       source: revokeSource.hash,
-      reactive: "SEE_LASNA_TX",
+      reactive: revokeReactive,
       callback: revokeCallback.hash,
       denial: null,
       denialKind: "eth_call",
@@ -254,7 +281,7 @@ async function main() {
   fs.writeFileSync(out, JSON.stringify(evidence, null, 2) + "\n");
   console.log("Evidence written to apps/web/public/evidence/flow.json");
   console.log("Measured source->destination propagation:", evidence.propagationMs, "ms");
-  console.log("Reactive transaction hashes must be read from Lasna by matching PolicyAccepted events, then filled into docs/DEPLOYMENTS.md.");
+  console.log("Reactive hashes were discovered from verified PolicyAccepted logs on Lasna.");
 }
 
 main().catch((e) => {

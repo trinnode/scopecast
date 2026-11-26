@@ -1,8 +1,8 @@
 # SCOPECAST — Callback operations
 
-> Testnet-only. All deployed values are `<PENDING_DEPLOY>` until confirmed from a verified RPC
-> receipt. Callback success means a **confirmed destination receipt**, never merely a
-> `CallbackRequest` or a request made by `react()`.
+> Testnet-only. Deployed values are recorded in `DEPLOYMENTS.md` from verified RPC receipts.
+> Callback success means a **confirmed destination receipt**, never merely a `CallbackRequest` or a
+> request made by `react()`.
 
 ## 1. Network constants
 
@@ -14,7 +14,7 @@
 | `PolicyUpdated` topic0 | `0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9` | Subscription topic; `keccak256` of the exact event signature |
 | Minimum callback gas | `100000` | Requests below this are ignored by the system contract; enforced in `ScopeCastReactive`'s constructor |
 | Reactive transaction gas cap | `900000` | Hard network cap; the callback gas limit is part of the same budget |
-| Configured callback gas limit | `<PENDING_DEPLOY>` | Immutable after deployment; local harness uses `300000` |
+| Configured callback gas limit | `800000` | Immutable on the deployed `ScopeCastReactive`; local harness uses `300000` but the proxy overhead requires ~190k for the receiver, so the live value is 800000 |
 
 The callback receiver (`PolicyMirror`) pays for destination execution in **Unichain Sepolia native
 ETH**, not in REACT/lREACT. A failed callback is still charged; a recipient in debt receives nothing.
@@ -44,7 +44,7 @@ cast send "$REACTIVE_CONTRACT_ADDRESS" --value 1000000000000000 \
   --rpc-url "$LASNA_RPC_URL" --private-key "$REACTIVE_DEPLOYER_PRIVATE_KEY"
 ```
 
-The current `ScopeCastReactive` source does **not** expose a public `coverDebt()` wrapper, so an
+The deployed `ScopeCastReactive` **does** expose a public `coverDebt()` wrapper, so an
 operator cannot explicitly clear reactive-side debt. Fund proactively; if debt becomes persistent,
 the contract must be redeployed with a wrapper (which requires re-bootstrap because of immutable
 addresses).
@@ -86,7 +86,7 @@ it will be retried.
 Work through the three chains in order; stop at the first missing link.
 
 1. **Source event.** Confirm the source receipt and the `PolicyUpdated` log fields (epoch, active,
-   policyHash, destination chain/module). The hub emits three indexed fields, so `opCode` is 3.
+   policyHash, destination chain/module). The hub emits three indexed fields, so `opCode` is 4.
    ```bash
    cast receipt "$SOURCE_TX" --rpc-url "$BASE_RPC_URL"
    cast logs --address "$POLICY_HUB_ADDRESS" \

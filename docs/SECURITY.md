@@ -1,9 +1,9 @@
 # SCOPECAST — Security model
 
-> Testnet-only. Addresses not yet confirmed from receipts are `<PENDING_DEPLOY>`. This document
-> describes the current `contracts/src/*.sol` implementation, including its limitations. It does not
-> claim an external audit. Local Foundry tests are simulations; only verified testnet receipts prove
-> a live callback.
+> Testnet-only. Deployed addresses and hashes are recorded in `DEPLOYMENTS.md` from verified RPC
+> receipts. This document describes the current `contracts/src/*.sol` implementation, including its
+> limitations. It does not claim an external audit. Local Foundry tests are simulations; only
+> verified testnet receipts prove a live callback.
 
 ## 1. Threat model summary
 
@@ -98,14 +98,14 @@ Test evidence (local simulation): `PolicyMirror.t.sol::test_eoaCannotCallCallbac
 | `GuardedDeFiVault` | Reads `getPolicy` on every call; no cached authorisation | A policy change is effective at the destination as soon as the callback is confirmed. |
 
 Additional anti-spoof checks at the reactive layer: `chainId == 84532`, `contractAddress == originHub`,
-`topic0 == 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9`, `opCode == 3`
+`topic0 == 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9`, `opCode == 4`
 (three indexed parameters → LOG3), nonzero `agentId`/`agent`/`epoch`, destination chain and module
 match, nonzero selector and cap, and canonical hash equality. Irrelevant logs return silently: a
 reverted react is still billed by the network.
 
 Callback gas is immutable at deploy time: the system contract ignores requests below **100,000**
 gas (enforced by `ScopeCastReactive`'s constructor), and the Reactive transaction gas cap is
-**900,000**. The local harness uses 300,000. The deployed value must be recorded from the verified
+**900,000**. The local harness uses 300,000; the deployed contract uses 800,000 because the callback
 receipt.
 
 ## 5. Guarded enforcement

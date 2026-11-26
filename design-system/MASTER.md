@@ -6,6 +6,13 @@
 >
 > This is a **risk-operations platform, not a trading terminal**. No tickers, no candlesticks,
 > no price flashing, no neon spectacle. Calm, dense, legible, audit-ready.
+
+> **Implemented system (authoritative, 2026-11-26).** The shipped app uses **Unbounded** (display),
+> **Archivo** (interface/body) and **Space Mono** (data), all served locally from
+> `apps/web/public/fonts/`. The implemented palette is canvas `#050506`, surface `#0B0B0D`,
+> surface-2 `#131316`, ink `#FFFFFF`, flare `#00F0FF`, iris `#8B5CF6`, blush `#FF3D81`, amber
+> `#FFC53D`. Earlier typography and colour recommendations below are historical exploration and are
+> superseded wherever they conflict with this block or with `apps/web/tailwind.config.ts`.
 >
 > Research basis and rejected alternatives: [`research/DESIGN_SOURCES.md`](../research/DESIGN_SOURCES.md).
 

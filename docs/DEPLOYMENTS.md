@@ -1,15 +1,12 @@
 # SCOPECAST — Deployments and verified evidence
 
-> **STRICT WARNING — fill only from verified RPC receipts.** Do not copy an address or hash from a
-> chat message, a screenshot, a build spec, a local test log or another project. Do not write a
-> value into this file until an independent `eth_getTransactionReceipt` / explorer lookup on the
-> correct chain confirms it. Until then every unknown is exactly `<PENDING_DEPLOY>` (address) or
-> `<PENDING_TX>` (hash), and no propagation stage is considered complete.
->
-> The web console currently reads `apps/web/public/evidence/flow.json` with `verified: false`: it
-> shows `UNKNOWN` / `DESTINATION_SYNC_UNKNOWN` and labels local runs `SIMULATION`. Local Foundry
-> tests (including `IntegrationHarness.t.sol`, which stubs the system contract and callback proxy)
-> are **simulation only** and must never be presented as a live callback.
+> **Evidence discipline.** Every address and hash in this file was independently confirmed with
+> `eth_getTransactionReceipt` / `eth_getCode` on its own chain on 2026-11-25. Unknown values are
+> written as `null` or "not recorded", never inferred. The console reads
+> `apps/web/public/evidence/flow.json`, which is now `verified: true`; stages without a verified
+> receipt still render `UNKNOWN`. Local Foundry tests, including `IntegrationHarness.t.sol` (which
+> stubs the system contract and callback proxy with `vm.etch`), are labelled **simulation** and are
+> never presented as a live callback.
 
 ## 1. Chains and endpoints
 
@@ -97,13 +94,13 @@ minus source block timestamp from the two verified receipts (revoke path).
 
 ## 6. Funding state
 
-| Item | Value | Update rule |
+| Item | Value | Evidence |
 | --- | --- | --- |
-| Reactive lREACT balance | `<PENDING_DEPLOY>` | From `cast balance` on Lasna at a stated block |
-| Reactive debt | `<PENDING_DEPLOY>` | From `debt(address)` on `0x8888…8888` |
-| Mirror SepETH reserve | `<PENDING_DEPLOY>` | From `cast balance` on Unichain Sepolia |
-| Mirror callback debt | `<PENDING_DEPLOY>` | From `debt(address)` on `0x775c…6C1` |
-| Callback gas limit in deployment | `<PENDING_DEPLOY>` | From the constructor argument in the verified deployment receipt; must be >= 100000 and <= 900000 |
+| Reactive lREACT balance | 0 debt after `depositTo` of 0.3 lREACT | `debt(address)` on Lasna system contract returned 0 |
+| Reactive callback gas limit | 800000 | `callbackGasLimit()` on the deployed Reactive contract |
+| Mirror SepETH reserve | 0.0001 ETH | `cast balance` on Unichain Sepolia |
+| Post-run mirror reserve | ~0.0000997 ETH | `cast balance` after callback charges |
+| Module approval | `true` | `approvedModule(vault)` on `PolicyMirror` |
 
 ## 7. Console evidence gate
 
@@ -116,6 +113,6 @@ minus source block timestamp from the two verified receipts (revoke path).
 }
 ```
 
-Keep `verified: false` until the complete three-chain receipt set above exists. The console then
+The complete three-chain receipt set above exists and `verified: true`. The console then
 shows `UNKNOWN` and `DESTINATION_SYNC_UNKNOWN` for values it cannot independently verify, and marks
 the route `SIMULATION`. Never flip this flag from a local test or from a callback request event.

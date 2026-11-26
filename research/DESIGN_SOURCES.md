@@ -119,3 +119,12 @@ No runtime font requests are made by the product.
   (`#0B1016`, `#E2E8F0`, `#22D3EE`) because SVG favicons render outside the app's CSS cascade.
 - All SVGs were XML-validated, rendered via Inkscape at full and 16px sizes, and checked for
   byte-identical copies in `public/brand/` and `apps/web/public/brand/`.
+
+
+## Addendum — implemented system (2026-11-26)
+
+The final shipped UI replaced the fonts explored above with **Unbounded**, **Archivo** and
+**Space Mono** (all SIL OFL 1.1, downloaded locally). The implemented palette and effects are
+authoritative in `apps/web/tailwind.config.ts`, `apps/web/app/globals.css` and
+`design-system/MASTER.md`. Earlier Space Grotesk / Satoshi / JetBrains Mono notes remain as research
+history only.

@@ -37,3 +37,7 @@ coverage/
 
 # playwright QA artifacts
 .playwright-mcp/
+
+# Local-only competition artifacts
+docs/DEMO_SCRIPT.md
+docs/SUBMISSION.md

@@ -1,9 +1,9 @@
 # SCOPECAST — Architecture
 
-> Status: testnet-only build. No production deployment receipts exist yet. Every address and hash
-> that is not a published network constant is written as `<PENDING_DEPLOY>` and must be filled only
-> from verified RPC receipts (see `DEPLOYMENTS.md`). Local Foundry runs are **simulation**, not
-> evidence of a live Reactive callback.
+> Status: testnet-only build with verified receipts in `DEPLOYMENTS.md`. Local Foundry runs are
+> **simulation**, not evidence of a live Reactive callback. The three-chain address cycle is
+> resolved by the owner-only `configure(hub, module, mirror)` function on `ScopeCastReactive`, which
+> unsubscribes the previous hub and subscribes the new one without redeployment.
 >
 > In one sentence: one owner-authored, versioned capability policy is published on Base Sepolia; a
 > Reactive contract on Lasna validates the event and requests an authenticated callback; a mirror on
@@ -58,10 +58,10 @@ proxy is the only callback gateway in the active path.
 
 | Component | Chain | Authoritative for | Key configuration | Mutation surface |
 | --- | --- | --- | --- | --- |
-| `PolicyHub` | Base Sepolia (84532) | Source policy state and epoch | `expectedDestinationChainId = 1301`, `expectedDestinationModule = <PENDING_DEPLOY>` (vault), `owner` | `onlyOwner`: `createPolicy`, `updatePolicy`, `revokePolicy`, `rotateAgentKey`, `transferOwnership` |
-| `ScopeCastReactive` | Reactive Lasna (5318007) | Decision to request a callback | immutables: `originChainId = 84532`, `originHub = <PENDING_DEPLOY>`, `policyTopic0 = 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9`, `destinationChainId = 1301`, `expectedDestinationModule = <PENDING_DEPLOY>` (vault), `callbackGasLimit`; mutable owner-set `destinationMirror` | `react()` (`onlySystem`), `setDestinationMirror` / `transferOwnership` (`onlyOwner`) |
-| `PolicyMirror` | Unichain Sepolia (1301) | Destination policy state and accepted epoch | immutables: callback proxy `0x775c9B990ADe401060B78D0e98684eEf8d2466C1`, authorised reactive sender `<PENDING_DEPLOY>`; mutable `admin`, `approvedModule` | `applyPolicy` (callback only), `emergencyRevoke` / `setModuleApproval` / `transferAdmin` (`onlyAdmin`), `coverDebt` (public) |
-| `GuardedDeFiVault` | Unichain Sepolia (1301) | Enforcement of a guarded action | immutables: `mirror = <PENDING_DEPLOY>`, `asset = <PENDING_DEPLOY>`; mutable `owner`, `holdings`, `deployed` | `seed` / `withdraw` / `transferOwnership` (`onlyOwner`), `rebalance` (agent, guarded) |
+| `PolicyHub` | Base Sepolia (84532) | Source policy state and epoch | `expectedDestinationChainId = 1301`, `expectedDestinationModule = 0x6AA08fD4C41D4e66CC27f654bE4f8f0e71029DBD` (vault), `owner` | `onlyOwner`: `createPolicy`, `updatePolicy`, `revokePolicy`, `rotateAgentKey`, `transferOwnership` |
+| `ScopeCastReactive` | Reactive Lasna (5318007) | Decision to request a callback | immutables: `originChainId = 84532`, `originHub = 0xc8B5A34BC6791138d107E1348A24bB7c27C766e4`, `policyTopic0 = 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9`, `destinationChainId = 1301`, `expectedDestinationModule = 0x6AA08fD4C41D4e66CC27f654bE4f8f0e71029DBD` (vault), `callbackGasLimit`; owner-set bootstrap `configure` (hub/module/mirror), `setDestinationMirror`, `transferOwnership`, `coverDebt` | `react()` (`onlySystem`); `configure()` unsubscribes the old hub and subscribes the new one |
+| `PolicyMirror` | Unichain Sepolia (1301) | Destination policy state and accepted epoch | immutables: callback proxy `0x775c9B990ADe401060B78D0e98684eEf8d2466C1`, authorised reactive sender `0x155c0CbEdfBA688974A7354D39797c09667f98a3`; mutable `admin`, `approvedModule` | `applyPolicy` (callback only), `emergencyRevoke` / `setModuleApproval` / `transferAdmin` (`onlyAdmin`), `coverDebt` (public) |
+| `GuardedDeFiVault` | Unichain Sepolia (1301) | Enforcement of a guarded action | immutables: `mirror = 0xFd036Ad562A612cEF82db4893558C09bBA8664D8`, `asset = 0xcfF438ec5B4AB5Afef185D5C2b270c9fFFF5fc8e`; mutable `owner`, `holdings`, `deployed` | `seed` / `withdraw` / `transferOwnership` (`onlyOwner`), `rebalance` (agent, guarded) |
 | `MockAsset` | Unichain Sepolia (1301) | Test units only | freely mintable; testnet-only by design | `mint`, `transfer`, `approve`, `transferFrom` |
 
 `PolicyUpdated` has three indexed fields (`agentId`, `agent`, `epoch`) and seven non-indexed fields,
@@ -87,7 +87,7 @@ compatibility contract between all three contracts; changing it requires redeplo
 | # | Boundary | What is trusted / how it is checked | What happens if the check fails |
 | --- | --- | --- | --- |
 | TB1 | Owner → `PolicyHub` (Base Sepolia) | `onlyOwner` on every mutation. The agent key is never an owner. Production owner should be a multisig or smart account. | Unauthorised policy writes revert with `NotOwner`. A compromised owner can still authorise a malicious policy (see `THREAT_MODEL.md`). |
-| TB2 | Base Sepolia logs → Reactive system contract → `react()` | `onlySystem` (`msg.sender == 0x8888…8888`); plus explicit filters on `chainId`, `contractAddress`, `topic0`, `opCode == 3`, nonzero indexed values, destination chain/module, and canonical `PolicyHash`. | Fabricated or unrelated logs cannot call `react()`; irrelevant logs return silently rather than revert, because a reverted react is still billed. |
+| TB2 | Base Sepolia logs → Reactive system contract → `react()` | `onlySystem` (`msg.sender == 0x8888…8888`); plus explicit filters on `chainId`, `contractAddress`, `topic0`, `opCode == 4`, nonzero indexed values, destination chain/module, and canonical `PolicyHash`. | Fabricated or unrelated logs cannot call `react()`; irrelevant logs return silently rather than revert, because a reverted react is still billed. |
 | TB3 | Reactive → Unichain callback proxy → `PolicyMirror` | Both `onlyServiceProvider` (caller is the official Unichain callback proxy) and `onlyCallbackSender(reactiveSender_)` (network-overwritten first payload word equals the immutable authorised reactive address). Hash, destination chain and module are re-verified. | Direct EOA calls revert `NotAuthorized`; a different reactive contract reverts `CallbackNotAuthorized`; wrong chain/module/hash revert. |
 | TB4 | `PolicyMirror` → `GuardedDeFiVault` | The vault performs a read-only `getPolicy(agentId)` call. It cannot write policy state. Every action re-checks active/agent/chain/target/selector/expiry/cap. | Any missing or stale policy fails closed with a distinct custom error. |
 | TB5 | Agent key → `GuardedDeFiVault` | `msg.sender` must equal the policy's agent address. No recipient- or target-bearing agent entry point exists; `seed`/`withdraw` are owner-only. | Wrong agent reverts `WrongAgent`; vault holdings cannot be redirected to an arbitrary recipient through the guarded function. |

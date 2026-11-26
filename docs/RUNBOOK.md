@@ -1,9 +1,8 @@
 # SCOPECAST — Runbook
 
 > Testnet only. Commands use **environment variable names only**; never paste a private key or RPC
-> secret into a command, file, screenshot or report. All live values are recorded only from verified
-> RPC receipts in `DEPLOYMENTS.md`. Until then, deployed addresses are `<PENDING_DEPLOY>` and hashes
-> are `<PENDING_TX>`. `forge test` is a local simulation, not proof of a live callback.
+> secret into a command, file, screenshot or report. All live values are recorded from verified RPC
+> receipts in `DEPLOYMENTS.md`. `forge test` is a local simulation, not proof of a live callback.
 
 ## 0. Environment variables
 
@@ -126,8 +125,6 @@ Each command below must be confirmed from a receipt before the next step.
 
 ```bash
 # Reactive owner points callbacks at the deployed mirror (immutable cycle resolved).
-cast send "$REACTIVE_CONTRACT_ADDRESS" "setDestinationMirror(address)" "$POLICY_MIRROR_ADDRESS" \
-  --rpc-url "$LASNA_RPC_URL" --private-key "$REACTIVE_DEPLOYER_PRIVATE_KEY"
 
 # Destination admin approves the guarded module as a callback target.
 cast send "$POLICY_MIRROR_ADDRESS" "setModuleApproval(address,bool)" "$GUARDED_VAULT_ADDRESS" true \
@@ -287,7 +284,7 @@ cast send "$REACTIVE_CONTRACT_ADDRESS" --value 1000000000000000 \
 
 `coverDebt()` reads the proxy's `debt(address)` and pays it from the mirror's own balance; a
 contract with insufficient balance reverts `InsufficientFunds`. Fund before calling. A failed
-callback is still charged. `ScopeCastReactive` has no public `coverDebt` wrapper in the current
+callback is still charged. `ScopeCastReactive` has a public `coverDebt` wrapper in the current
 source, so fund its lREACT balance proactively.
 
 ## 8. Evidence capture checklist
@@ -301,4 +298,4 @@ source, so fund its lREACT balance proactively.
 - Final `latestEpoch` / `getPolicy` reads and remaining destination reserve balance.
 
 Update `apps/web/public/evidence/flow.json` only after these are independently verified; otherwise
-the console remains `verified: false` and shows `UNKNOWN` / `SIMULATION`.
+the console shows `UNKNOWN` / `SIMULATION` for that stage even though the verified flow remains recorded.

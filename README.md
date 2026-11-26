@@ -124,7 +124,7 @@ colour-only: every state carries an icon, an uppercase text label and a distinct
   card spotlight, 3D tilt, moving-border buttons, gradient/shimmer text, typewriter reveal,
   intersection-based scroll reveals, and a snap-scrolling carousel.
 - All motion respects `prefers-reduced-motion`; there is a static labelled fallback.
-- Animated properties are limited to `transform` and `opacity`.
+- Motion uses `transform` and `opacity` for movement; the only other animated property is a single `background-position` shimmer on the hero gradient text.
 
 **Brand assets** — original vector geometry (two permission nodes joined by a controlled signal line
 ending in a closed gate):
@@ -258,7 +258,7 @@ bash scripts/deploy.sh
 cd apps/web && pnpm flow
 ```
 
-Step-by-step manual commands, funding and callback recovery:
+DoraHacks submission copy and the 165-second demo script are kept locally and are intentionally not published in this repository. Step-by-step manual commands, funding and callback recovery:
 [`docs/RUNBOOK.md`](./docs/RUNBOOK.md) and [`docs/CALLBACK_OPERATIONS.md`](./docs/CALLBACK_OPERATIONS.md).
 
 ## Repository layout
@@ -297,8 +297,6 @@ scopecast/
 | [`docs/RUNBOOK.md`](./docs/RUNBOOK.md) | Deploy, grant, revoke, recovery, reserve top-up |
 | [`docs/CALLBACK_OPERATIONS.md`](./docs/CALLBACK_OPERATIONS.md) | Proxies, gas, debt, debugging |
 | [`docs/DEPLOYMENTS.md`](./docs/DEPLOYMENTS.md) | Addresses, hashes, subscription, verification commands |
-| [`docs/SUBMISSION.md`](./docs/SUBMISSION.md) | DoraHacks submission text and differentiation |
-| [`docs/DEMO_SCRIPT.md`](./docs/DEMO_SCRIPT.md) | 165-second demo sequence and fallback |
 | [`research/REACTIVE_TECHNICAL.md`](./research/REACTIVE_TECHNICAL.md) | Exact Omni APIs and verification |
 | [`research/COMPETITIVE_LANDSCAPE.md`](./research/COMPETITIVE_LANDSCAPE.md) | Dated competitor matrix |
 
@@ -309,7 +307,7 @@ scopecast/
 | `forge build`, `forge fmt --check` | Pass |
 | `forge test -vvv` | **51 tests passing** — unit, fuzz, replay, forged callback, local full lifecycle |
 | `pnpm typecheck` | Pass |
-| `pnpm build` | Pass; 12 routes |
+| `pnpm build` | Pass; 11 authored screens (12 build entries including `not-found`) |
 | Browser QA | 390 / 768 / 1440 px, zero horizontal overflow, no console errors |
 | Live receipts | All grant, reactive, callback, action and revoke hashes checked by RPC |
 
