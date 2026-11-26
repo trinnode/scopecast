@@ -65,12 +65,12 @@ verifiable callback receipt per change.
 
 ```mermaid
 flowchart LR
-  O[Owner wallet] -->|PolicyUpdated tx| B[Base Sepolia 84532<br/>PolicyHub]
-  B -->|origin log| R[Reactive Omni / Lasna 5318007<br/>ScopeCastReactive.react]
-  R -->|requestCallbackV_1_0| M[Unichain Sepolia 1301<br/>PolicyMirror.applyPolicy]
-  A[Agent session key] -->|rebalance(bytes32,uint256)| V[GuardedDeFiVault]
-  M -->|mirrored epoch| V
-  V -->|ActionExecuted / revert| UI[Console + explorer]
+  O[Owner wallet] -->|"PolicyUpdated tx"| B[Base Sepolia 84532<br/>PolicyHub]
+  B -->|"origin log"| R[Reactive Omni / Lasna 5318007<br/>ScopeCastReactive.react]
+  R -->|"requestCallbackV_1_0"| M[Unichain Sepolia 1301<br/>PolicyMirror.applyPolicy]
+  A[Agent session key] -->|"rebalance(bytes32,uint256)"| V[GuardedDeFiVault]
+  M -->|"mirrored epoch"| V
+  V -->|"ActionExecuted / revert"| UI[Console + explorer]
   B --> UI
   R --> UI
 ```
