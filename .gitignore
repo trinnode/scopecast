@@ -50,3 +50,4 @@ docs/demo/qa-*.png
 docs/demo/
 scripts/demo-capture.js
 scripts/demo-build.sh
+scripts/demo-build-silent.sh
