@@ -65,7 +65,7 @@ multisig in production. All activity is testnet-only and uses a valueless mock t
 
 ```
 Built during the Reactive Omni Buildathon. Public repository: https://github.com/trinnode/scopecast.
-Live app: Vercel deployment pending; local run: `cd apps/web && pnpm dev`.
+Live app: https://scopecast.vercel.app/ ; local run: `cd apps/web && pnpm dev`.
 ```
 
 ## 2. Deployed addresses and hashes
@@ -76,7 +76,7 @@ receipts on 2026-11-25.
 | Item | Value |
 | --- | --- |
 | Public repository URL | `https://github.com/trinnode/scopecast` |
-| Live app URL | Vercel pending; local: `cd apps/web && pnpm dev` |
+| Live app URL | `https://scopecast.vercel.app/` (HTTP 200 verified 2026-11-26) |
 | `PolicyHub` (Base Sepolia, 84532) | `0xc8B5A34BC6791138d107E1348A24bB7c27C766e4` |
 | `ScopeCastReactive` (Reactive Lasna, 5318007) | `0x155c0CbEdfBA688974A7354D39797c09667f98a3` |
 | `PolicyMirror` (Unichain Sepolia, 1301) | `0xFd036Ad562A612cEF82db4893558C09bBA8664D8` |

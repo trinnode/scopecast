@@ -6,7 +6,7 @@
 
 Cross-chain, agent-scoped permission synchronisation for DeFi protocols, powered by **Reactive Omni**.
 
-| Testnet only | Foundry 0.8.29 | Next.js console | Reactive Lasna | Verified callback |
+| **Live app:** [scopecast.vercel.app](https://scopecast.vercel.app/) | Testnet only | Foundry 0.8.29 | Reactive Lasna | Verified callback |
 | --- | --- | --- | --- | --- |
 
 </div>
@@ -222,6 +222,8 @@ verified receipts). Machine-readable evidence:
 
 Requirements: Foundry 1.5+, Node 22+, pnpm, and testnet ETH on Base Sepolia / Unichain Sepolia plus
 lREACT on Lasna. Testnet resources only — never use mainnet funds.
+
+**Live console:** [https://scopecast.vercel.app/](https://scopecast.vercel.app/)
 
 ```bash
 git clone https://github.com/trinnode/scopecast.git
