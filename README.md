@@ -20,6 +20,7 @@ Cross-chain, agent-scoped permission synchronisation for DeFi protocols, powered
 - [How the flow works](#how-the-flow-works)
 - [Design and product experience](#design-and-product-experience)
 - [Screenshots](#screenshots)
+- [Demo video](#demo-video)
 - [Architecture](#architecture)
 - [Security model](#security-model)
 - [Verified deployment](#verified-deployment)
@@ -152,6 +153,23 @@ Identical copies are served from `apps/web/public/brand/`.
 | Console overview | Console on mobile |
 | --- | --- |
 | ![Console overview](./docs/screenshots/console-overview.png) | ![Console mobile](./docs/screenshots/console-mobile.png) |
+
+## Demo video
+
+**[Watch the 2:08 demo](./docs/demo/scopecast-demo.mp4)** (MP4, 1280×800, narrated, under the
+three-minute DoraHacks limit).
+
+The video is a screen capture of the **live production build** driven by Playwright: the landing
+page and all console screens, the propagation timeline with real transaction hashes, the guarded
+vault state, the revoke flow, audit links and diagnostics. Caption overlays were added per frame,
+narration was generated locally with `espeak`, and the MP4 was assembled with `ffmpeg`. The capture
+and build scripts are reproducible: `scripts/demo-capture.js` and `scripts/demo-build.sh`; the
+narration is `docs/demo/narration.txt`.
+
+Honesty notes: the wallet connection is shown with a **demo EIP-1193 provider for the UI only** — no
+private key is placed in the browser and no wallet signature is claimed. Every on-chain hash and
+status shown in the video was independently verified by RPC. The post-revoke rejection is labelled
+as an `eth_call` simulation, not a reverted transaction.
 
 ## Architecture
 
