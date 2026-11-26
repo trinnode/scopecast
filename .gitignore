@@ -41,3 +41,7 @@ coverage/
 # Local-only competition artifacts
 docs/DEMO_SCRIPT.md
 docs/SUBMISSION.md
+
+# demo build intermediates
+docs/demo/work/
+docs/demo/qa-*.png
