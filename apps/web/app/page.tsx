@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight, Check, Minus, AlertTriangle } from "lucide-react";
+import { ArrowUpRight, AlertTriangle, Minus } from "lucide-react";
 import { RouteScene3D } from "@/components/RouteScene3D";
 import { Overline } from "@/components/ui";
-import { BackgroundMotion, Carousel, GradientText, RevealText, ScrollProgress, ScrollReveal, SpotlightCard, TiltCard } from "@/components/effects";
-import { AuroraWaves, GlareCard, MagneticButton, Meteors, OrbitRings, Sparkles, TracingBeam } from "@/components/aceternity-effects";
+import { BackgroundMotion, Carousel, GradientText, RevealText, ScrollProgress, ScrollReveal, SpotlightCard } from "@/components/effects";
+import { AuroraWaves, MagneticButton, Meteors, OrbitRings, Sparkles, TracingBeam } from "@/components/aceternity-effects";
+import { CapabilityFingerprint, CutChannel, DualBoltGlyph, EpochStackGlyph, LineKeyGlyph, RoleGlyph, ScopedGateGlyph, VerificationRail } from "@/components/Illustrations";
 import { BrandMark, BrandWordmark } from "@/components/Brand";
 import { ScrollAwareHeader } from "@/components/ScrollAwareHeader";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -112,22 +113,18 @@ export default function Landing() {
               </div>
             </div>
 
-            <TiltCard>
-              <SpotlightCard className="border border-line-strong bg-[#08080A]/85 p-5 backdrop-blur-xl">
+            <SpotlightCard className="border border-line-strong bg-[#08080A]/85 p-5 backdrop-blur-xl">
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                   <Overline>Cross-chain route</Overline>
                   <span className="border border-amber/60 px-2 py-1 font-mono text-[13px] font-bold uppercase tracking-[0.12em] text-amber">Illustration</span>
                 </div>
-                <div className="tilt-inner">
-                  <RouteScene3D />
-                </div>
+                <RouteScene3D />
                 <div className="mt-5 grid gap-3 border-t border-line pt-5 font-mono text-[13px] text-ink-3 sm:grid-cols-3">
                   <span><span className="text-flare">01</span> source event</span>
                   <span><span className="text-iris">02</span> react + callback</span>
                   <span><span className="text-blush">03</span> guarded action</span>
                 </div>
-              </SpotlightCard>
-            </TiltCard>
+            </SpotlightCard>
           </div>
         </section>
 
@@ -213,6 +210,7 @@ export default function Landing() {
               <p className="mt-5 border-l-2 border-flare pl-4 font-mono text-[15px] leading-5 text-ink-3">
                 topic0 = 0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9
               </p>
+              <div className="mt-8"><CapabilityFingerprint /></div>
             </ScrollReveal>
             <ScrollReveal delay={80}>
               <div className="border border-line">
@@ -243,14 +241,19 @@ export default function Landing() {
                 ["Monotonic epochs", "A callback at epoch n is ignored if the mirror already holds epoch n or newer. A delayed revoke cannot be overwritten by an older grant, and duplicate deliveries are harmless."],
                 ["Scoped execution", "GuardedDeFiVault checks active state, caller identity, chain, target, selector, expiry and cap. Its agent entry point accepts no arbitrary recipient or external target."],
                 ["Visible failure modes", "The console renders SOURCE_REVOKED separately from DESTINATION_REVOKED, and shows UNKNOWN when a receipt cannot be independently verified."],
-              ].map(([title, body]) => (
+              ].map(([title, body], i) => {
+                const glyphs = [<DualBoltGlyph key="a" />, <EpochStackGlyph key="b" />, <ScopedGateGlyph key="c" />, <LineKeyGlyph key="d" />];
+                const rails = ["signal-line", "signal-line--pending", "signal-line--revoked", "signal-line--unknown"];
+                return (
                 <ScrollReveal key={title}>
-                  <SpotlightCard className="h-full border border-line bg-surface p-6">
-                    <div className="flex items-center gap-3"><Check size={16} className="text-flare" aria-hidden="true" /><h3 className="text-[18px]">{title}</h3></div>
+                  <SpotlightCard className={`h-full border border-line bg-surface p-6`}>
+                    <div className={`mb-5 h-[2px] w-full ${rails[i]}`} aria-hidden="true" />
+                    <div className="flex items-center gap-3"><span className="text-flare">{glyphs[i]}</span><h3 className="text-[18px]">{title}</h3></div>
                     <p className="mt-4 text-[17px] leading-6 text-ink-2">{body}</p>
                   </SpotlightCard>
                 </ScrollReveal>
-              ))}
+                );
+              })}
             </div>
             <ScrollReveal>
               <div className="mt-6 border border-amber/30 bg-tint-pending p-6">
@@ -263,6 +266,7 @@ export default function Landing() {
                   <li>— The source owner must be a multisig in production.</li>
                   <li>— Testnet chain parameters are rechecked before each deploy.</li>
                 </ul>
+                <CutChannel />
               </div>
             </ScrollReveal>
           </div>
@@ -277,10 +281,10 @@ export default function Landing() {
             </ScrollReveal>
             <ScrollReveal delay={80} className="mt-10">
               <Carousel items={[
-                { tag: "PROTOCOL", title: "Integration engineer", body: "Add the guard to an execution module and read the mirrored policy before every agent call." },
-                { tag: "OPERATIONS", title: "Security engineer", body: "See the exact epoch, target, selector and cap on source and destination, with real transaction links." },
-                { tag: "TREASURY", title: "DAO operator", body: "Authorise one bounded strategy on a source chain and revoke it without editing each destination." },
-                { tag: "INFRASTRUCTURE", title: "Agent provider", body: "Give each session key a narrow scope and prove to users that a revoke reached every integrated chain." },
+                { tag: "PROTOCOL", title: "Integration engineer", icon: <RoleGlyph kind="engineer" />, body: "Add the guard to an execution module and read the mirrored policy before every agent call." },
+                { tag: "OPERATIONS", title: "Security engineer", icon: <RoleGlyph kind="security" />, body: "See the exact epoch, target, selector and cap on source and destination, with real transaction links." },
+                { tag: "TREASURY", title: "DAO operator", icon: <RoleGlyph kind="treasury" />, body: "Authorise one bounded strategy on a source chain and revoke it without editing each destination." },
+                { tag: "INFRASTRUCTURE", title: "Agent provider", icon: <RoleGlyph kind="provider" />, body: "Give each session key a narrow scope and prove to users that a revoke reached every integrated chain." },
               ]} />
             </ScrollReveal>
           </div>
@@ -309,12 +313,23 @@ export default function Landing() {
                   ["PolicyMirror + vault on Unichain", deployments?.destination?.mirror ?? "Not deployed"],
                   ["Live origin → callback proof", flow.verified ? `Verified · ${flow.propagationMs} ms revoke path (source → destination)` : "Not yet recorded"],
                   ["Post-revoke enforcement", flow.verified ? "eth_call denied with AgentPolicyInactive (0x5aff86e7)" : "Not yet recorded"],
-                ].map(([k, v]) => (
-                  <div key={k} className="grid grid-cols-[1fr_1.4fr] gap-4 border-b border-line px-5 py-3 last:border-b-0">
+                ].map(([k, v]) => {
+                  const ok = Boolean(v) && !String(v).startsWith("Not ");
+                  return (
+                  <div key={k} className="grid grid-cols-[3px_1fr_1.4fr] items-start gap-4 border-b border-line px-5 py-3 last:border-b-0">
+                    <VerificationRail verified={ok} />
                     <span className="mono text-[15px] text-ink">{k}</span>
-                    <span className="mono break-all text-[15px] text-ink-2">{v || "Not deployed"}</span>
+                    <span className="mono break-all text-[15px] text-ink-2">
+                      {k === "Live origin → callback proof" && flow.verified ? (
+                        <span className="flex flex-wrap items-center gap-2">
+                          <span>SOURCE → REACTIVE → CALLBACK → ENFORCED</span>
+                          <span className="text-flare">{flow.propagationMs} ms</span>
+                        </span>
+                      ) : (v || "Not deployed")}
+                    </span>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </ScrollReveal>
           </div>

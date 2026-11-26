@@ -123,8 +123,11 @@ colour-only: every state carries an icon, an uppercase text label and a distinct
 - Aceternity-inspired effects are implemented locally and kept subordinate to data: animated aurora
   waves, meteors, sparkles, background beams, pointer-tracked card spotlight and glare, 3D tilt,
   orbiting rings, a tracing beam, magnetic CTAs, moving-border buttons, gradient/shimmer text,
-  typewriter reveal, a capability-fingerprint visualisation, intersection-based scroll reveals and a
-  snap-scrolling carousel.
+  typewriter reveal, a capability-fingerprint proof (nine field ticks converging into one hash tile,
+  replicated at EMIT / RECOMPUTE / VERIFY), four information-bearing security SVG glyphs with line
+  patterns, a cut-channel diagram for asynchronous finality, verification rails on the status table,
+  intersection-based scroll reveals and a responsive role gallery (single-card snap rail with a peek
+  on mobile, four fixed cards on desktop, no auto-advance).
 - All motion respects `prefers-reduced-motion`; there is a static labelled fallback.
 - Motion uses `transform` and `opacity` for movement; the only other animated property is a single `background-position` shimmer on the hero gradient text.
 

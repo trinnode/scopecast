@@ -7,7 +7,7 @@ export function BackgroundMotion() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <video
-        className="sc-motion absolute inset-0 h-full w-full object-cover opacity-[0.28] blur-[26px] saturate-[0.85]"
+        className="sc-motion absolute inset-0 h-full w-full object-cover opacity-[0.18] blur-[26px] saturate-[0.85]"
         autoPlay
         muted
         loop
@@ -29,7 +29,7 @@ export function BackgroundMotion() {
 export function Beams() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      {[8, 26, 45, 63, 82].map((left, i) => (
+      {[12, 48, 84].map((left, i) => (
         <span
           key={left}
           className="beam animate-beam-drift"
@@ -165,64 +165,61 @@ export function ScrollReveal({
   );
 }
 
-/// Smooth horizontal carousel with snap scrolling, controls and gentle
-/// auto-advance. Auto-advance is disabled under prefers-reduced-motion.
+/// Responsive role gallery: a snap rail with a next-card peek on small
+/// screens, a fixed multi-column grid on larger screens. No auto-advance —
+/// nothing moves while the reader is reading.
 export function Carousel({
   items,
   className = "",
 }: {
-  items: { tag: string; title: string; body: string }[];
+  items: { tag: string; title: string; body: string; icon?: React.ReactNode }[];
   className?: string;
 }) {
   const [index, setIndex] = useState(0);
   const scroller = useRef<HTMLDivElement>(null);
 
   const go = (next: number) => {
-    const n = (next + items.length) % items.length;
-    setIndex(n);
     const box = scroller.current;
+    const max = items.length - 1;
+    const n = Math.max(0, Math.min(max, next));
+    setIndex(n);
     const card = box?.children[n] as HTMLElement | undefined;
     if (box && card) {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      box.scrollTo({ left: card.offsetLeft - box.offsetLeft - (box.clientWidth - card.clientWidth) / 2, behavior: reduced ? "auto" : "smooth" });
+      box.scrollTo({ left: card.offsetLeft - box.offsetLeft - 16, behavior: reduced ? "auto" : "smooth" });
     }
   };
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => go(index + 1), 7000);
-    return () => window.clearInterval(id);
-  }, [index, items.length]);
-
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className}`} role="region" aria-label="Who SCOPECAST is for">
+      <span className="sr-only" aria-live="polite">Showing role {index + 1} of {items.length}</span>
       <div
         ref={scroller}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        aria-roledescription="carousel"
+        className="carousel-rail flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:overflow-visible xl:grid-cols-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {items.map((item) => (
+        {items.map((item, i) => (
           <SpotlightCard
             key={item.title}
-            className="min-w-[min(86vw,340px)] shrink-0 snap-center border border-line bg-surface p-6"
+            className={`w-[min(86vw,340px)] max-w-[340px] shrink-0 snap-center border border-line bg-surface p-6 md:w-auto md:max-w-none`}
           >
+            {item.icon && <div className="mb-5 text-flare">{item.icon}</div>}
             <span className="overline">{item.tag}</span>
-            <h3 className="mt-5 text-[17px]">{item.title}</h3>
-            <p className="mt-3 text-[15px] leading-7 text-ink-2">{item.body}</p>
+            <h3 className="mt-5 text-[18px]">{item.title}</h3>
+            <p className="mt-3 text-[16px] leading-7 text-ink-2">{item.body}</p>
+            <span className="mono mt-5 block text-[13px] text-ink-3">0{i + 1} / 0{items.length}</span>
           </SpotlightCard>
         ))}
       </div>
-      <div className="mt-4 flex items-center gap-3">
-        <button onClick={() => go(index - 1)} className="border border-line-strong px-3 py-2 font-mono text-[14px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Previous item">←</button>
-        <button onClick={() => go(index + 1)} className="border border-line-strong px-3 py-2 font-mono text-[14px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Next item">→</button>
-        <div className="ml-2 flex gap-2">
+      <div className="mt-4 flex items-center gap-3 md:hidden">
+        <button onClick={() => go(index - 1)} className="flex h-11 w-11 items-center justify-center border border-line-strong text-[17px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Previous role">←</button>
+        <button onClick={() => go(index + 1)} className="flex h-11 w-11 items-center justify-center border border-line-strong text-[17px] text-ink-2 hover:border-flare hover:text-flare" aria-label="Next role">→</button>
+        <div className="ml-2 flex gap-2" aria-hidden="true">
           {items.map((item, i) => (
             <button
               key={item.title}
               onClick={() => go(i)}
-              aria-label={`Go to ${item.title}`}
-              aria-current={i === index ? "true" : undefined}
-              className={`h-2 w-8 transition-colors ${i === index ? "bg-flare" : "bg-line-strong hover:bg-ink-3"}`}
+              tabIndex={-1}
+              className={`h-2 w-8 transition-colors ${i === index ? "bg-flare" : "bg-line-strong"}`}
             />
           ))}
         </div>
