@@ -45,3 +45,8 @@ docs/SUBMISSION.md
 # demo build intermediates
 docs/demo/work/
 docs/demo/qa-*.png
+
+# Local-only demo production assets (not for the public repo)
+docs/demo/
+scripts/demo-capture.js
+scripts/demo-build.sh
