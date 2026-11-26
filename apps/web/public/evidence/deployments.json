@@ -1,9 +1,8 @@
 {
-  "verifiedAt": "2026-11-25T18:20:00Z",
+  "verifiedAt": "2026-11-26",
   "reactive": {
     "address": "0x155c0CbEdfBA688974A7354D39797c09667f98a3",
     "deployTx": "0x3e67b3ae34e9db016bfd4c6b46db8f80ff66ae51cf10ee269b0b5f75a046f9d4",
-    "faucetTx": "0x1e321dc1c865ffe404874b9d2ad51d3cad77a039f376b1881b6399c1297817a5",
     "depositTx": "0x1f8b893bcba2e8bc141cd52e7f6122bc4973bff5ba6ae9f8399af26aa27c9d18"
   },
   "source": {
@@ -16,5 +15,10 @@
     "asset": "0xcfF438ec5B4AB5Afef185D5C2b270c9fFFF5fc8e",
     "tx": "0xc42a91950fa0005bd8576a73c34c2811dbe1f726f0827bc0cb10803eeeafa73c"
   },
-  "note": "Only independently verified values are recorded. Null means not recovered or not applicable, never assumed."
+  "note": "Only independently verified values are recorded. Null means not recovered or not applicable, never assumed.",
+  "baseFaucetTx": {
+    "chainId": 84532,
+    "tx": "0x1e321dc1c865ffe404874b9d2ad51d3cad77a039f376b1881b6399c1297817a5",
+    "note": "0.01 Base Sepolia ETH sent to the documented lREACT faucet; this tx exists on Base, not Lasna."
+  }
 }

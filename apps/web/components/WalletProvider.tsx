@@ -88,12 +88,17 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const switchChain = useCallback(async (target: typeof baseSepolia | typeof unichainSepolia) => {
     const eth = window.ethereum;
     if (!eth) return;
+    setError(null);
+    const refreshChain = async () => {
+      const id = (await eth.request({ method: "eth_chainId" })) as Hex;
+      setChainId(Number(id));
+    };
     try {
       await eth.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: `0x${target.id.toString(16)}` }],
       });
-      setChainId(target.id);
+      await refreshChain();
     } catch {
       try {
         await eth.request({
@@ -108,7 +113,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             },
           ],
         });
-        setChainId(target.id);
+        await refreshChain();
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not switch network");
       }

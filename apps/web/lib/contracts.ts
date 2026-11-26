@@ -143,9 +143,10 @@ export const mirrorAbi = [
     inputs: [
       { name: "agentId", type: "bytes32", indexed: true },
       { name: "epoch", type: "uint64", indexed: true },
-      { name: "agent", type: "address", indexed: false },
+      { name: "agent", type: "address", indexed: true },
       { name: "active", type: "bool", indexed: false },
       { name: "policyHash", type: "bytes32", indexed: false },
+      { name: "destinationModule", type: "address", indexed: false },
     ],
   },
 ] as const;

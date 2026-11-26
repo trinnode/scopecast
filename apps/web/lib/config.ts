@@ -76,6 +76,12 @@ export function addressUrl(chain: "base" | "unichain" | "lasna", address: string
   return `${explorers[chain]}/address/${address}`;
 }
 
+/// Scan anchors. Use env overrides when redeploying; defaults are the verified
+/// deployment blocks of the current live contracts.
+export const BASE_START_BLOCK = BigInt(process.env.NEXT_PUBLIC_BASE_START_BLOCK || "63543000");
+export const UNICHAIN_START_BLOCK = BigInt(process.env.NEXT_PUBLIC_UNICHAIN_START_BLOCK || "68776000");
+export const LOG_CHUNK = { base: 50_000n, unichain: 1_000n } as const;
+
 export const SYSTEM_CONTRACT = "0x8888888888888888888888888888888888888888" as const;
 export const CALLBACK_PROXY = {
   base: "0x476F44b11F5C942c58f4c8E3d0300E5710743585" as const,

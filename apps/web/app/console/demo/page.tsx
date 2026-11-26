@@ -36,7 +36,7 @@ export default function GuardedDemo() {
   };
 
   useEffect(() => {
-    void readSourceEvents().then((list) => {
+    void readSourceEvents().then(({ events: list }) => {
       const latest = new Map<string, SourceEvent>();
       for (const e of list) if (!latest.has(e.agentId) || e.epoch > latest.get(e.agentId)!.epoch) latest.set(e.agentId, e);
       const rows = [...latest.values()];

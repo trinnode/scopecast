@@ -7,7 +7,7 @@ import { truncateHex } from "@/lib/format";
 export const dynamic = "force-dynamic";
 
 export default async function Policies() {
-  const events = await readSourceEvents();
+  const { events, ok: sourceOk } = await readSourceEvents();
   const latest = new Map<string, (typeof events)[number]>();
   for (const e of events) {
     const prev = latest.get(e.agentId);
@@ -32,7 +32,7 @@ export default async function Policies() {
       </div>
 
       {rows.length === 0 ? (
-        <EmptyState title="No policies on source" hint="Publish a policy from Base Sepolia to populate this table." />
+        <EmptyState title={sourceOk ? "No policies on source" : "Source logs unavailable"} hint={sourceOk ? "Publish a policy from Base Sepolia to populate this table." : "RPC UNKNOWN — retry with a working Base Sepolia endpoint."} />
       ) : (
         <div className="grid gap-4">
           {rows.map(({ e, m }) => {

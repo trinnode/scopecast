@@ -11,9 +11,10 @@ type Params = { params: Promise<{ agentId: string }> };
 export default async function PolicyDetail({ params }: Params) {
   const { agentId } = await params;
   const id = agentId as `0x${string}`;
-  const events = (await readSourceEvents()).filter((e) => e.agentId.toLowerCase() === id.toLowerCase());
+  const source = await readSourceEvents();
+  const events = source.events.filter((e) => e.agentId.toLowerCase() === id.toLowerCase());
   const mirror = await readMirrorPolicy(id);
-  const actions = (await readVaultEvents()).filter((a) => a.agentId.toLowerCase() === id.toLowerCase());
+  const actions = (await readVaultEvents()).events.filter((a) => a.agentId.toLowerCase() === id.toLowerCase());
 
   if (events.length === 0) {
     return (
@@ -36,7 +37,7 @@ export default async function PolicyDetail({ params }: Params) {
 
   return (
     <>
-      <PageHeader kicker="AGENT POLICY DETAIL" title="Northstar Rebalance Agent" description={current.agentId} />
+      <PageHeader kicker="AGENT POLICY DETAIL" title={`Agent ${truncateHex(current.agentId, 10, 6)}`} description={current.agentId} />
       <div className="mb-6"><StatusChip status={status} /></div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">

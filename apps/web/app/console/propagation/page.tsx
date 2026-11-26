@@ -7,9 +7,18 @@ import { RouteVisual } from "@/components/RouteVisual";
 export const dynamic = "force-dynamic";
 
 export default async function Propagation() {
-  const events = await readSourceEvents();
+  const { events } = await readSourceEvents();
   const evidence = readEvidence();
   const latest = events.length ? events.reduce((a, b) => (b.epoch > a.epoch ? b : a)) : null;
+
+  const destinationRevoked = Boolean(evidence.revoke?.callback);
+  const currentStatus = destinationRevoked
+    ? "DESTINATION_REVOKED"
+    : evidence.grant?.callback
+      ? "DESTINATION_POLICY_ACTIVE"
+      : "DESTINATION_SYNC_UNKNOWN";
+
+  const validHash = (h?: string) => Boolean(h && /^0x[a-fA-F0-9]{64}$/.test(h));
 
   const stages = [
     {
@@ -45,17 +54,17 @@ export default async function Propagation() {
 
       <Card>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <Overline>GRANT PATH</Overline>
-          <StatusChip status={evidence.verified ? "DESTINATION_POLICY_ACTIVE" : "DESTINATION_SYNC_UNKNOWN"} />
+          <Overline>{currentStatus === "DESTINATION_REVOKED" ? "GRANT PATH · HISTORICAL" : "GRANT PATH"}</Overline>
+          <StatusChip status={currentStatus} />
         </div>
         <RouteVisual
-          status={evidence.verified ? "DESTINATION_POLICY_ACTIVE" : "DESTINATION_SYNC_UNKNOWN"}
+          status={currentStatus}
           simulation={!evidence.verified}
           stages={stages.map((s) => ({
             label: s.title,
             sub: s.chain,
             hash: s.hash,
-            url: s.hash ? `https://${s.explorer === "base" ? "sepolia.basescan.org" : s.explorer === "lasna" ? "lasna.reactscan.net" : "sepolia.uniscan.xyz"}/tx/${s.hash}` : undefined,
+            url: validHash(s.hash) ? `https://${s.explorer === "base" ? "sepolia.basescan.org" : s.explorer === "lasna" ? "lasna.reactscan.net" : "sepolia.uniscan.xyz"}/tx/${s.hash}` : undefined,
             state: s.hash ? "complete" : "pending",
           }))}
         />
@@ -71,9 +80,9 @@ export default async function Propagation() {
                 <p className="mt-1 text-[18px] text-ink">{s.title}</p>
                 <p className="text-[16px] text-ink-3">{s.chain}</p>
                 <div className="mt-2">
-                  {s.hash ? (
-                    <ExplorerLink href={s.hash.startsWith("0x") ? `https://${s.explorer === "base" ? "sepolia.basescan.org" : s.explorer === "lasna" ? "lasna.reactscan.net" : "sepolia.uniscan.xyz"}/tx/${s.hash}` : "#"}>
-                      {truncateHex(s.hash, 14, 10)}
+                  {validHash(s.hash) ? (
+                    <ExplorerLink href={`https://${s.explorer === "base" ? "sepolia.basescan.org" : s.explorer === "lasna" ? "lasna.reactscan.net" : "sepolia.uniscan.xyz"}/tx/${s.hash!}`}>
+                      {truncateHex(s.hash!, 14, 10)}
                     </ExplorerLink>
                   ) : (
                     <span className="mono text-[15px] text-fog">NO VERIFIED RECEIPT</span>
@@ -98,7 +107,7 @@ export default async function Propagation() {
                 <p className="mt-1 text-[18px] text-ink">{s.label}</p>
                 {s.hash ? (
                   <div className="mt-2">
-                    <ExplorerLink href={`https://${s.explorer}/tx/${s.hash}`}>{truncateHex(s.hash, 14, 10)}</ExplorerLink>
+                    <ExplorerLink href={`https://${s.explorer}/tx/${s.hash!}`}>{truncateHex(s.hash!, 14, 10)}</ExplorerLink>
                     {s.kind && <span className="ml-2 text-[15px] text-amber">({s.kind.toUpperCase()})</span>}
                   </div>
                 ) : (

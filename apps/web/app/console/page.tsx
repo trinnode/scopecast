@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { readSourceEvents, readMirrorPolicy, readVaultPositions } from "@/lib/chain-data";
+import { readEvidence } from "@/lib/evidence";
 import { deriveStatus } from "@/lib/status";
 import { Card, EmptyState, Mono, Overline, PageHeader, Stat, StatusChip } from "@/components/ui";
 import { truncateHex } from "@/lib/format";
@@ -8,7 +9,7 @@ import { RouteVisual } from "@/components/RouteVisual";
 export const dynamic = "force-dynamic";
 
 export default async function Overview() {
-  const events = await readSourceEvents();
+  const { events, ok: sourceOk } = await readSourceEvents();
   const latestByAgent = new Map<string, (typeof events)[number]>();
   for (const e of events) {
     const prev = latestByAgent.get(e.agentId);
@@ -19,6 +20,7 @@ export default async function Overview() {
     [...latestByAgent.values()].map(async (e) => ({ event: e, mirror: await readMirrorPolicy(e.agentId) })),
   );
   const positions = await readVaultPositions();
+  const evidence = readEvidence();
 
   const active = rows.filter((r) => r.event.active).length;
   const revoked = rows.filter((r) => !r.event.active).length;
@@ -102,8 +104,8 @@ export default async function Overview() {
         </div>
         {rows.length === 0 ? (
           <EmptyState
-            title="No source policies observed yet"
-            hint="No PolicyUpdated events were returned from the configured PolicyHub. Configure a deployed address and publish a policy on Base Sepolia, or use the local simulation to explore the console."
+            title={sourceOk ? "No source policies observed yet" : "Source logs unavailable"}
+            hint={sourceOk ? "No PolicyUpdated events were returned in the verified deployment range." : "The Base Sepolia RPC could not serve the log range. State is UNKNOWN, not empty — retry or configure a working RPC."}
           />
         ) : (
           <div className="card overflow-hidden">

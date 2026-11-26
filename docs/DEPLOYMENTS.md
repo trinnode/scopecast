@@ -23,9 +23,9 @@ Recheck official endpoints before every deployment; testnet parameters can chang
 
 | Constant | Value | Verified how |
 | --- | --- | --- |
-| Reactive system contract (Lasna) | `0x8888888888888888888888888888888888888888` | `eth_getCode` present, 478 bytes, EIP-1967 proxy |
-| Base Sepolia callback proxy | `0x476F44b11F5C942c58f4c8E3d0300E5710743585` | `eth_getCode` present, 436 bytes, EIP-1967 proxy |
-| Unichain Sepolia callback proxy | `0x775c9B990ADe401060B78D0e98684eEf8d2466C1` | `eth_getCode` present, 436 bytes, EIP-1967 proxy |
+| Reactive system contract (Lasna) | `0x8888888888888888888888888888888888888888` | `eth_getCode` present (239 bytes of runtime bytecode), EIP-1967 proxy |
+| Base Sepolia callback proxy | `0x476F44b11F5C942c58f4c8E3d0300E5710743585` | `eth_getCode` present (218 bytes of runtime bytecode), EIP-1967 proxy |
+| Unichain Sepolia callback proxy | `0x775c9B990ADe401060B78D0e98684eEf8d2466C1` | `eth_getCode` present (218 bytes of runtime bytecode), EIP-1967 proxy |
 | `PolicyUpdated` topic0 | `0xd1601cdc83fb90b6c3071dcd453f6433b966853b9b306aeb31c20c74ebedd8c9` | `cast sig-event` matches the compiled event signature |
 | Reactive library | `reactive-lib-omni` v0.1.0, commit `3ade0dcf1d27e67e5783ef807e73a1b9e0c0cce8` | vendored in `contracts/lib/reactive-lib/` |
 | Compiler / EVM | Solidity `0.8.29`, `cancun` | `contracts/foundry.toml` |
@@ -54,7 +54,7 @@ reentrancy sentry". The receiver needs ~190,000 gas.
 | --- | --- | --- | --- |
 | `PolicyHub` | Base Sepolia (84532) | `0xc8B5A34BC6791138d107E1348A24bB7c27C766e4` | `expectedDestinationChainId()=1301`, `expectedDestinationModule()=vault` |
 | `ScopeCastReactive` | Reactive Lasna (5318007) | `0x155c0CbEdfBA688974A7354D39797c09667f98a3` | deploy `0x3e67b3ae34e9db016bfd4c6b46db8f80ff66ae51cf10ee269b0b5f75a046f9d4`; `policyTopic0()`, `destinationMirror()`, `callbackGasLimit()=800000`, `debt()=0` verified |
-| `PolicyMirror` | Unichain Sepolia (1301) | `0xFd036Ad562A612cEF82db4893558C09bBA8664D8` | `_CALLBACK_SENDER()=reactive`, `_SERVICE_PROVIDER()=proxy`, `admin()`, module approved, balance 0.0001 ETH |
+| `PolicyMirror` | Unichain Sepolia (1301) | `0xFd036Ad562A612cEF82db4893558C09bBA8664D8` | `_CALLBACK_SENDER()=reactive`, `_SERVICE_PROVIDER()=proxy`, `admin()`, module approved; initially funded with 0.0001 ETH |
 | `GuardedDeFiVault` | Unichain Sepolia (1301) | `0x6AA08fD4C41D4e66CC27f654bE4f8f0e71029DBD` | `mirror()=PolicyMirror`, `asset()`, seeded 50 test units |
 | `MockAsset` | Unichain Sepolia (1301) | `0xcfF438ec5B4AB5Afef185D5C2b270c9fFFF5fc8e` | `eth_getCode`, `symbol()=SCT` |
 
@@ -98,18 +98,18 @@ minus source block timestamp from the two verified receipts (revoke path).
 | --- | --- | --- |
 | Reactive lREACT balance | 0 debt after `depositTo` of 0.3 lREACT | `debt(address)` on Lasna system contract returned 0 |
 | Reactive callback gas limit | 800000 | `callbackGasLimit()` on the deployed Reactive contract |
-| Mirror SepETH reserve | 0.0001 ETH | `cast balance` on Unichain Sepolia |
-| Post-run mirror reserve | ~0.0000997 ETH | `cast balance` after callback charges |
+| Initial mirror SepETH funding | 0.0001 ETH | `cast send --value 0.0001ether` on Unichain Sepolia |
+| Measured post-run reserve | 99,001,890,250,000 wei (0.00009900189025 ETH) at 2026-11-26 verification | `cast balance` after callback charges |
 | Module approval | `true` | `approvedModule(vault)` on `PolicyMirror` |
 
 ## 7. Console evidence gate
 
-`apps/web/public/evidence/flow.json` starts as:
+`apps/web/public/evidence/flow.json` currently contains:
 
 ```json
 {
-  "verified": false,
-  "note": "No verified on-chain flow evidence has been recorded yet. Local simulations are not proof of a live callback. This file is updated only from independently checked RPC receipts."
+  "verified": true,
+  "note": "Hashes are recorded only after eth_getTransactionReceipt on their own chain. Post-revoke denial is an eth_call simulation."
 }
 ```
 

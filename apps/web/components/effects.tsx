@@ -177,7 +177,8 @@ export function Carousel({
     const box = scroller.current;
     const card = box?.children[n] as HTMLElement | undefined;
     if (box && card) {
-      box.scrollTo({ left: card.offsetLeft - box.offsetLeft - (box.clientWidth - card.clientWidth) / 2, behavior: "smooth" });
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      box.scrollTo({ left: card.offsetLeft - box.offsetLeft - (box.clientWidth - card.clientWidth) / 2, behavior: reduced ? "auto" : "smooth" });
     }
   };
 

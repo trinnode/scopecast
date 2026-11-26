@@ -214,8 +214,8 @@ Live flow evidence (all hashes independently checked with `eth_getTransactionRec
 | Revoke callback | Unichain Sepolia | `0x97d2a79dac850272906e637b2bc8862a39aa97b985c6fd0c9055428d0a540112` |
 | Post-revoke denial | Unichain Sepolia | `eth_call` simulation, revert `0x5aff86e7` (`AgentPolicyInactive`) |
 
-Observed propagation: **3,000 ms** (destination block timestamp minus source block timestamp from
-verified receipts). Machine-readable evidence:
+Observed propagation: **3,000 ms on the revoke path** and **2,000 ms on the grant path**, measured as
+destination block timestamp minus source block timestamp from verified receipts. Machine-readable evidence:
 [`apps/web/public/evidence/flow.json`](./apps/web/public/evidence/flow.json).
 
 ## Quickstart

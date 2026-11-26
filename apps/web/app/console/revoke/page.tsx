@@ -20,7 +20,7 @@ export default function Revoke() {
   const [mirrorEpoch, setMirrorEpoch] = useState<number | null>(null);
 
   useEffect(() => {
-    void readSourceEvents().then((list) => {
+    void readSourceEvents().then(({ events: list }) => {
       const latest = new Map<string, SourceEvent>();
       for (const e of list) if (!latest.has(e.agentId) || e.epoch > latest.get(e.agentId)!.epoch) latest.set(e.agentId, e);
       const rows = [...latest.values()];
@@ -32,6 +32,19 @@ export default function Revoke() {
   useEffect(() => {
     if (!selected) return;
     void readMirrorPolicy(selected as `0x${string}`).then((p) => setMirrorEpoch(p ? Number(p.epoch) : null));
+  }, [selected]);
+
+  // After submission, poll the destination mirror until the newer epoch lands.
+  useEffect(() => {
+    if (!selected || !hash) return;
+    let cancelled = false;
+    const poll = async () => {
+      const policy = await readMirrorPolicy(selected as `0x${string}`);
+      if (!cancelled && policy) setMirrorEpoch(Number(policy.epoch));
+    };
+    const interval = window.setInterval(() => void poll(), 4000);
+    const timeout = window.setTimeout(() => window.clearInterval(interval), 180_000);
+    return () => { cancelled = true; window.clearInterval(interval); window.clearTimeout(timeout); };
   }, [selected, hash]);
 
   const current = events.find((e) => e.agentId === selected);

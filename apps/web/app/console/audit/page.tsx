@@ -7,8 +7,8 @@ import { deriveStatus } from "@/lib/status";
 export const dynamic = "force-dynamic";
 
 export default async function Audit() {
-  const events = await readSourceEvents();
-  const actions = await readVaultEvents();
+  const { events, ok: sourceOk } = await readSourceEvents();
+  const { events: actions, ok: vaultOk } = await readVaultEvents();
 
   return (
     <>
@@ -25,7 +25,7 @@ export default async function Audit() {
       </div>
 
       {events.length === 0 ? (
-        <EmptyState title="No source events" hint="Configure PolicyHub and publish a policy to populate the audit trail." />
+        <EmptyState title={sourceOk ? "No source events" : "Audit logs unavailable"} hint={sourceOk ? "No PolicyUpdated events in the verified deployment range." : "RPC UNKNOWN — retry with a working Base Sepolia endpoint."} />
       ) : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">

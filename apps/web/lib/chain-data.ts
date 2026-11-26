@@ -1,5 +1,5 @@
 import { createPublicClient, http, decodeEventLog, getAddress, type PublicClient } from "viem";
-import { addresses, rpcUrls, baseSepolia, unichainSepolia, lasna, POLICY_UPDATED_TOPIC, SYSTEM_CONTRACT, CALLBACK_PROXY } from "./config";
+import { addresses, rpcUrls, baseSepolia, unichainSepolia, lasna, POLICY_UPDATED_TOPIC, SYSTEM_CONTRACT, CALLBACK_PROXY, BASE_START_BLOCK, UNICHAIN_START_BLOCK, LOG_CHUNK } from "./config";
 import { policyHubAbi, mirrorAbi, vaultAbi } from "./contracts";
 
 export type SourceEvent = {
@@ -23,17 +23,45 @@ const baseClient: AnyClient = createPublicClient({ chain: baseSepolia, transport
 const unichainClient: AnyClient = createPublicClient({ chain: unichainSepolia, transport: http(rpcUrls.unichain, { timeout: 10_000 }) });
 const lasnaClient: AnyClient = createPublicClient({ chain: lasna, transport: http(rpcUrls.lasna, { timeout: 20_000 }) });
 
-export async function readSourceEvents(): Promise<SourceEvent[]> {
-  if (!addresses.policyHub) return [];
-  try {
-    const latest = await baseClient.getBlockNumber();
-    const from = latest > 200_000n ? latest - 200_000n : 0n;
-    const allLogs = await baseClient.getLogs({ address: addresses.policyHub, fromBlock: from, toBlock: latest });
-    const logs = allLogs.filter((log) => log.topics[0] === POLICY_UPDATED_TOPIC);
-    return logs.map((log) => {
-      const decoded = decodeEventLog({ abi: policyHubAbi, data: log.data, topics: log.topics, eventName: "PolicyUpdated" });
+type ReadResult<T> = { ok: boolean; events: T[] };
+
+/// Public RPCs cap eth_getLogs ranges differently. Chunk from a known
+/// deployment block rather than a head-relative window, and report failure
+/// explicitly instead of collapsing it into an empty result.
+async function getLogsChunked(
+  client: AnyClient,
+  address: `0x${string}`,
+  from: bigint,
+  chunk: bigint,
+): Promise<ReadResult<{ data: `0x${string}`; topics: readonly `0x${string}`[]; transactionHash: `0x${string}` | null; blockNumber: bigint }>> {
+  const latest = await client.getBlockNumber();
+  if (latest < from) return { ok: true, events: [] };
+  const out: Array<{ data: `0x${string}`; topics: readonly `0x${string}`[]; transactionHash: `0x${string}` | null; blockNumber: bigint }> = [];
+  let cursor = from;
+  while (cursor <= latest) {
+    const end = cursor + chunk - 1n > latest ? latest : cursor + chunk - 1n;
+    try {
+      const logs = await client.getLogs({ address, fromBlock: cursor, toBlock: end });
+      out.push(...logs);
+    } catch {
+      return { ok: false, events: [] };
+    }
+    cursor = end + 1n;
+  }
+  return { ok: true, events: out };
+}
+
+export async function readSourceEvents(): Promise<ReadResult<SourceEvent>> {
+  if (!addresses.policyHub) return { ok: false, events: [] };
+  const scanned = await getLogsChunked(baseClient, addresses.policyHub, BASE_START_BLOCK, LOG_CHUNK.base);
+  if (!scanned.ok) return { ok: false, events: [] };
+  const logs = scanned.events.filter((log) => log.topics[0] === POLICY_UPDATED_TOPIC);
+  const events: SourceEvent[] = [];
+  for (const log of logs) {
+    try {
+      const decoded = decodeEventLog({ abi: policyHubAbi, data: log.data, topics: log.topics as [`0x${string}`, ...`0x${string}`[]], eventName: "PolicyUpdated" });
       const a = decoded.args as unknown as Record<string, unknown>;
-      return {
+      events.push({
         agentId: a.agentId as `0x${string}`,
         agent: a.agent as `0x${string}`,
         epoch: Number(a.epoch),
@@ -46,11 +74,10 @@ export async function readSourceEvents(): Promise<SourceEvent[]> {
         policyHash: a.policyHash as `0x${string}`,
         txHash: log.transactionHash!,
         blockNumber: log.blockNumber,
-      };
-    });
-  } catch {
-    return [];
+      });
+    } catch { /* unrelated log */ }
   }
+  return { ok: true, events };
 }
 
 export async function readMirrorPolicy(agentId: `0x${string}`) {
@@ -81,33 +108,19 @@ export async function readVaultPositions() {
   }
 }
 
-export async function readVaultEvents() {
-  if (!addresses.guardedVault) return [] as Array<{ txHash: `0x${string}`; agentId: `0x${string}`; amount: bigint; epoch: number }>;
-  try {
-    const latest = await unichainClient.getBlockNumber();
-    const from = latest > 200_000n ? latest - 200_000n : 0n;
-    const logs = await unichainClient.getLogs({ address: addresses.guardedVault, fromBlock: from, toBlock: latest });
-    const actionTopic = "0x" as const;
-    void actionTopic;
-    const out: Array<{ txHash: `0x${string}`; agentId: `0x${string}`; amount: bigint; epoch: number }> = [];
-    for (const log of logs) {
-      try {
-        const decoded = decodeEventLog({ abi: vaultAbi, data: log.data, topics: log.topics, eventName: "ActionExecuted" });
-        const a = decoded.args as unknown as Record<string, unknown>;
-        out.push({
-          txHash: log.transactionHash!,
-          agentId: a.agentId as `0x${string}`,
-          amount: a.amount as bigint,
-          epoch: Number(a.epoch),
-        });
-      } catch {
-        /* unrelated event from the same address */
-      }
-    }
-    return out;
-  } catch {
-    return [];
+export async function readVaultEvents(): Promise<ReadResult<{ txHash: `0x${string}`; agentId: `0x${string}`; amount: bigint; epoch: number }>> {
+  if (!addresses.guardedVault) return { ok: false, events: [] };
+  const scanned = await getLogsChunked(unichainClient, addresses.guardedVault, UNICHAIN_START_BLOCK, LOG_CHUNK.unichain);
+  if (!scanned.ok) return { ok: false, events: [] };
+  const out: Array<{ txHash: `0x${string}`; agentId: `0x${string}`; amount: bigint; epoch: number }> = [];
+  for (const log of scanned.events) {
+    try {
+      const decoded = decodeEventLog({ abi: vaultAbi, data: log.data, topics: log.topics as [`0x${string}`, ...`0x${string}`[]], eventName: "ActionExecuted" });
+      const a = decoded.args as unknown as Record<string, unknown>;
+      out.push({ txHash: log.transactionHash!, agentId: a.agentId as `0x${string}`, amount: a.amount as bigint, epoch: Number(a.epoch) });
+    } catch { /* unrelated event */ }
   }
+  return { ok: true, events: out };
 }
 
 export type Diagnostic = { name: string; value: string; ok: boolean; detail?: string };

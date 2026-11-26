@@ -303,7 +303,7 @@ export default function Landing() {
                   ["Reactive funding", reactive?.depositTx ? "lREACT reserve deposited, debt 0" : "Not funded"],
                   ["PolicyHub on Base Sepolia", deployments?.source?.address ?? "Not deployed"],
                   ["PolicyMirror + vault on Unichain", deployments?.destination?.mirror ?? "Not deployed"],
-                  ["Live origin → callback proof", flow.verified ? `Verified · ${flow.propagationMs} ms source → destination` : "Not yet recorded"],
+                  ["Live origin → callback proof", flow.verified ? `Verified · ${flow.propagationMs} ms revoke path (source → destination)` : "Not yet recorded"],
                   ["Post-revoke enforcement", flow.verified ? "eth_call denied with AgentPolicyInactive (0x5aff86e7)" : "Not yet recorded"],
                 ].map(([k, v]) => (
                   <div key={k} className="grid grid-cols-[1fr_1.4fr] gap-4 border-b border-line px-5 py-3 last:border-b-0">
