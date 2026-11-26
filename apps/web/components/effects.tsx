@@ -58,14 +58,20 @@ export function SpotlightCard({
   return (
     <div
       ref={ref}
-      className={`spotlight-card ${className}`}
+      className={`spotlight-card glare-card ${className}`}
       onPointerMove={(e) => {
         const { px, py } = pointerVars(e);
         e.currentTarget.style.setProperty("--mx", `${px * 100}%`);
         e.currentTarget.style.setProperty("--my", `${py * 100}%`);
         e.currentTarget.style.setProperty("--spot-opacity", "1");
+        e.currentTarget.style.setProperty("--gx", `${px * 100}%`);
+        e.currentTarget.style.setProperty("--gy", `${py * 100}%`);
+        e.currentTarget.style.setProperty("--glare", "1");
       }}
-      onPointerLeave={(e) => e.currentTarget.style.setProperty("--spot-opacity", "0")}
+      onPointerLeave={(e) => {
+        e.currentTarget.style.setProperty("--spot-opacity", "0");
+        e.currentTarget.style.setProperty("--glare", "0");
+      }}
     >
       {children}
     </div>

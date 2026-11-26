@@ -14,6 +14,12 @@
 > `#FFC53D`. Earlier typography and colour recommendations below are historical exploration and are
 > superseded wherever they conflict with this block or with `apps/web/tailwind.config.ts`.
 >
+> Implemented effect vocabulary: aurora waves, meteors, sparkles, background beams, spotlight +
+> glare cards, 3D tilt, orbiting rings, tracing beam, magnetic buttons, moving borders, gradient
+> text, typewriter reveal, capability fingerprint, scroll reveals and a snap carousel. All are local
+> CSS/React implementations in `apps/web/components/effects.tsx` and
+> `apps/web/components/aceternity-effects.tsx`, with reduced-motion fallbacks in `globals.css`.
+>
 > Research basis and rejected alternatives: [`research/DESIGN_SOURCES.md`](../research/DESIGN_SOURCES.md).
 
 ---

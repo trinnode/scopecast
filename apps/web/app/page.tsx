@@ -3,6 +3,7 @@ import { ArrowUpRight, Check, Minus, AlertTriangle } from "lucide-react";
 import { RouteScene3D } from "@/components/RouteScene3D";
 import { Overline } from "@/components/ui";
 import { BackgroundMotion, Carousel, GradientText, RevealText, ScrollProgress, ScrollReveal, SpotlightCard, TiltCard } from "@/components/effects";
+import { AuroraWaves, GlareCard, MagneticButton, Meteors, OrbitRings, Sparkles, TracingBeam } from "@/components/aceternity-effects";
 import { BrandMark, BrandWordmark } from "@/components/Brand";
 import { ScrollAwareHeader } from "@/components/ScrollAwareHeader";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -66,7 +67,6 @@ export default function Landing() {
             <a href="#how" className="hover:text-flare">How it works</a>
             <a href="#policy" className="hover:text-flare">Policy</a>
             <a href="#status" className="hover:text-flare">Status</a>
-            <a href="https://github.com/trinnode/scopecast" target="_blank" rel="noreferrer" className="hover:text-flare">GitHub</a>
             <Link href="/console" className="flex items-center gap-2 border border-flare px-4 py-2.5 text-flare transition-colors hover:bg-flare hover:text-canvas">Open console <ArrowUpRight size={15} aria-hidden="true" /></Link>
           </nav>
           <div className="flex items-center gap-3 lg:hidden">
@@ -76,7 +76,6 @@ export default function Landing() {
               { href: "#how", label: "How it works" },
               { href: "#policy", label: "Policy" },
               { href: "#status", label: "Build status" },
-              { href: "https://github.com/trinnode/scopecast", label: "GitHub", external: true },
               { href: "/console", label: "Open console" },
             ]} />
           </div>
@@ -86,14 +85,19 @@ export default function Landing() {
       <main>
         <section className="noise relative overflow-hidden border-b border-line">
           <BackgroundMotion />
+          <AuroraWaves />
+          <Meteors />
           <div className={`${container} relative z-10 grid gap-12 py-20 md:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:items-center`}>
             <div>
               <Overline>Reactive Omni Buildathon · Every Second Counts</Overline>
+              <div className="relative">
+              <Sparkles />
               <h1 className="mt-6 text-[38px] leading-[1.08] sm:text-[50px] lg:text-[58px]">
                 Revoke once.
                 <br />
                 <GradientText>Enforce everywhere.</GradientText>
               </h1>
+              </div>
               <p className="mt-7 max-w-[56ch] text-[19px] leading-7 text-ink-2">
                 <RevealText text="SCOPECAST is a cross-chain capability registry for delegated DeFi agents. One owner action on Base Sepolia produces a versioned policy event; a Reactive contract validates it and mirrors it to a guarded execution module on Unichain Sepolia." />
               </p>

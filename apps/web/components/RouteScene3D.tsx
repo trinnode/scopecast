@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { OrbitRings } from "./aceternity-effects";
 
 const nodes = [
   { label: "BASE SEPOLIA", sub: "84532 · source", tone: "from-flare/25", glyph: "01", depth: "translate3d(-175px, 14px, 40px) rotateY(16deg)" },
@@ -42,6 +43,7 @@ export function RouteScene3D() {
         className="scene-core absolute inset-0"
         style={{ transformStyle: "preserve-3d", transform: "rotateX(var(--sx,0deg)) rotateY(var(--sy,0deg))" }}
       >
+        <OrbitRings />
         <div className="absolute left-1/2 top-1/2 h-px w-[420px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-flare via-iris to-blush opacity-60" />
         <div className="sc-propagation-pulse absolute left-1/2 top-1/2 h-[3px] w-14 -translate-y-1/2 animate-signal-travel rounded-pill bg-white shadow-[0_0_18px_rgba(0,240,255,.8)]" style={{ ["--signal-distance" as string]: "360px" }} />
 

@@ -120,9 +120,11 @@ colour-only: every state carries an icon, an uppercase text label and a distinct
   produced with FFmpeg — no network fetch) sits behind the hero.
 - The hero route is a pointer-reactive **3D scene**: three depth-layered chain cards, a gradient
   signal line, a travelling pulse and glow orbs (`components/RouteScene3D.tsx`).
-- Aceternity-style effects are implemented locally and kept subordinate to data: background beams,
-  card spotlight, 3D tilt, moving-border buttons, gradient/shimmer text, typewriter reveal,
-  intersection-based scroll reveals, and a snap-scrolling carousel.
+- Aceternity-inspired effects are implemented locally and kept subordinate to data: animated aurora
+  waves, meteors, sparkles, background beams, pointer-tracked card spotlight and glare, 3D tilt,
+  orbiting rings, a tracing beam, magnetic CTAs, moving-border buttons, gradient/shimmer text,
+  typewriter reveal, a capability-fingerprint visualisation, intersection-based scroll reveals and a
+  snap-scrolling carousel.
 - All motion respects `prefers-reduced-motion`; there is a static labelled fallback.
 - Motion uses `transform` and `opacity` for movement; the only other animated property is a single `background-position` shimmer on the hero gradient text.
 
