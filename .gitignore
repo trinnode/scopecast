@@ -53,3 +53,4 @@ scripts/demo-build.sh
 scripts/demo-build-silent.sh
 scripts/demo-flow-assemble.sh
 scripts/demo-edge-tts.sh
+scripts/demo-edge-fit.sh
